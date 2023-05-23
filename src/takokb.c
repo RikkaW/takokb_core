@@ -1,20 +1,18 @@
 #include <stdbool.h>
-#include <memory.h>
-#include "matrix.h"
 #include "keyboard.h"
 #include "keymap.h"
 #include "takokb.h"
 #include "report.h"
 
-static matrix_row_t matrix_previous[MATRIX_ROWS] = {0};
-static matrix_row_t matrix[MATRIX_ROWS] = {0};
-static key_state_t key_states[MATRIX_ROWS][MATRIX_COLS] = {0};
+static matrix_row_t matrix_previous[TAKOKB_MATRIX_ROWS] = {0};
+static matrix_row_t matrix[TAKOKB_MATRIX_ROWS] = {0};
+static key_state_t key_states[TAKOKB_MATRIX_ROWS][TAKOKB_MATRIX_COLS] = {0};
 
-static key_info_t changed_keys[MATRIX_ROWS * MATRIX_COLS] = {0};
+static key_info_t changed_keys[TAKOKB_MATRIX_ROWS * TAKOKB_MATRIX_COLS] = {0};
 static uint8_t changed_keys_size = 0;
 
 static uint8_t default_layer = 0;
-static bool layer_enabled[MAX_LAYERS] = {true};
+static bool layer_enabled[TAKOKB_MAX_LAYERS] = {true};
 static uint8_t current_layer = 0;
 static uint8_t momentary_layer = 0;
 
@@ -32,7 +30,7 @@ bool matrix_task() {
     changed_keys_size = 0;
 
     bool changed = false;
-    for (uint8_t row = 0; row < MATRIX_ROWS; row++) {
+    for (uint8_t row = 0; row < TAKOKB_MATRIX_ROWS; row++) {
         bool row_changed = matrix_previous[row] ^ matrix[row];
         if (!row_changed) {
             continue;

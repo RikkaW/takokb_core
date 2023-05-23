@@ -10,14 +10,14 @@ extern "C" {
 #include <stddef.h>
 #include "takokb_action.h"
 
-#if (MATRIX_COLS <= 8)
+#if (TAKOKB_MATRIX_COLS <= 8)
 typedef uint8_t matrix_row_t;
-#elif (MATRIX_COLS <= 16)
+#elif (TAKOKB_MATRIX_COLS <= 16)
 typedef uint16_t matrix_row_t;
-#elif (MATRIX_COLS <= 32)
+#elif (TAKOKB_MATRIX_COLS <= 32)
 typedef uint32_t matrix_row_t;
 #else
-#    error "MATRIX_COLS must be less than 32"
+#    error "TAKOKB_MATRIX_COLS must be less than 32"
 #endif
 
 // ---------- action ----------

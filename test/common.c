@@ -7,8 +7,8 @@
 
 static uint64_t ms = 0;
 
-void test_tick(void) {
-    ms ++;
+void takokb_test_tick(void) {
+    ms++;
 }
 
 uint64_t takokb_get_milliseconds(void) {

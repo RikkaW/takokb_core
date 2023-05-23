@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-void test_tick(void);
+void takokb_test_tick(void);
 
 #ifdef __cplusplus
 }

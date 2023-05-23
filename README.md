@@ -1,6 +1,6 @@
 # Tako Keyboard Library Core
 
-Tako Keyboard core is a keyboard firmware library that does not to be bound to specific chips.
+Tako Keyboard core is a keyboard firmware library for embedded devices.
 
 ## Background
 
