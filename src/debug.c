@@ -6,15 +6,47 @@
 
 extern action_t keymaps[TAKOKB_MAX_LAYERS][TAKOKB_MATRIX_ROWS][TAKOKB_MATRIX_COLS];
 
+const char *takokb_debug_modifier_bit_to_name(enum mods_bit bit) {
+    switch (bit) {
+        case MOD_LSFT:
+            return "MOD_LSFT";
+        case MOD_RSFT:
+            return "MOD_RSFT";
+        case MOD_LCTL:
+            return "MOD_LCTL";
+        case MOD_RCTL:
+            return "MOD_RCTL";
+        case MOD_LALT:
+            return "MOD_LALT";
+        case MOD_RALT:
+            return "MOD_RALT";
+        case MOD_LGUI:
+            return "MOD_LGUI";
+        case MOD_RGUI:
+            return "MOD_RGUI";
+        default:
+            return "MOD_NONE";
+    }
+}
+
 void takokb_debug_print_action(action_t *action) {
     if (action->type == TYPE_NORMAL_KEY) {
-        takokb_debug_printf("TYPE_NORMAL_KEY, %s",
+        takokb_debug_printf("TYPE_NORMAL_KEY (%s)",
                             takokb_debug_keycode_to_name(action->parameter.key.keycode));
     } else if (action->type == TYPE_TRANSPARENT) {
         takokb_debug_printf("TYPE_TRANSPARENT");
     } else if (action->type == TYPE_MOMENTARY_LAYER_TOGGLE) {
-        takokb_debug_printf("TYPE_MOMENTARY_LAYER_TOGGLE, %d",
+        takokb_debug_printf("TYPE_MOMENTARY_LAYER_TOGGLE %d",
                             action->parameter.layer.id);
+    } else if (action->type == TYPE_MODIFIER) {
+        takokb_debug_printf("TYPE_MODIFIER (%s, ",
+                            takokb_debug_keycode_to_name(action->parameter.key.keycode));
+        for (int i = 0; i < 8; ++i) {
+            if (action->parameter.key.modifier & (1 << i)) {
+                takokb_debug_printf("%s", takokb_debug_modifier_bit_to_name(1 << i));
+            }
+        }
+        takokb_debug_printf(")");
     }
 }
 

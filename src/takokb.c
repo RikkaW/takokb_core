@@ -216,6 +216,15 @@ static void handle_changed_keys() {
                 }
                 break;
             }
+            case TYPE_MODIFIER:
+                if (key_info->pressed) {
+                    report_add_keycode(action->parameter.key.keycode);
+                    report_add_modifiers(action->parameter.key.modifier);
+                } else {
+                    report_remove_keycode(action->parameter.key.keycode);
+                    report_remove_modifiers(action->parameter.key.modifier);
+                }
+                break;
             default: {
                 break;
             }

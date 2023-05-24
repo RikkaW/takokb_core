@@ -9,6 +9,10 @@ static report_keyboard_t report_keyboard = {0};
 static bool report_changed = false;
 
 void report_add_keycode(uint8_t keycode) {
+    if (keycode == KC_NO) {
+        return;
+    }
+
     uint8_t index;
 
     for (index = 0; index < MAX_KEYS; index++) {
@@ -32,6 +36,10 @@ void report_add_keycode(uint8_t keycode) {
 }
 
 void report_remove_keycode(uint8_t keycode) {
+    if (keycode == KC_NO) {
+        return;
+    }
+
     uint8_t index;
 
     for (index = 0; index < MAX_KEYS; index++) {

@@ -21,7 +21,7 @@ int main(int argc, char *argv[]) {
     action.type = TYPE_NORMAL_KEY;
     action.parameter.key.keycode = KC_A;
     takokb_keymap_set_action(0, 0, 0, &action);
-    action.parameter.key.keycode = KC_B;
+    action.parameter.key.keycode = KC_LEFT_SHIFT;
     takokb_keymap_set_action(0, 0, 1, &action);
     takokb_debug_print_keymap();
 
@@ -57,10 +57,11 @@ void takokb_send_keyboard_hid_report(report_keyboard_t *report, size_t size) {
             return;
         case 2:
             assert_keycode_equals(report, 0, KC_A);
-            assert_keycode_equals(report, 1, KC_B);
+            assert_modifier_bits_equals(report, MOD_LSFT);
             return;
         case 3:
-            assert_keycode_equals(report, 0, KC_B);
+            assert_keycode_equals(report, 0, KC_NO);
+            assert_modifier_bits_equals(report, MOD_LSFT);
             return;
         default:
             // This should never trigger
