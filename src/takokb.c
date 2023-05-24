@@ -23,10 +23,8 @@ static uint8_t bottom_layer = 0;
 
 static uint32_t activated_layers = 0;
 static uint32_t permanent_activated_layers = 0;
-static uint8_t top_permanent_layer = 0;
 
 #define IS_LAYER_ACTIVATED(layer) ((activated_layers & (1 << layer)) != 0)
-#define IS_LAYER_PERMANENT_ACTIVATED(layer) ((permanent_activated_layers & (1 << layer)) != 0)
 
 static uint8_t momentary_layer_queue[MOMENTARY_LAYER_QUEUE_MAX_SIZE] = {0};
 static uint8_t momentary_layer_queue_size = 0;
@@ -86,13 +84,21 @@ action_t *find_action(uint8_t layer, uint8_t row, uint8_t colum) {
     takokb_debug_printf("find_action: top_layer = %d, (%d, %d)\n", layer, row, colum);
 
     action_t *action = keymap_get_action(layer, row, colum);
+    if (!IS_LAYER_ACTIVATED(layer)) {
+        // If the layer is not activated, find action from lower layer.
+        return find_action(layer - 1, row, colum);
+    }
+
+    if (layer == bottom_layer) {
+        // If the layer is bottom layer, return action.
+        return action;
+    }
 
     if (action->type != TYPE_TRANSPARENT) {
         return action;
-    } else {
-        // If action is transparent, find action from lower layer.
-        return find_action(layer - 1, row, colum);
     }
+    // If action is transparent, find action from lower layer.
+    return find_action(layer - 1, row, colum);
 }
 
 static uint8_t momentary_layer_queue_insert(uint8_t layer) {
@@ -114,19 +120,12 @@ static void momentary_layer_queue_remove(uint8_t index) {
     }
 }
 
-static uint8_t momentary_layer_queue_peek() {
-    if (momentary_layer_queue_size == 0) {
-        return LAYER_ID_INVALID;
-    }
-    return momentary_layer_queue[momentary_layer_queue_size - 1];
-}
-
 /**
  * @brief This function updates top_layer and activated_layers from momentary_layer_queue and activated_layers
  */
 static void sync_layer() {
     // Bottom layer is always activated.
-    activated_layers = (1<<bottom_layer);
+    activated_layers = (1 << bottom_layer);
 
     bool has_momentary_layer = false;
     for (uint8_t i = 0; i < momentary_layer_queue_size; i++) {
@@ -244,7 +243,7 @@ void takokb_task() {
 
 void takokb_init(void) {
     keymap_init();
-    //memset(layer_enabled, true, sizeof(layer_enabled));
+    sync_layer();
 }
 
 matrix_row_t *takokb_get_matrix(void) {
