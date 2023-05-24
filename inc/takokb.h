@@ -68,12 +68,15 @@ matrix_row_t *takokb_get_matrix(void);
 
 void takokb_keymap_set_action(uint8_t layer, uint8_t row, uint8_t column, action_t *action);
 
+uint8_t takokb_get_active_layer(void);
+
 // ---------- weak functions ----------
 #ifdef TAKOKB_TEST
 #define __TAKOKB_WEAK
 #else
 #define __TAKOKB_WEAK __attribute__((weak))
 #endif
+
 /**
  * @return Current milliseconds
  */
@@ -82,7 +85,7 @@ __TAKOKB_WEAK uint64_t takokb_get_milliseconds(void);
 __TAKOKB_WEAK bool takokb_matrix_scan(matrix_row_t *matrix);
 
 #ifndef NDEBUG
-__TAKOKB_WEAK int takokb_printf(const char *format, ...);
+__TAKOKB_WEAK int takokb_debug_printf(const char *format, ...);
 #else
 #define takokb_printf(...)
 #endif

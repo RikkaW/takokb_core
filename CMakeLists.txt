@@ -18,9 +18,9 @@ else ()
     add_compile_options(-O0 -g)
 endif ()
 
-add_definitions(-DTAKOKB_MAX_LAYERS=4)
-add_definitions(-DTAKOKB_MATRIX_ROWS=2)
-add_definitions(-DTAKOKB_MATRIX_COLS=8)
+add_definitions(-DTAKOKB_MAX_LAYERS=2)
+add_definitions(-DTAKOKB_MATRIX_ROWS=1)
+add_definitions(-DTAKOKB_MATRIX_COLS=4)
 add_definitions(-DTAKOKB_TEST)
 
 include_directories(src inc test)
@@ -29,5 +29,7 @@ file(GLOB_RECURSE TEST_SOURCES test/common.c)
 
 enable_testing()
 add_executable(test_key_press ${SOURCES} ${TEST_SOURCES} test/1_key_press.cpp)
+add_executable(test_layer ${SOURCES} ${TEST_SOURCES} test/2_layer.cpp)
 
 add_test(NAME key_press COMMAND test_key_press)
+add_test(NAME layer COMMAND test_layer)

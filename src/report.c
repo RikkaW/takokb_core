@@ -28,7 +28,7 @@ void report_add_keycode(uint8_t keycode) {
 
     report_changed = true;
 
-    takokb_printf("report_add_keycode: 0x%02x\n", keycode);
+    takokb_debug_printf("report_add_keycode: 0x%02x\n", keycode);
 }
 
 void report_remove_keycode(uint8_t keycode) {
@@ -49,7 +49,7 @@ void report_remove_keycode(uint8_t keycode) {
 
     report_changed = true;
 
-    takokb_printf("report_remove_keycode: 0x%02x\n", keycode);
+    takokb_debug_printf("report_remove_keycode: 0x%02x\n", keycode);
 }
 
 void report_add_modifiers(enum mods_bit mods) {
@@ -58,7 +58,7 @@ void report_add_modifiers(enum mods_bit mods) {
         report_keyboard.mods = new_mods;
         report_changed = true;
 
-        takokb_printf("report_add_modifiers: 0x%02x\n", mods);
+        takokb_debug_printf("report_add_modifiers: 0x%02x\n", mods);
     }
 }
 
@@ -68,7 +68,7 @@ void report_remove_modifiers(enum mods_bit mods) {
         report_keyboard.mods = new_mods;
         report_changed = true;
 
-        takokb_printf("report_remove_modifiers: 0x%02x\n", mods);
+        takokb_debug_printf("report_remove_modifiers: 0x%02x\n", mods);
     }
 }
 

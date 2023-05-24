@@ -282,6 +282,7 @@ enum keycodes {
     KC_RIGHT_ALT = 0x00E6,
     KC_RIGHT_GUI = 0x00E7,
 };
+
 #ifdef __cplusplus
 }
 #endif

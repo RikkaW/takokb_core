@@ -1,19 +1,17 @@
 #include <cstdio>
 #include "takokb.h"
-
-static bool success = true;
-
-static int test_step = 0;
+#include "common.h"
+#include "debug.h"
 
 /*
  * Step 1:
- * Tap (0, 0) KC_A
+ * PRESS(0, 0) KC_A
  *
  * Step 2:
- * Tap (0, 1) KC_B
+ * PRESS(0, 1) KC_B
  *
  * Step 3:
- * Release (0, 0) KC_A
+ * RELEASE(0, 0) KC_A
  **/
 
 int main(int argc, char *argv[]) {
@@ -25,14 +23,11 @@ int main(int argc, char *argv[]) {
     takokb_keymap_set_action(0, 0, 0, &action);
     action.parameter.key.keycode = KC_B;
     takokb_keymap_set_action(0, 0, 1, &action);
+    takokb_debug_print_keymap();
 
-    takokb_task();
-    test_step = 1;
-    takokb_task();
-    test_step = 2;
-    takokb_task();
-    test_step = 3;
-    takokb_task();
+    test_next_step();
+    test_next_step();
+    test_next_step();
 
     return success ? 0 : 1;
 }
@@ -42,13 +37,13 @@ bool takokb_matrix_scan(matrix_row_t *matrix) {
         case 0:
             return false;
         case 1:
-            matrix[0] |= (1 << 0);
+            PRESS(0, 0);
             return true;
         case 2:
-            matrix[0] |= (1 << 1);
+            PRESS(0, 1);
             return true;
         case 3:
-            matrix[0] &= ~(1 << 0);
+            RELEASE(0, 0);
             return true;
         default:
             return false;
@@ -58,26 +53,14 @@ bool takokb_matrix_scan(matrix_row_t *matrix) {
 void takokb_send_keyboard_hid_report(report_keyboard_t *report, size_t size) {
     switch (test_step) {
         case 1:
-            success &= (report->keys[0] == KC_A);
-            if (!success) {
-                fprintf(stderr, "Step 1: report->keys[0] == KC_A\n");
-            }
+            assert_keycode_equals(report, 0, KC_A);
             return;
         case 2:
-            success &= (report->keys[0] == KC_A);
-            if (!success) {
-                fprintf(stderr, "Step 2: report->keys[0] == KC_A\n");
-            }
-            success &= (report->keys[1] == KC_B);
-            if (!success) {
-                fprintf(stderr, "Step 2: report->keys[1] == KC_B\n");
-            }
+            assert_keycode_equals(report, 0, KC_A);
+            assert_keycode_equals(report, 1, KC_B);
             return;
         case 3:
-            success &= (report->keys[0] == KC_B);
-            if (!success) {
-                fprintf(stderr, "Step 3: report->keys[0] == KC_B\n");
-            }
+            assert_keycode_equals(report, 0, KC_B);
             return;
         default:
             // This should never trigger
