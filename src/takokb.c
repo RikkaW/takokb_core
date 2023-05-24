@@ -154,6 +154,7 @@ static void sync_layer() {
 }
 
 static void handle_changed_keys() {
+    // First, handle all actions that can affect layer
     for (uint8_t index = 0; index < changed_keys_size; ++index) {
         key_change_event_t *key_info = &changed_keys[index];
         uint8_t row = key_info->position.row;
@@ -196,6 +197,7 @@ static void handle_changed_keys() {
 
     sync_layer();
 
+    // Handle keys
     for (uint8_t index = 0; index < changed_keys_size; ++index) {
         key_change_event_t *key_info = &changed_keys[index];
         uint8_t row = key_info->position.row;

@@ -20,6 +20,38 @@ action_t *keymap_get_action(uint8_t layer, uint8_t row, uint8_t column) {
     return &keymaps[layer][row][column];
 }
 
-void keymap_set_action(uint8_t layer, uint8_t row, uint8_t column, action_t *action) {
+static uint8_t keycode_to_modifier_bits(uint8_t keycode) {
+    switch (keycode) {
+        case KC_LEFT_SHIFT:
+            return MOD_LSFT;
+        case KC_RIGHT_SHIFT:
+            return MOD_RSFT;
+        case KC_LEFT_CTRL:
+            return MOD_LCTL;
+        case KC_RIGHT_CTRL:
+            return MOD_RCTL;
+        case KC_LEFT_ALT:
+            return MOD_LALT;
+        case KC_RIGHT_ALT:
+            return MOD_RALT;
+        case KC_LEFT_GUI:
+            return MOD_LGUI;
+        case KC_RIGHT_GUI:
+            return MOD_RGUI;
+        default:
+            return 0;
+    }
+}
+
+void keymap_set_action(uint8_t layer, uint8_t row, uint8_t column, const action_t *action) {
+    if (action->type == TYPE_NORMAL_KEY) {
+        uint8_t modifier_bits = keycode_to_modifier_bits(action->parameter.key.keycode);
+        if (modifier_bits != 0) {
+            action_t new_action = {.type = TYPE_MODIFIER, .parameter = {.key.modifier = modifier_bits}};
+            keymaps[layer][row][column] = new_action;
+            return;
+        }
+    }
+
     keymaps[layer][row][column] = *action;
 }

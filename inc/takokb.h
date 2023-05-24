@@ -27,13 +27,12 @@ typedef union {
 
     struct action_key {
         uint8_t keycode: 8;
-        uint32_t reserved: 16;
+        uint8_t modifier: 8;
     } key;
 
     struct action_layer {
         uint8_t id: 8;
         uint8_t enabled: 8;
-        uint32_t reserved: 16;
     } layer;
 
 } __attribute__((packed)) action_parameter_t;
