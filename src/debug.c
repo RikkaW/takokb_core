@@ -30,24 +30,39 @@ const char *takokb_debug_modifier_bit_to_name(enum mods_bit bit) {
 }
 
 void takokb_debug_print_action(action_t *action) {
-    if (action->type == TYPE_NORMAL_KEY) {
-        takokb_debug_printf("TYPE_NORMAL_KEY (%s)",
-                            takokb_debug_keycode_to_name(action->parameter.key.keycode));
-    } else if (action->type == TYPE_TRANSPARENT) {
-        takokb_debug_printf("TYPE_TRANSPARENT");
-    } else if (action->type == TYPE_MOMENTARY_LAYER_TOGGLE) {
-        takokb_debug_printf("TYPE_MOMENTARY_LAYER_TOGGLE %d",
-                            action->parameter.layer.id);
-    } else if (action->type == TYPE_MODIFIER) {
-        takokb_debug_printf("TYPE_MODIFIER (%s, ",
-                            takokb_debug_keycode_to_name(action->parameter.key.keycode));
-        for (int i = 0; i < 8; ++i) {
-            if (action->parameter.key.modifier & (1 << i)) {
-                takokb_debug_printf("%s", takokb_debug_modifier_bit_to_name(1 << i));
-            }
+    switch (action->type) {
+        case TYPE_NORMAL_KEY: {
+            takokb_debug_printf("TYPE_NORMAL_KEY (%s)",
+                                takokb_debug_keycode_to_name(action->parameter.key.keycode));
+            break;
         }
-        takokb_debug_printf(")");
+        case TYPE_MODIFIER: {
+            takokb_debug_printf("TYPE_MODIFIER (%s, ",
+                                takokb_debug_keycode_to_name(action->parameter.key.keycode));
+            for (int i = 0; i < 8; ++i) {
+                if (action->parameter.key.modifier & (1 << i)) {
+                    takokb_debug_printf("%s", takokb_debug_modifier_bit_to_name(1 << i));
+                }
+            }
+            takokb_debug_printf(")");
+            break;
+        }
+        case TYPE_TRANSPARENT: {
+            takokb_debug_printf("TYPE_TRANSPARENT");
+            break;
+        }
+        case TYPE_MOMENTARY_LAYER: {
+            takokb_debug_printf("TYPE_MOMENTARY_LAYER %d",
+                                action->parameter.layer.id);
+            break;
+        }
+        case TYPE_TOGGLE_LAYER: {
+            takokb_debug_printf("TYPE_TOGGLE_LAYER %d",
+                                action->parameter.layer.id);
+            break;
+        }
     }
+
 }
 
 void takokb_debug_print_keymap(void) {

@@ -21,10 +21,10 @@ static uint8_t changed_keys_size = 0;
 static uint8_t top_layer = 0;
 static uint8_t bottom_layer = 0;
 
-static uint32_t activated_layers = 0;
-static uint32_t permanent_activated_layers = 0;
+static uint32_t synced_layers_mask = 0;
+static uint32_t toggled_layers_mask = 0;
 
-#define IS_LAYER_ACTIVATED(layer) ((activated_layers & (1 << layer)) != 0)
+#define IS_LAYER_ACTIVATED(layer) ((synced_layers_mask & (1 << layer)) != 0)
 
 static uint8_t momentary_layer_queue[MOMENTARY_LAYER_QUEUE_MAX_SIZE] = {0};
 static uint8_t momentary_layer_queue_size = 0;
@@ -125,7 +125,7 @@ static void momentary_layer_queue_remove(uint8_t index) {
  */
 static void sync_layer() {
     // Bottom layer is always activated.
-    activated_layers = (1 << bottom_layer);
+    synced_layers_mask = (1 << bottom_layer);
 
     bool has_momentary_layer = false;
     for (uint8_t i = 0; i < momentary_layer_queue_size; i++) {
@@ -134,7 +134,7 @@ static void sync_layer() {
             continue;
         }
         top_layer = layer;
-        activated_layers |= (1 << layer);
+        synced_layers_mask |= (1 << layer);
         has_momentary_layer = true;
     }
 
@@ -142,10 +142,10 @@ static void sync_layer() {
         takokb_debug_printf("sync_layer: momentary layer %d\n", top_layer);
     }
 
-    activated_layers |= permanent_activated_layers;
+    synced_layers_mask |= toggled_layers_mask;
     if (!has_momentary_layer) {
         for (uint8_t i = 31; i >= 0; i--) {
-            if (activated_layers & (1 << i)) {
+            if (synced_layers_mask & (1 << i)) {
                 top_layer = i;
                 break;
             }
@@ -154,7 +154,7 @@ static void sync_layer() {
 }
 
 static void handle_changed_keys() {
-    // First, handle all actions that can affect layer
+    // First, handle all actions that can affect layer.
     for (uint8_t index = 0; index < changed_keys_size; ++index) {
         key_change_event_t *key_info = &changed_keys[index];
         uint8_t row = key_info->position.row;
@@ -180,7 +180,7 @@ static void handle_changed_keys() {
             key_state->action = action;
         }
 
-        if (action->type == TYPE_MOMENTARY_LAYER_TOGGLE) {
+        if (action->type == TYPE_MOMENTARY_LAYER) {
             if (key_info->pressed) {
                 uint8_t queue_index = momentary_layer_queue_insert(action->parameter.layer.id);
                 if (queue_index != MOMENTARY_LAYER_QUEUE_INDEX_INVALID) {
@@ -191,7 +191,16 @@ static void handle_changed_keys() {
             }
             top_layer = action->parameter.layer.id;
             takokb_debug_printf("handle_changed_keys: current_layer = %d\n", top_layer);
-        } else if (action->type == TYPE_LAYER_TOGGLE) {
+        } else if (action->type == TYPE_TOGGLE_LAYER) {
+            // Once TYPE_LAYER_TOGGLE is pressed, toggle the layer immediately.
+            if (key_info->pressed) {
+                uint8_t mask = (1 << action->parameter.layer.id);
+                if (toggled_layers_mask & mask) {
+                    toggled_layers_mask &= ~mask;
+                } else {
+                    toggled_layers_mask |= mask;
+                }
+            }
         }
     }
 

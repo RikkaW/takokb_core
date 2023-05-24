@@ -28,12 +28,12 @@ enum types {
     /* Momentary turn layer on
      *
      * _ (8), layer # (8), 0 (8) */
-    TYPE_MOMENTARY_LAYER_TOGGLE = 0x03,
+    TYPE_MOMENTARY_LAYER = 0x03,
 
     /* Layer toggle
      *
      * _ (8), layer # (8), 0 (8) */
-    TYPE_LAYER_TOGGLE = 0x04,
+    TYPE_TOGGLE_LAYER = 0x04,
 
     /* Set default layer
      *
