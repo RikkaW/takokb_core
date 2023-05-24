@@ -201,6 +201,11 @@ static void handle_changed_keys() {
                     toggled_layers_mask |= mask;
                 }
             }
+        } else if (action->type == TYPE_BOTTOM_LAYER) {
+            if (key_info->pressed) {
+                bottom_layer = action->parameter.layer.id;
+                takokb_debug_printf("handle_changed_keys: bottom_layer = %d\n", bottom_layer);
+            }
         }
     }
 

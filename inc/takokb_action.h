@@ -10,43 +10,53 @@ extern "C" {
 
 enum types {
 
-    /* Normal keycode
+    /**
+     * Normal keycode.
      *
-     * _ (8), 0 (8), keycode (8) */
+     * Parameter: keycode (8) */
     TYPE_NORMAL_KEY = 0x00,
 
-    /* Modifier + normal keycode
+    /**
+     * Modifier + normal keycode
      *
-     * _ (8), mod_bits (8), keycode (8) */
+     * Parameter: mod_bits (8), keycode (8) */
     TYPE_MODIFIER = 0x01,
 
-    /* Find lower layer
-     * _ (8), 0 (8), 0 (8)
+    /**
+     * Find action from a lower layer.
+     *
+     * Parameter: (none)
      * */
     TYPE_TRANSPARENT = 0x02,
 
-    /* Momentary turn layer on
+    /**
+     * Momentary turn a layer on, momentary layers has higher priority than TYPE_TOGGLE_LAYER.
      *
-     * _ (8), layer # (8), 0 (8) */
+     * Parameter: layer # (8) */
     TYPE_MOMENTARY_LAYER = 0x03,
 
-    /* Layer toggle
+    /**
+     * Permanently turn a layer on or off.
      *
-     * _ (8), layer # (8), 0 (8) */
+     * Parameter: layer # (8) */
     TYPE_TOGGLE_LAYER = 0x04,
 
-    /* Set default layer
+    /**
+     * Set the bottom layer, the bottom layer is always on.
+     * Action is found from the top layer that is on to the bottom layer.
      *
-     * _ (8), layer # (8), 0 (8) */
-    TYPE_SET_DEFAULT_LAYER = 0x05,
+     * Parameter: layer # (8) */
+    TYPE_BOTTOM_LAYER = 0x05,
 
-    /* Macro
+    /**
+     * Send a pre-defined Macro.
      *
-     * _ (8), macro # (8), 0 (8) */
+     * Parameter: macro # (8) */
     TYPE_MACRO = 0x06,
 
-    /* Custom
-     * _ (8), _ (8), custom keycode (8) */
+    /* Custom function. (TBD)
+     *
+     * Parameter: TBD */
     TYPE_CUSTOM = 0x07,
 };
 

@@ -61,6 +61,11 @@ void takokb_debug_print_action(action_t *action) {
                                 action->parameter.layer.id);
             break;
         }
+        case TYPE_BOTTOM_LAYER: {
+            takokb_debug_printf("TYPE_BOTTOM_LAYER %d",
+                                action->parameter.layer.id);
+            break;
+        }
     }
 
 }
