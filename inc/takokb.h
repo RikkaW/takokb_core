@@ -86,7 +86,7 @@ __TAKOKB_WEAK bool takokb_matrix_scan(matrix_row_t *matrix);
 #ifndef NDEBUG
 __TAKOKB_WEAK int takokb_debug_printf(const char *format, ...);
 #else
-#define takokb_printf(...)
+#define takokb_debug_printf(...)
 #endif
 
 __TAKOKB_WEAK void takokb_send_keyboard_hid_report(report_keyboard_t *report, size_t size);
