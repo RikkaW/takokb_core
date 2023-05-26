@@ -8,8 +8,8 @@ extern "C" {
 #include <stdint.h>
 #include "takokb.h"
 
-#define STATE_TYPE_TWO_STATE 0x00
-#define STATE_TYPE_THREE_STATE 0x01
+#define STATE_TYPE_BASIC 0x00
+#define STATE_TYPE_TAP_HOLD 0x01
 #define STATE_TYPE_FOUR_STATE 0x02
 
 enum types {

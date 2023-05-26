@@ -149,26 +149,26 @@ static void sync_layer() {
 }
 
 static action_function_t *functions[MAX_TYPES][8] = {
-        TWO_STATE_FUNC_ARRAY(TYPE_KEY),
-        TWO_STATE_FUNC_ARRAY(TYPE_MODIFIER),
-        TWO_STATE_FUNC_ARRAY(TYPE_TRANSPARENT),
-        TWO_STATE_FUNC_ARRAY(TYPE_MOMENTARY_LAYER),
-        TWO_STATE_FUNC_ARRAY(TYPE_TOGGLE_LAYER),
-        TWO_STATE_FUNC_ARRAY(TYPE_BOTTOM_LAYER),
+        STATE_BASIC_FUNC_ARRAY(TYPE_KEY),
+        STATE_BASIC_FUNC_ARRAY(TYPE_MODIFIER),
+        STATE_BASIC_FUNC_ARRAY(TYPE_TRANSPARENT),
+        STATE_BASIC_FUNC_ARRAY(TYPE_MOMENTARY_LAYER),
+        STATE_BASIC_FUNC_ARRAY(TYPE_TOGGLE_LAYER),
+        STATE_BASIC_FUNC_ARRAY(TYPE_BOTTOM_LAYER),
 };
 
 static void handle_two_state_change(key_state_t *key_state, action_t *action, bool pressed) {
     switch (key_state->state) {
-        case STATE_TWO_IDLE:
+        case basic_IDLE:
             if (pressed) {
-                key_state->state = STATE_TWO_PRESSED;
-                functions[action->type][STATE_TWO_IDLE_TO_PRESSED](key_state, action);
+                key_state->state = basic_TAP;
+                functions[action->type][STATE_BASIC_IDLE_TO_TAP](key_state, action);
             }
             break;
-        case STATE_TWO_PRESSED:
+        case basic_TAP:
             if (!pressed) {
-                key_state->state = STATE_TWO_IDLE;
-                functions[action->type][STATE_TWO_PRESSED_TO_IDLE](key_state, action);
+                key_state->state = basic_IDLE;
+                functions[action->type][STATE_BASIC_TAP_TO_IDLE](key_state, action);
             }
             break;
         default:
@@ -204,7 +204,7 @@ static void handle_changed_keys() {
         takokb_debug_print_action(action);
         takokb_debug_printf("\n");
 
-        if (action->state_type == STATE_TYPE_TWO_STATE) {
+        if (action->state_type == STATE_TYPE_BASIC) {
             handle_two_state_change(key_state, action, change_event->pressed);
         }
     }

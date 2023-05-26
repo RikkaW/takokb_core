@@ -9,33 +9,36 @@ extern "C" {
 
 typedef void(action_function_t)(key_state_t *key_state, action_t *action);
 
-#define STATE_TWO_IDLE_TO_PRESSED 0
-#define STATE_TWO_PRESSED_TO_IDLE 1
+// -------- STATE_BASIC --------
+#define STATE_BASIC_IDLE_TO_TAP 0
+#define STATE_BASIC_TAP_TO_IDLE 1
 
-#define TWO_STATE_FUNC(type, state) state_two_##type##_##state
+#define STATE_BASIC_FUNC(type, state) state_basic_##type##_##state
 
-#define TWO_STATE_FUNC_ARRAY(type) [type] = { \
-    (action_function_t*) TWO_STATE_FUNC(type, STATE_TWO_IDLE_TO_PRESSED), \
-    (action_function_t*) TWO_STATE_FUNC(type, STATE_TWO_PRESSED_TO_IDLE), \
+#define STATE_BASIC_FUNC_ARRAY(type) [type] = { \
+    (action_function_t*) STATE_BASIC_FUNC(type, STATE_BASIC_IDLE_TO_TAP), \
+    (action_function_t*) STATE_BASIC_FUNC(type, STATE_BASIC_TAP_TO_IDLE), \
 }
 
-#define TWO_STATE_FUNC_DEF(type, state) void state_two_##type##_##state(key_state_t *key_state, action_t *action)
+#define STATE_BASIC_FUNC_DEF(type, state) void state_basic_##type##_##state(key_state_t *key_state, action_t *action)
 
-#define TWO_STATE_FUNCS_DEF(type) \
-void state_two_##type##_STATE_TWO_IDLE_TO_PRESSED(key_state_t *key_state, action_t *action); \
-void state_two_##type##_STATE_TWO_PRESSED_TO_IDLE(key_state_t *key_state, action_t *action)
+#define STATE_BASIC_FUNCS_DEF(type) \
+void state_basic_##type##_STATE_BASIC_IDLE_TO_TAP(key_state_t *key_state, action_t *action); \
+void state_basic_##type##_STATE_BASIC_TAP_TO_IDLE(key_state_t *key_state, action_t *action)
 
-TWO_STATE_FUNCS_DEF(TYPE_KEY);
+STATE_BASIC_FUNCS_DEF(TYPE_KEY);
 
-TWO_STATE_FUNCS_DEF(TYPE_MODIFIER);
+STATE_BASIC_FUNCS_DEF(TYPE_MODIFIER);
 
-TWO_STATE_FUNCS_DEF(TYPE_TRANSPARENT);
+STATE_BASIC_FUNCS_DEF(TYPE_TRANSPARENT);
 
-TWO_STATE_FUNCS_DEF(TYPE_MOMENTARY_LAYER);
+STATE_BASIC_FUNCS_DEF(TYPE_MOMENTARY_LAYER);
 
-TWO_STATE_FUNCS_DEF(TYPE_TOGGLE_LAYER);
+STATE_BASIC_FUNCS_DEF(TYPE_TOGGLE_LAYER);
 
-TWO_STATE_FUNCS_DEF(TYPE_BOTTOM_LAYER);
+STATE_BASIC_FUNCS_DEF(TYPE_BOTTOM_LAYER);
+
+// -------- STATE_THREE --------
 
 
 #ifdef __cplusplus

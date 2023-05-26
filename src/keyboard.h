@@ -24,15 +24,18 @@ typedef struct key_change_event {
 
 #define STATE_IDLE 0
 
-enum key_state_two {
-    STATE_TWO_IDLE = STATE_IDLE,
-    STATE_TWO_PRESSED,
+enum key_state_basic {
+    basic_IDLE = STATE_IDLE,
+    basic_TAP,
 };
 
-enum key_state_three {
-    STATE_THREE_IDLE = STATE_IDLE,
-    STATE_THREE_PRESSED,
-    STATE_THREE_HELD,
+enum key_state_tap_hold {
+    tapHold_IDLE = STATE_IDLE,
+    tapHold_TAP,
+    tapHold_HOLD,
+    tapHold_WAIT_FOR_RELEASE_INTERNAL,
+    tapHold_HOLD_WAIT_FOR_HOLD,
+    tapHold_TAP_HOLD,
 };
 
 typedef struct key_state {
@@ -41,7 +44,7 @@ typedef struct key_state {
     union extras {
         uint8_t raw[8];
         struct {
-            uint64_t hold_threshold_time: 61;
+            uint64_t threshold_time: 61;
         } __attribute__((packed)) tap_hold;
         struct {
             uint8_t queue_index: 8;
