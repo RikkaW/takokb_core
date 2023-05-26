@@ -54,6 +54,8 @@ bool matrix_task() {
             }
 
             key_change_event_t *key_info = &changed_keys[changed_keys_size];
+
+#ifndef NDEBUG
             key_state_t *key_state = &key_states[row][colum];
 
             if (pressed) {
@@ -61,6 +63,7 @@ bool matrix_task() {
             } else {
                 takokb_debug_printf("matrix_task: (%d, %d) pressed -> released\n", row, colum);
             }
+#endif
 
             key_info->position.row = row;
             key_info->position.colum = colum;

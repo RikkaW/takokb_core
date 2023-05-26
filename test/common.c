@@ -9,6 +9,7 @@ uint64_t takokb_get_milliseconds(void) {
     return ms;
 }
 
+#ifndef NDEBUG
 int takokb_debug_printf(const char *format, ...) {
     va_list args;
     va_start(args, format);
@@ -16,6 +17,7 @@ int takokb_debug_printf(const char *format, ...) {
     va_end(args);
     return res;
 }
+#endif
 
 // ----------------------------------------
 
