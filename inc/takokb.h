@@ -23,8 +23,8 @@ typedef uint32_t matrix_row_t;
 // ---------- action ----------
 
 typedef struct action {
-    uint8_t type: 6;
-    uint8_t state_type: 2;
+    uint8_t state_machine: 2;
+    uint8_t id: 6;
 
     union {
         uint32_t raw: 24;
@@ -40,10 +40,10 @@ typedef struct action {
         } layer;
 
         struct action_layer_tap {
-            uint8_t id: 8;
+            uint8_t layer_id: 8;
             uint8_t keycode: 8;
             uint8_t modifiers: 8;
-        } layer_tap;
+        } tap_key_hold_layer;
 
     } parameter;
 

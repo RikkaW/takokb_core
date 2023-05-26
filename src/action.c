@@ -3,8 +3,16 @@
 #include "report.h"
 #include "action.h"
 
-action_t action_no = {TYPE_KEY, STATE_TYPE_BASIC, {.key = KC_NO}};
-action_t action_trans = {TYPE_TRANSPARENT, STATE_TYPE_BASIC};
+action_t action_no = {
+        .state_machine= STATE_MACHINE_BASIC,
+        .id=TYPE_KEY,
+        .parameter={.key = KC_NO}
+};
+
+action_t action_trans = {
+        .state_machine=STATE_MACHINE_BASIC,
+        .id=TYPE_TRANSPARENT,
+};
 
 // -------- TYPE_KEY --------
 STATE_BASIC_FUNC_DEF(TYPE_KEY, IDLE, TAP) {
@@ -69,9 +77,9 @@ STATE_BASIC_FUNC_DEF(TYPE_BOTTOM_LAYER, TAP, IDLE) {
 // -------- TYPE_MOMENTARY_LAYER_KEY --------
 STATE_TAP_HOLD_FUNC_DEF(TYPE_TAP_KEY_HOLD_MOMENTARY_LAYER, IDLE, TAP) {
     // Acquire momentary layer
-    uint8_t queue_index = keyboard_momentary_layer_queue_insert(action->parameter.layer.id);
+    uint8_t queue_index = keyboard_momentary_layer_queue_insert(action->parameter.tap_key_hold_layer.layer_id);
     if (queue_index != MOMENTARY_LAYER_QUEUE_INDEX_INVALID) {
-        key_state->extras.momentary_layer_tap_hold.layer_queue_index = queue_index;
+        key_state->extras.tap_key_hold_layer.layer_queue_index = queue_index;
     }
 }
 
@@ -81,28 +89,28 @@ STATE_TAP_HOLD_FUNC_DEF(TYPE_TAP_KEY_HOLD_MOMENTARY_LAYER, TAP, HOLD) {
 
 STATE_TAP_HOLD_FUNC_DEF(TYPE_TAP_KEY_HOLD_MOMENTARY_LAYER, HOLD, IDLE) {
     // Release momentary layer
-    keyboard_momentary_layer_queue_remove(key_state->extras.momentary_layer_tap_hold.layer_queue_index);
+    keyboard_momentary_layer_queue_remove(key_state->extras.tap_key_hold_layer.layer_queue_index);
 }
 
 STATE_TAP_HOLD_FUNC_DEF(TYPE_TAP_KEY_HOLD_MOMENTARY_LAYER, TAP, WAIT_FOR_RELEASE_INTERNAL) {
     // Press keycode & modifiers
-    report_add_keycode(action->parameter.key.keycode);
-    report_add_modifiers(action->parameter.key.modifiers);
+    report_add_keycode(action->parameter.tap_key_hold_layer.keycode);
+    report_add_modifiers(action->parameter.tap_key_hold_layer.modifiers);
 
     // Release momentary layer
-    keyboard_momentary_layer_queue_remove(key_state->extras.momentary_layer_tap_hold.layer_queue_index);
+    keyboard_momentary_layer_queue_remove(key_state->extras.tap_key_hold_layer.layer_queue_index);
 }
 
 STATE_TAP_HOLD_FUNC_DEF(TYPE_TAP_KEY_HOLD_MOMENTARY_LAYER, WAIT_FOR_RELEASE_INTERNAL, TAP_HOLD) {
     // Release keycode & modifiers
-    report_remove_keycode(action->parameter.key.keycode);
-    report_remove_modifiers(action->parameter.key.modifiers);
+    report_remove_keycode(action->parameter.tap_key_hold_layer.keycode);
+    report_remove_modifiers(action->parameter.tap_key_hold_layer.modifiers);
 }
 
 STATE_TAP_HOLD_FUNC_DEF(TYPE_TAP_KEY_HOLD_MOMENTARY_LAYER, WAIT_FOR_RELEASE_INTERNAL, HOLD_WAIT_FOR_HOLD) {
     // Release keycode & modifiers
-    report_remove_keycode(action->parameter.key.keycode);
-    report_remove_modifiers(action->parameter.key.modifiers);
+    report_remove_keycode(action->parameter.tap_key_hold_layer.keycode);
+    report_remove_modifiers(action->parameter.tap_key_hold_layer.modifiers);
 }
 
 STATE_TAP_HOLD_FUNC_DEF(TYPE_TAP_KEY_HOLD_MOMENTARY_LAYER, WAIT_FOR_TAP_HOLD, IDLE) {
@@ -111,12 +119,12 @@ STATE_TAP_HOLD_FUNC_DEF(TYPE_TAP_KEY_HOLD_MOMENTARY_LAYER, WAIT_FOR_TAP_HOLD, ID
 
 STATE_TAP_HOLD_FUNC_DEF(TYPE_TAP_KEY_HOLD_MOMENTARY_LAYER, WAIT_FOR_TAP_HOLD, TAP_HOLD) {
     // Press keycode & modifiers
-    report_add_keycode(action->parameter.key.keycode);
-    report_add_modifiers(action->parameter.key.modifiers);
+    report_add_keycode(action->parameter.tap_key_hold_layer.keycode);
+    report_add_modifiers(action->parameter.tap_key_hold_layer.modifiers);
 }
 
 STATE_TAP_HOLD_FUNC_DEF(TYPE_TAP_KEY_HOLD_MOMENTARY_LAYER, TAP_HOLD, IDLE) {
     // Release keycode & modifiers
-    report_remove_keycode(action->parameter.key.keycode);
-    report_remove_modifiers(action->parameter.key.modifiers);
+    report_remove_keycode(action->parameter.tap_key_hold_layer.keycode);
+    report_remove_modifiers(action->parameter.tap_key_hold_layer.modifiers);
 }

@@ -38,12 +38,13 @@
 
 static void set_keymap() {
     action_t action;
+    action.state_machine = STATE_MACHINE_BASIC;
 
-    action.type = TYPE_TOGGLE_LAYER;
+    action.id = TYPE_TOGGLE_LAYER;
     action.parameter.layer.id = 2;
     takokb_keymap_set_action(0, 0, 1, &action);
 
-    action.type = TYPE_MOMENTARY_LAYER;
+    action.id = TYPE_MOMENTARY_LAYER;
     action.parameter.layer.id = 1;
     takokb_keymap_set_action(0, 0, 2, &action);
 }

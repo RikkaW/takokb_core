@@ -44,25 +44,25 @@ static uint8_t keycode_to_modifier_bits(uint8_t keycode) {
 }
 
 static uint8_t get_state_type(const action_t *action) {
-    switch (action->type) {
+    switch (action->id) {
         case TYPE_TAP_KEY_HOLD_MOMENTARY_LAYER:
-            return STATE_TYPE_TAP_HOLD;
+            return STATE_MACHINE_TAP_HOLD;
         default:
-            return STATE_TYPE_BASIC;
+            return STATE_MACHINE_BASIC;
     }
 }
 
 void keymap_set_action(uint8_t layer, uint8_t row, uint8_t column, const action_t *action) {
     action_t new_action = {
-            .type = action->type,
-            .state_type=get_state_type(action),
+            .id = action->id,
+            .state_machine=get_state_type(action),
             .parameter.raw = action->parameter.raw
     };
 
-    if (action->type == TYPE_KEY) {
+    if (action->id == TYPE_KEY) {
         uint8_t modifier_bits = keycode_to_modifier_bits(action->parameter.key.keycode);
         if (modifier_bits != 0) {
-            new_action.type = TYPE_MODIFIER;
+            new_action.id = TYPE_MODIFIER;
             new_action.parameter.raw = 0;
             new_action.parameter.key.modifiers = modifier_bits;
             keymaps[layer][row][column] = new_action;

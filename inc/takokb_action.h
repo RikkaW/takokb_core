@@ -8,11 +8,10 @@ extern "C" {
 #include <stdint.h>
 #include "takokb.h"
 
-#define STATE_TYPE_BASIC 0x00
-#define STATE_TYPE_TAP_HOLD 0x01
-#define STATE_TYPE_FOUR_STATE 0x02
+#define STATE_MACHINE_BASIC 0x00
+#define STATE_MACHINE_TAP_HOLD 0x01
 
-enum types {
+enum basic_types {
 
     /**
      * Send a keyboard HID keycode.
@@ -55,24 +54,25 @@ enum types {
     TYPE_BOTTOM_LAYER = 0x05,
 
     /**
-     * Momentary turn a layer, send normal key if the key is released in 200ms.
-     * Modifiers are also supported.
-     *
-     * Parameter: layer # (8), keycode (8), mod_bits (8) */
-    TYPE_TAP_KEY_HOLD_MOMENTARY_LAYER = 0x06,
-
-    /**
      * Send a pre-defined Macro.
      *
      * Parameter: macro # (8) */
-    TYPE_MACRO = 0x07,
+    TYPE_MACRO = 0x06,
 
     /* Custom function. (TBD)
      *
      * Parameter: TBD */
-    TYPE_CUSTOM = 0x08,
+    TYPE_CUSTOM = 0x07,
+};
 
-    MAX_TYPES,
+enum tap_hold_types {
+
+    /**
+     * Momentary turn a layer, send normal key if the key is released in 200ms.
+     * Modifiers are also supported.
+     *
+     * Parameter: layer # (8), keycode (8), mod_bits (8) */
+    TYPE_TAP_KEY_HOLD_MOMENTARY_LAYER = 0x00,
 };
 
 enum mods_bit {

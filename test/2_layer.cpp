@@ -34,28 +34,29 @@
 
 static void set_keymap() {
     action_t action;
+    action.state_machine = STATE_MACHINE_BASIC;
 
-    action.type = TYPE_KEY;
+    action.id = TYPE_KEY;
     action.parameter.key.keycode = KC_A;
     takokb_keymap_set_action(0, 0, 0, &action);
 
-    action.type = TYPE_MOMENTARY_LAYER;
+    action.id = TYPE_MOMENTARY_LAYER;
     action.parameter.layer.id = 1;
     takokb_keymap_set_action(0, 0, 1, &action);
 
-    action.type = TYPE_KEY;
+    action.id = TYPE_KEY;
     action.parameter.key.keycode = KC_B;
     takokb_keymap_set_action(0, 0, 2, &action);
 
-    action.type = TYPE_KEY;
+    action.id = TYPE_KEY;
     action.parameter.key.keycode = KC_C;
     takokb_keymap_set_action(0, 0, 3, &action);
 
-    action.type = TYPE_KEY;
+    action.id = TYPE_KEY;
     action.parameter.key.keycode = KC_D;
     takokb_keymap_set_action(1, 0, 0, &action);
 
-    action.type = TYPE_KEY;
+    action.id = TYPE_KEY;
     action.parameter.key.keycode = KC_E;
     takokb_keymap_set_action(1, 0, 2, &action);
 }

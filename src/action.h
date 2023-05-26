@@ -97,7 +97,7 @@ static action_function_t *state_tapHold_functions[][tapHold_NUM_TRANSITIONS] = {
 };
 
 #define CALL_tapHold_TRANSITION_FUNC(type, stateA, stateB) \
-    state_tapHold_functions[type - NUM_STATE_BASIC_TYPES][tapHold_##stateA##_to_##stateB]((key_state_t*) key_state, (action_t*) action)
+    state_tapHold_functions[type][tapHold_##stateA##_to_##stateB]((key_state_t*) key_state, (action_t*) action)
 
 #ifdef __cplusplus
 }

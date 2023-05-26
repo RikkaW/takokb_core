@@ -11,7 +11,7 @@ extern bool success;
 #define PRESS(row, colum) ((matrix)[(row)] |= (1U << (colum)))
 #define RELEASE(row, colum) ((matrix)[(row)] &= ~(1U << (colum)))
 
-void test_tick(void);
+void test_tick(uint64_t ms);
 
 void test_next_step(void);
 

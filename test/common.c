@@ -1,5 +1,3 @@
-#include <stdint.h>
-#include <sys/time.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdbool.h>
@@ -7,11 +5,25 @@
 
 static uint64_t ms = 0;
 
+uint64_t takokb_get_milliseconds(void) {
+    return ms;
+}
+
+int takokb_debug_printf(const char *format, ...) {
+    va_list args;
+    va_start(args, format);
+    int res = vprintf(format, args);
+    va_end(args);
+    return res;
+}
+
+// ----------------------------------------
+
 int test_step = 0;
 bool success = true;
 
-void test_tick(void) {
-    ms++;
+void test_tick(uint64_t milliseconds) {
+    ms += milliseconds;
 }
 
 void test_next_step(void) {
@@ -32,7 +44,8 @@ void assert_active_layer_equals(int layer) {
 
 void assert_keycode_equals(report_keyboard_t *report, int index, uint8_t keycode) {
     if (report->keys[index] != keycode) {
-        fprintf(stdout, "!!! Step %d: key[%d] should be 0x%02x, current 0x%02x\n", test_step, index, keycode, report->keys[index]);
+        fprintf(stdout, "!!! Step %d: key[%d] should be 0x%02x, current 0x%02x\n", test_step, index, keycode,
+                report->keys[index]);
         success = false;
     } else {
         printf("--- Step %d: key[%d] is 0x%02x\n", test_step, index, keycode);
@@ -43,22 +56,12 @@ void assert_modifier_bits_equals(report_keyboard_t *report, enum mods_bit bits) 
     if (report->mods == bits) {
         printf("--- Step %d: modifier bits 0x%02x\n", test_step, bits);
     } else {
-        fprintf(stdout, "!!! Step %d: should have modifier bits 0x%02x, current 0x%02x\n", test_step, bits, report->mods);
+        fprintf(stdout, "!!! Step %d: should have modifier bits 0x%02x, current 0x%02x\n", test_step, bits,
+                report->mods);
         success = false;
     }
 }
 
-uint64_t takokb_get_milliseconds(void) {
-    return ms;
-}
-
-int takokb_debug_printf(const char *format, ...) {
-    va_list args;
-    va_start(args, format);
-    int res = vprintf(format, args);
-    va_end(args);
-    return res;
-}
 
 void assert_equals(bool changed, bool b, const char *message) {
     if (changed != b) {

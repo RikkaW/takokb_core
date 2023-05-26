@@ -30,44 +30,73 @@ const char *takokb_debug_modifier_bit_to_name(enum mods_bit bit) {
 }
 
 void takokb_debug_print_action(action_t *action) {
-    switch (action->type) {
-        case TYPE_KEY: {
-            takokb_debug_printf("TYPE_NORMAL_KEY (%s)",
-                                takokb_debug_keycode_to_name(action->parameter.key.keycode));
-            break;
-        }
-        case TYPE_MODIFIER: {
-            takokb_debug_printf("TYPE_MODIFIER (%s, ",
-                                takokb_debug_keycode_to_name(action->parameter.key.keycode));
-            for (int i = 0; i < 8; ++i) {
-                if (action->parameter.key.modifiers & (1 << i)) {
-                    takokb_debug_printf("%s", takokb_debug_modifier_bit_to_name(1 << i));
+    switch (action->state_machine) {
+        case STATE_MACHINE_BASIC: {
+            switch (action->id) {
+                case TYPE_KEY: {
+                    takokb_debug_printf("TYPE_NORMAL_KEY (%s)",
+                                        takokb_debug_keycode_to_name(action->parameter.key.keycode));
+                    break;
                 }
+                case TYPE_MODIFIER: {
+                    takokb_debug_printf("TYPE_MODIFIER (%s, ",
+                                        takokb_debug_keycode_to_name(action->parameter.key.keycode));
+                    for (int i = 0; i < 8; ++i) {
+                        if (action->parameter.key.modifiers & (1 << i)) {
+                            takokb_debug_printf("%s", takokb_debug_modifier_bit_to_name(1 << i));
+                        }
+                    }
+                    takokb_debug_printf(")");
+                    break;
+                }
+                case TYPE_TRANSPARENT: {
+                    takokb_debug_printf("TYPE_TRANSPARENT");
+                    break;
+                }
+                case TYPE_MOMENTARY_LAYER: {
+                    takokb_debug_printf("TYPE_MOMENTARY_LAYER %d",
+                                        action->parameter.layer.id);
+                    break;
+                }
+                case TYPE_TOGGLE_LAYER: {
+                    takokb_debug_printf("TYPE_TOGGLE_LAYER %d",
+                                        action->parameter.layer.id);
+                    break;
+                }
+                case TYPE_BOTTOM_LAYER: {
+                    takokb_debug_printf("TYPE_BOTTOM_LAYER %d",
+                                        action->parameter.layer.id);
+                    break;
+                }
+                default:
+                    takokb_debug_printf("(unknown action type)");
+                    break;
             }
-            takokb_debug_printf(")");
             break;
         }
-        case TYPE_TRANSPARENT: {
-            takokb_debug_printf("TYPE_TRANSPARENT");
-            break;
-        }
-        case TYPE_MOMENTARY_LAYER: {
-            takokb_debug_printf("TYPE_MOMENTARY_LAYER %d",
-                                action->parameter.layer.id);
-            break;
-        }
-        case TYPE_TOGGLE_LAYER: {
-            takokb_debug_printf("TYPE_TOGGLE_LAYER %d",
-                                action->parameter.layer.id);
-            break;
-        }
-        case TYPE_BOTTOM_LAYER: {
-            takokb_debug_printf("TYPE_BOTTOM_LAYER %d",
-                                action->parameter.layer.id);
+        case STATE_MACHINE_TAP_HOLD: {
+            switch (action->id) {
+                case TYPE_TAP_KEY_HOLD_MOMENTARY_LAYER:
+                    takokb_debug_printf("TYPE_TAP_KEY_HOLD_MOMENTARY_LAYER (%d, %s, ",
+                                        action->parameter.layer.id,
+                                        takokb_debug_keycode_to_name(action->parameter.tap_key_hold_layer.keycode),
+                                        takokb_debug_modifier_bit_to_name(
+                                                action->parameter.tap_key_hold_layer.modifiers));
+                    for (int i = 0; i < 8; ++i) {
+                        if (action->parameter.tap_key_hold_layer.modifiers & (1 << i)) {
+                            takokb_debug_printf("%s", takokb_debug_modifier_bit_to_name(1 << i));
+                        }
+                    }
+                    takokb_debug_printf(")");
+                    break;
+                default:
+                    takokb_debug_printf("(unknown action type)");
+                    break;
+            }
             break;
         }
         default:
-            takokb_debug_printf("(unknown action type)");
+            takokb_debug_printf("(unknown state machine type)");
             break;
     }
 }
