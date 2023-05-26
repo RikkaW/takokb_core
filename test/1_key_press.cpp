@@ -18,7 +18,7 @@ int main(int argc, char *argv[]) {
     takokb_init();
 
     action_t action;
-    action.type = TYPE_NORMAL_KEY;
+    action.type = TYPE_KEY;
     action.parameter.key.keycode = KC_A;
     takokb_keymap_set_action(0, 0, 0, &action);
     action.parameter.key.keycode = KC_LEFT_SHIFT;

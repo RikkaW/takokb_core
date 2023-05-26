@@ -8,29 +8,35 @@ extern "C" {
 #include <stdint.h>
 #include "takokb.h"
 
+#define STATE_TYPE_TWO_STATE 0x00
+#define STATE_TYPE_THREE_STATE 0x01
+#define STATE_TYPE_FOUR_STATE 0x02
+
 enum types {
 
     /**
-     * Normal keycode.
+     * Send a keyboard HID keycode.
      *
      * Parameter: keycode (8) */
-    TYPE_NORMAL_KEY = 0x00,
+    TYPE_KEY = 0x00,
 
     /**
-     * Modifier + normal keycode
+     * Modifier, with keycode.
      *
      * Parameter: mod_bits (8), keycode (8) */
     TYPE_MODIFIER = 0x01,
 
     /**
-     * Find action from a lower layer.
+     * Find action from a lower layer, this is to make keymap clean.
      *
      * Parameter: (none)
      * */
     TYPE_TRANSPARENT = 0x02,
 
     /**
-     * Momentary turn a layer on, momentary layers has higher priority than TYPE_TOGGLE_LAYER.
+     * Turn a layer on if the key is pressed, off when released.
+     * This has higher priority than TYPE_TOGGLE_LAYER. For example, even a higher level layer is on, keys are found
+     * from the layer that is turned on by this action.
      *
      * Parameter: layer # (8) */
     TYPE_MOMENTARY_LAYER = 0x03,
@@ -49,15 +55,24 @@ enum types {
     TYPE_BOTTOM_LAYER = 0x05,
 
     /**
+     * Momentary turn a layer, send normal key if the key is released in 200ms.
+     * Modifiers are also supported.
+     *
+     * Parameter: layer # (8), keycode (8), mod_bits (8) */
+    TYPE_MOMENTARY_LAYER_KEY = 0x06,
+
+    /**
      * Send a pre-defined Macro.
      *
      * Parameter: macro # (8) */
-    TYPE_MACRO = 0x06,
+    TYPE_MACRO = 0x07,
 
     /* Custom function. (TBD)
      *
      * Parameter: TBD */
-    TYPE_CUSTOM = 0x07,
+    TYPE_CUSTOM = 0x08,
+
+    MAX_TYPES,
 };
 
 enum mods_bit {

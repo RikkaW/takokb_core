@@ -21,7 +21,7 @@ void test_next_step(void) {
 }
 
 void assert_active_layer_equals(int layer) {
-    uint8_t current_layer = takokb_get_active_layer();
+    uint8_t current_layer = takokb_get_top_activated_layer();
     if (current_layer != layer) {
         fprintf(stdout, "!!! Step %d: layer should be %d, current %d\n", test_step, layer, current_layer);
         success = false;

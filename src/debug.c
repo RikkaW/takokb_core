@@ -31,7 +31,7 @@ const char *takokb_debug_modifier_bit_to_name(enum mods_bit bit) {
 
 void takokb_debug_print_action(action_t *action) {
     switch (action->type) {
-        case TYPE_NORMAL_KEY: {
+        case TYPE_KEY: {
             takokb_debug_printf("TYPE_NORMAL_KEY (%s)",
                                 takokb_debug_keycode_to_name(action->parameter.key.keycode));
             break;
@@ -40,7 +40,7 @@ void takokb_debug_print_action(action_t *action) {
             takokb_debug_printf("TYPE_MODIFIER (%s, ",
                                 takokb_debug_keycode_to_name(action->parameter.key.keycode));
             for (int i = 0; i < 8; ++i) {
-                if (action->parameter.key.modifier & (1 << i)) {
+                if (action->parameter.key.modifiers & (1 << i)) {
                     takokb_debug_printf("%s", takokb_debug_modifier_bit_to_name(1 << i));
                 }
             }
@@ -66,8 +66,10 @@ void takokb_debug_print_action(action_t *action) {
                                 action->parameter.layer.id);
             break;
         }
+        default:
+            takokb_debug_printf("(unknown action type)");
+            break;
     }
-
 }
 
 void takokb_debug_print_keymap(void) {

@@ -1,6 +1,5 @@
 #ifndef TAKOKB_DEBUG_H
 #define TAKOKB_DEBUG_H
-
 #ifdef __cplusplus
 extern "C" {
 #endif

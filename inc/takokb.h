@@ -22,24 +22,31 @@ typedef uint32_t matrix_row_t;
 
 // ---------- action ----------
 
-typedef union {
-    uint32_t raw: 24;
+typedef struct action {
+    uint8_t type: 6;
+    uint8_t state_type: 2;
 
-    struct action_key {
-        uint8_t keycode: 8;
-        uint8_t modifier: 8;
-    } key;
+    union {
+        uint32_t raw: 24;
 
-    struct action_layer {
-        uint8_t id: 8;
-        uint8_t enabled: 8;
-    } layer;
+        struct action_key {
+            uint8_t keycode: 8;
+            uint8_t modifiers: 8;
+        } key;
 
-} __attribute__((packed)) action_parameter_t;
+        struct action_layer {
+            uint8_t id: 8;
+            uint8_t enabled: 8;
+        } layer;
 
-typedef struct {
-    uint8_t type;
-    action_parameter_t parameter;
+        struct action_layer_tap {
+            uint8_t id: 8;
+            uint8_t keycode: 8;
+            uint8_t modifiers: 8;
+        } layer_tap;
+
+    } parameter;
+
 } __attribute__((packed)) action_t;
 
 // ----------------------------
@@ -67,7 +74,7 @@ matrix_row_t *takokb_get_matrix(void);
 
 void takokb_keymap_set_action(uint8_t layer, uint8_t row, uint8_t column, action_t *action);
 
-uint8_t takokb_get_active_layer(void);
+uint8_t takokb_get_top_activated_layer(void);
 
 // ---------- weak functions ----------
 #ifdef TAKOKB_TEST
@@ -85,6 +92,7 @@ __TAKOKB_WEAK bool takokb_matrix_scan(matrix_row_t *matrix);
 
 #ifndef NDEBUG
 __TAKOKB_WEAK int takokb_debug_printf(const char *format, ...);
+
 #else
 #define takokb_debug_printf(...)
 #endif

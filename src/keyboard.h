@@ -12,28 +12,68 @@ extern "C" {
 /**
  * @brief This struct holds the information about the key change event. Cleared every scan.
  **/
-typedef struct {
-    struct position_t {
-        uint8_t row: 5;
-        uint8_t colum: 3;
+typedef struct key_change_event {
+    struct position {
+        uint8_t row;
+        uint8_t colum;
     } __attribute__((packed)) position;
 
     /* If the key is pressed or released */
-    uint8_t pressed: 1;
+    bool pressed;
 } __attribute__((packed)) key_change_event_t;
 
-typedef struct {
-    key_change_event_t *key_change_event;
+#define STATE_IDLE 0
 
-    /* When the key is pressed */
-    uint64_t time: 63;
+enum key_state_two {
+    STATE_TWO_IDLE = STATE_IDLE,
+    STATE_TWO_PRESSED,
+};
+
+enum key_state_three {
+    STATE_THREE_IDLE = STATE_IDLE,
+    STATE_THREE_PRESSED,
+    STATE_THREE_HELD,
+};
+
+typedef struct key_state {
+    uint8_t state: 8;
+
+    union extras {
+        uint8_t raw[8];
+        struct {
+            uint64_t hold_threshold_time: 61;
+        } __attribute__((packed)) tap_hold;
+        struct {
+            uint8_t queue_index: 8;
+        } __attribute__((packed)) momentary_layer;
+    } extras;
 
     /* Action the key is bound */
     action_t *action;
 
-    uint8_t momentary_layer_queue_index;
+} __attribute__((packed)) key_state_t;
 
-} key_state_t;
+#define MOMENTARY_LAYER_QUEUE_MAX_SIZE 32
+#define MOMENTARY_LAYER_QUEUE_INDEX_INVALID UINT8_MAX
+#define LAYER_ID_INVALID UINT8_MAX
+
+bool matrix_task();
+
+void keyboard_task();
+
+void keyboard_init();
+
+matrix_row_t *keyboard_get_matrix();
+
+uint8_t keyboard_get_top_activated_layer(void);
+
+uint8_t keyboard_momentary_layer_queue_insert(uint8_t layer);
+
+void keyboard_momentary_layer_queue_remove(uint8_t layer);
+
+uint32_t *keyboard_get_toggled_layers_mask(void);
+
+void keyboard_set_bottom_layer(uint8_t layer);
 
 #ifdef __cplusplus
 }
