@@ -59,7 +59,7 @@ enum types {
      * Modifiers are also supported.
      *
      * Parameter: layer # (8), keycode (8), mod_bits (8) */
-    TYPE_MOMENTARY_LAYER_KEY = 0x06,
+    TYPE_TAP_KEY_HOLD_MOMENTARY_LAYER = 0x06,
 
     /**
      * Send a pre-defined Macro.

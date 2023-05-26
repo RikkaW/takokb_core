@@ -61,6 +61,10 @@ void report_remove_keycode(uint8_t keycode) {
 }
 
 void report_add_modifiers(enum mods_bit mods) {
+    if (mods == 0) {
+        return;
+    }
+
     uint8_t new_mods = report_keyboard.mods | mods;
     if (new_mods != report_keyboard.mods) {
         report_keyboard.mods = new_mods;
@@ -71,6 +75,10 @@ void report_add_modifiers(enum mods_bit mods) {
 }
 
 void report_remove_modifiers(enum mods_bit mods) {
+    if (mods == 0) {
+        return;
+    }
+
     uint8_t new_mods = report_keyboard.mods & ~mods;
     if (new_mods != report_keyboard.mods) {
         report_keyboard.mods = new_mods;

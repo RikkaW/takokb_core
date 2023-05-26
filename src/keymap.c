@@ -45,7 +45,7 @@ static uint8_t keycode_to_modifier_bits(uint8_t keycode) {
 
 static uint8_t get_state_type(const action_t *action) {
     switch (action->type) {
-        case TYPE_MOMENTARY_LAYER_KEY:
+        case TYPE_TAP_KEY_HOLD_MOMENTARY_LAYER:
             return STATE_TYPE_TAP_HOLD;
         default:
             return STATE_TYPE_BASIC;

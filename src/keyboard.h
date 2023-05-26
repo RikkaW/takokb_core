@@ -34,7 +34,7 @@ enum key_state_tap_hold {
     tapHold_TAP,
     tapHold_HOLD,
     tapHold_WAIT_FOR_RELEASE_INTERNAL,
-    tapHold_HOLD_WAIT_FOR_HOLD,
+    tapHold_WAIT_FOR_TAP_HOLD,
     tapHold_TAP_HOLD,
 };
 
@@ -44,10 +44,11 @@ typedef struct key_state {
     union extras {
         uint8_t raw[8];
         struct {
-            uint64_t threshold_time: 61;
-        } __attribute__((packed)) tap_hold;
+            uint8_t layer_queue_index: 8;
+            uint64_t threshold_time: 56;
+        } __attribute__((packed)) momentary_layer_tap_hold;
         struct {
-            uint8_t queue_index: 8;
+            uint8_t layer_queue_index: 8;
         } __attribute__((packed)) momentary_layer;
     } extras;
 

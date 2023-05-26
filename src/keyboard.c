@@ -148,27 +148,72 @@ static void sync_layer() {
     takokb_debug_printf("sync_layer: top_layer = %d\n", top_layer);
 }
 
-static action_function_t *functions[MAX_TYPES][8] = {
-        STATE_BASIC_FUNC_ARRAY(TYPE_KEY),
-        STATE_BASIC_FUNC_ARRAY(TYPE_MODIFIER),
-        STATE_BASIC_FUNC_ARRAY(TYPE_TRANSPARENT),
-        STATE_BASIC_FUNC_ARRAY(TYPE_MOMENTARY_LAYER),
-        STATE_BASIC_FUNC_ARRAY(TYPE_TOGGLE_LAYER),
-        STATE_BASIC_FUNC_ARRAY(TYPE_BOTTOM_LAYER),
-};
-
 static void handle_two_state_change(key_state_t *key_state, action_t *action, bool pressed) {
     switch (key_state->state) {
         case basic_IDLE:
             if (pressed) {
                 key_state->state = basic_TAP;
-                functions[action->type][STATE_BASIC_IDLE_TO_TAP](key_state, action);
+                CALL_basic_TRANSITION_FUNC(action->type, IDLE, TAP);
             }
             break;
         case basic_TAP:
             if (!pressed) {
                 key_state->state = basic_IDLE;
-                functions[action->type][STATE_BASIC_TAP_TO_IDLE](key_state, action);
+                CALL_basic_TRANSITION_FUNC(action->type, TAP, IDLE);
+            }
+            break;
+        default:
+            break;
+    }
+}
+
+static void handle_tap_hold_state_change(key_state_t *key_state, action_t *action, bool pressed) {
+    switch (key_state->state) {
+        case tapHold_IDLE:
+            if (pressed) {
+                key_state->state = tapHold_TAP;
+                key_state->extras.momentary_layer_tap_hold.threshold_time = time + 200;
+                CALL_tapHold_TRANSITION_FUNC(action->type, IDLE, TAP);
+            }
+            break;
+        case tapHold_TAP:
+            if (time > key_state->extras.momentary_layer_tap_hold.threshold_time) {
+                key_state->state = tapHold_HOLD;
+                CALL_tapHold_TRANSITION_FUNC(action->type, TAP, HOLD);
+            } else if (pressed) {
+                key_state->state = tapHold_WAIT_FOR_RELEASE_INTERNAL;
+                key_state->extras.momentary_layer_tap_hold.threshold_time = time + 50;
+                CALL_tapHold_TRANSITION_FUNC(action->type, TAP, WAIT_FOR_RELEASE_INTERNAL);
+            }
+            break;
+        case tapHold_HOLD:
+            if (!pressed) {
+                key_state->state = tapHold_IDLE;
+                CALL_tapHold_TRANSITION_FUNC(action->type, HOLD, IDLE);
+            }
+            break;
+        case tapHold_WAIT_FOR_RELEASE_INTERNAL:
+            if (pressed) {
+                key_state->state = tapHold_TAP_HOLD;
+                CALL_tapHold_TRANSITION_FUNC(action->type, WAIT_FOR_RELEASE_INTERNAL, TAP_HOLD);
+            } else if (time > key_state->extras.momentary_layer_tap_hold.threshold_time) {
+                key_state->state = tapHold_WAIT_FOR_TAP_HOLD;
+                key_state->extras.momentary_layer_tap_hold.threshold_time = time + 150;
+                CALL_tapHold_TRANSITION_FUNC(action->type, WAIT_FOR_RELEASE_INTERNAL, HOLD_WAIT_FOR_HOLD);
+            }
+            break;
+        case tapHold_WAIT_FOR_TAP_HOLD:
+            if (time > key_state->extras.momentary_layer_tap_hold.threshold_time) {
+                key_state->state = tapHold_IDLE;
+                CALL_tapHold_TRANSITION_FUNC(action->type, WAIT_FOR_TAP_HOLD, IDLE);
+            } else if (pressed) {
+                key_state->state = tapHold_TAP_HOLD;
+                CALL_tapHold_TRANSITION_FUNC(action->type, WAIT_FOR_TAP_HOLD, TAP_HOLD);
+            }
+        case tapHold_TAP_HOLD:
+            if (!pressed) {
+                key_state->state = tapHold_IDLE;
+                CALL_tapHold_TRANSITION_FUNC(action->type, TAP_HOLD, IDLE);
             }
             break;
         default:
