@@ -9,6 +9,12 @@ extern "C" {
 #include "takokb_action.h"
 #include "takokb.h"
 
+enum key_change {
+    KEY_CHANGE_RELEASE = 0,
+    KEY_CHANGE_PRESS,
+    KEY_CHANGE_UNCHANGED,
+};
+
 /**
  * @brief This struct holds the information about the key change event. Cleared every scan.
  **/
@@ -19,7 +25,7 @@ typedef struct key_change_event {
     } __attribute__((packed)) position;
 
     /* If the key is pressed or released */
-    bool pressed;
+    enum key_change change;
 } __attribute__((packed)) key_change_event_t;
 
 #define STATE_IDLE 0
