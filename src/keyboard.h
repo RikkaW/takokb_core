@@ -49,10 +49,13 @@ typedef struct key_state {
 
     union extras {
         uint8_t raw[8];
-        struct {
-            uint8_t layer_queue_index: 8;
-            uint64_t threshold_time: 56;
+
+        struct tap_key_hold_layer {
+            uint8_t layer_queue_index: 5;
+            uint8_t key_state_queue_index: 7;
+            uint64_t threshold_time: 52;
         } __attribute__((packed)) tap_key_hold_layer;
+
         struct {
             uint8_t layer_queue_index: 8;
         } __attribute__((packed)) momentary_layer;

@@ -24,10 +24,12 @@ static uint32_t toggled_layers_mask = 0;
 static uint8_t momentary_layer_queue[MOMENTARY_LAYER_QUEUE_MAX_SIZE] = {0};
 static uint8_t momentary_layer_queue_size = 0;
 
-#define TIME_RELATED_KEYS_QUEUE_MAX_SIZE TAKOKB_MATRIX_ROWS * TAKOKB_MATRIX_COLS
+#define TIME_RELATED_KEYS_QUEUE_MAX_SIZE 128
+static key_state_t *time_related_keys_queue[TIME_RELATED_KEYS_QUEUE_MAX_SIZE];
+static uint32_t time_related_keys_queue_size = 0;
 
 uint64_t time = 0;
-static uint64_t last_sync_time = 0;
+static uint64_t next_time_related_key_update_time = 0;
 
 /**
  * @brief Scan matrix and update changed_keys array.
@@ -118,14 +120,38 @@ void keyboard_momentary_layer_queue_remove(uint8_t index) {
     }
 }
 
-static void time_related_keys_queue_push(uint8_t layer, uint8_t row, uint8_t colum) {
-    /*if (time_related_keys_queue_size >= TIME_RELATED_KEYS_QUEUE_MAX_SIZE) {
+static uint8_t time_related_keys_queue_push(key_state_t *key_state) {
+    if (time_related_keys_queue_size >= TIME_RELATED_KEYS_QUEUE_MAX_SIZE) {
+        return UINT8_MAX;
+    }
+    time_related_keys_queue[time_related_keys_queue_size] = key_state;
+    time_related_keys_queue_size++;
+    return time_related_keys_queue_size - 1;
+}
+
+static key_state_t *time_related_keys_queue_pop() {
+    if (time_related_keys_queue_size == 0) {
+        return NULL;
+    }
+    key_state_t *key_state = time_related_keys_queue[time_related_keys_queue_size - 1];
+    time_related_keys_queue_size--;
+    return key_state;
+}
+
+static void time_related_keys_queue_remove(uint8_t index) {
+    if (time_related_keys_queue_size == 0 || index >= time_related_keys_queue_size) {
         return;
     }
-    time_related_keys_queue[time_related_keys_queue_size].layer = layer;
-    time_related_keys_queue[time_related_keys_queue_size].row = row;
-    time_related_keys_queue[time_related_keys_queue_size].colum = colum;
-    time_related_keys_queue_size++;*/
+    time_related_keys_queue[index] = NULL;
+    if (index == time_related_keys_queue_size - 1) {
+        time_related_keys_queue_size--;
+    }
+}
+
+static void time_related_keys_set_next_update_time(uint64_t new_time) {
+    if (new_time < next_time_related_key_update_time) {
+        next_time_related_key_update_time = new_time;
+    }
 }
 
 /**
@@ -163,8 +189,15 @@ static void sync_layer() {
     takokb_debug_printf("sync_layer: top_layer = %d\n", top_layer);
 }
 
+#ifndef NDEBUG
+
 static void handle_basic_state_change(
         uint8_t row, uint8_t colum, key_state_t *key_state, action_t *action, enum key_change change) {
+#else
+
+    static void handle_basic_state_change(
+            key_state_t *key_state, action_t *action, enum key_change change) {
+#endif
 
     switch (key_state->state) {
         case basic_IDLE:
@@ -188,8 +221,29 @@ static void handle_basic_state_change(
     }
 }
 
+static void handle_tap_hold_state_change_set_threshold_time(key_state_t *key_state, uint64_t threshold_time) {
+    key_state->extras.tap_key_hold_layer.threshold_time = time + threshold_time;
+    key_state->extras.tap_key_hold_layer.key_state_queue_index = time_related_keys_queue_push(key_state);
+    time_related_keys_set_next_update_time(key_state->extras.tap_key_hold_layer.threshold_time);
+}
+
+static void handle_tap_hold_state_change_remove_threshold_time(key_state_t *key_state) {
+    if (key_state->extras.tap_key_hold_layer.key_state_queue_index == 0) {
+        return;
+    }
+    time_related_keys_queue_remove(key_state->extras.tap_key_hold_layer.key_state_queue_index);
+    key_state->extras.tap_key_hold_layer.key_state_queue_index = 0;
+}
+
+#ifndef NDEBUG
+
 static void handle_tap_hold_state_change(
         uint8_t row, uint8_t colum, key_state_t *key_state, action_t *action, uint8_t change) {
+#else
+
+    static void handle_tap_hold_state_change(
+            key_state_t *key_state, action_t *action, uint8_t change) {
+#endif
 
     switch (key_state->state) {
         case tapHold_IDLE:
@@ -197,7 +251,8 @@ static void handle_tap_hold_state_change(
                 takokb_debug_printf("handle_tap_hold_state_change: (%d, %d) IDLE -> TAP\n", row, colum);
 
                 key_state->state = tapHold_TAP;
-                key_state->extras.tap_key_hold_layer.threshold_time = time + 200;
+                handle_tap_hold_state_change_set_threshold_time(key_state, 200);
+
                 CALL_tapHold_TRANSITION_FUNC(action->id, IDLE, TAP);
             }
             break;
@@ -206,13 +261,16 @@ static void handle_tap_hold_state_change(
                 takokb_debug_printf("handle_tap_hold_state_change: (%d, %d) TAP -> HOLD\n", row, colum);
 
                 key_state->state = tapHold_HOLD;
+                handle_tap_hold_state_change_remove_threshold_time(key_state);
+
                 CALL_tapHold_TRANSITION_FUNC(action->id, TAP, HOLD);
             } else if (change == KEY_CHANGE_PRESS) {
-                takokb_debug_printf("handle_tap_hold_state_change: (%d, %d) TAP -> WAIT_FOR_RELEASE_INTERNAL\n", row,
-                                    colum);
+                takokb_debug_printf("handle_tap_hold_state_change: (%d, %d) TAP -> WAIT_FOR_RELEASE_INTERNAL\n",
+                                    row, colum);
 
                 key_state->state = tapHold_WAIT_FOR_RELEASE_INTERNAL;
-                key_state->extras.tap_key_hold_layer.threshold_time = time + 50;
+                handle_tap_hold_state_change_set_threshold_time(key_state, 50);
+
                 CALL_tapHold_TRANSITION_FUNC(action->id, TAP, WAIT_FOR_RELEASE_INTERNAL);
             }
             break;
@@ -221,6 +279,8 @@ static void handle_tap_hold_state_change(
                 takokb_debug_printf("handle_tap_hold_state_change: (%d, %d) HOLD -> IDLE\n", row, colum);
 
                 key_state->state = tapHold_IDLE;
+                handle_tap_hold_state_change_remove_threshold_time(key_state);
+
                 CALL_tapHold_TRANSITION_FUNC(action->id, HOLD, IDLE);
             }
             break;
@@ -230,6 +290,8 @@ static void handle_tap_hold_state_change(
                                     row, colum);
 
                 key_state->state = tapHold_TAP_HOLD;
+                handle_tap_hold_state_change_remove_threshold_time(key_state);
+
                 CALL_tapHold_TRANSITION_FUNC(action->id, WAIT_FOR_RELEASE_INTERNAL, TAP_HOLD);
             } else if (time > key_state->extras.tap_key_hold_layer.threshold_time) {
                 takokb_debug_printf(
@@ -237,7 +299,8 @@ static void handle_tap_hold_state_change(
                         row, colum);
 
                 key_state->state = tapHold_WAIT_FOR_TAP_HOLD;
-                key_state->extras.tap_key_hold_layer.threshold_time = time + 150;
+                handle_tap_hold_state_change_set_threshold_time(key_state, 150);
+
                 CALL_tapHold_TRANSITION_FUNC(action->id, WAIT_FOR_RELEASE_INTERNAL, HOLD_WAIT_FOR_HOLD);
             }
             break;
@@ -246,12 +309,16 @@ static void handle_tap_hold_state_change(
                 takokb_debug_printf("handle_tap_hold_state_change: (%d, %d) WAIT_FOR_TAP_HOLD -> IDLE\n", row, colum);
 
                 key_state->state = tapHold_IDLE;
+                handle_tap_hold_state_change_remove_threshold_time(key_state);
+
                 CALL_tapHold_TRANSITION_FUNC(action->id, WAIT_FOR_TAP_HOLD, IDLE);
             } else if (change == KEY_CHANGE_PRESS) {
-                takokb_debug_printf("handle_tap_hold_state_change: (%d, %d) WAIT_FOR_TAP_HOLD -> TAP_HOLD\n", row,
-                                    colum);
+                takokb_debug_printf("handle_tap_hold_state_change: (%d, %d) WAIT_FOR_TAP_HOLD -> TAP_HOLD\n",
+                                    row, colum);
 
                 key_state->state = tapHold_TAP_HOLD;
+                handle_tap_hold_state_change_remove_threshold_time(key_state);
+
                 CALL_tapHold_TRANSITION_FUNC(action->id, WAIT_FOR_TAP_HOLD, TAP_HOLD);
             }
         case tapHold_TAP_HOLD:
@@ -259,6 +326,8 @@ static void handle_tap_hold_state_change(
                 takokb_debug_printf("handle_tap_hold_state_change: (%d, %d) TAP_HOLD -> IDLE\n", row, colum);
 
                 key_state->state = tapHold_IDLE;
+                handle_tap_hold_state_change_remove_threshold_time(key_state);
+
                 CALL_tapHold_TRANSITION_FUNC(action->id, TAP_HOLD, IDLE);
             }
             break;
@@ -307,25 +376,36 @@ static void handle_changed_keys() {
         takokb_debug_printf("\n");
 
         if (action->state_machine == STATE_MACHINE_BASIC) {
+#ifndef NDEBUG
             handle_basic_state_change(row, colum, key_state, action, change_event->change);
+#else
+            handle_basic_state_change(key_state, action, change_event->change);
+#endif
         } else if (action->state_machine == STATE_MACHINE_TAP_HOLD) {
+#ifndef NDEBUG
             handle_tap_hold_state_change(row, colum, key_state, action, change_event->change);
+#else
+            handle_tap_hold_state_change(key_state, action, change_event->change);
+#endif
         }
     }
 }
 
 static void handle_time_related_keys() {
-    for (uint8_t layer = 0; layer < TAKOKB_MAX_LAYERS; ++layer) {
-        for (uint8_t row = 0; row < TAKOKB_MATRIX_ROWS; ++row) {
-            for (uint8_t colum = 0; colum < TAKOKB_MATRIX_COLS; ++colum) {
-                key_state_t *key_state = &key_states[row][colum];
-                action_t *action = key_state->action;
-                if (!action) continue;
+    if (time < next_time_related_key_update_time) {
+        return;
+    }
 
-                if (action->state_machine == STATE_MACHINE_TAP_HOLD) {
-                    handle_tap_hold_state_change(row, colum, key_state, action, KEY_CHANGE_UNCHANGED);
-                }
-            }
+    for (int i = 0; i < time_related_keys_queue_size; ++i) {
+        key_state_t *key_state = time_related_keys_queue[i];
+        action_t *action = key_state->action;
+
+        if (action->state_machine == STATE_MACHINE_TAP_HOLD) {
+#ifndef NDEBUG
+            handle_tap_hold_state_change(UINT8_MAX, UINT8_MAX, key_state, action, KEY_CHANGE_UNCHANGED);
+#else
+            handle_tap_hold_state_change(key_state, action, KEY_CHANGE_UNCHANGED);
+#endif
         }
     }
 }
