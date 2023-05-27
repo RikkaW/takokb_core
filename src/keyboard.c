@@ -264,7 +264,7 @@ static void handle_tap_hold_state_change(
                 handle_tap_hold_state_change_remove_threshold_time(key_state);
 
                 CALL_tapHold_TRANSITION_FUNC(action->id, TAP, HOLD);
-            } else if (change == KEY_CHANGE_PRESS) {
+            } else if (change == KEY_CHANGE_RELEASE) {
                 takokb_debug_printf("handle_tap_hold_state_change: (%d, %d) TAP -> WAIT_FOR_RELEASE_INTERNAL\n",
                                     row, colum);
 

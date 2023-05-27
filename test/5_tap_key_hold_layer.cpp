@@ -23,7 +23,30 @@
  * RELEASE(0, 1)
  * -> layer=0
  *
+ * Step 3:
+ * PRESS(0, 0)
+ * -> layer=1, KC_NO
  *
+ * Step 4:
+ * Wait for 50ms
+ * RELEASE(0, 1)
+ * -> layer=0, KC_A, MOD_LSFT
+ *
+ * Step5 :
+ * Wait for 100ms
+ * -> layer=0, KC_NO
+ *
+ * Step 6:
+ * PRESS(0, 0)
+ * -> layer=0, KC_A, MOD_LSFT
+ *
+ * Step 7:
+ * Wait 1000ms
+ * -> layer=0, KC_A, MOD_LSFT
+ *
+ * Step 8:
+ * RELEASE(0, 0)
+ * -> layer=0, KC_NO
  **/
 
 static void set_keymap() {
@@ -49,12 +72,41 @@ int main(int argc, char *argv[]) {
 
     takokb_task();
 
+    // Step 1
     test_next_step();
     assert_active_layer_equals(1);
 
+    // Step 2
     test_tick(400);
     test_next_step();
     takokb_task();
+    assert_active_layer_equals(0);
+
+    // Step 3
+    test_next_step();
+    assert_active_layer_equals(1);
+
+    // Step 4
+    test_tick(50);
+    test_next_step();
+    assert_active_layer_equals(0);
+
+    // Step 5
+    test_tick(100);
+    test_next_step();
+    assert_active_layer_equals(0);
+
+    // Step 6
+    test_next_step();
+    assert_active_layer_equals(0);
+
+    // Step 7
+    test_tick(1000);
+    test_next_step();
+    assert_active_layer_equals(0);
+
+    // Step 8
+    test_next_step();
     assert_active_layer_equals(0);
 
     return success ? 0 : 1;
@@ -70,6 +122,20 @@ bool takokb_matrix_scan(matrix_row_t *matrix) {
         case 2:
             RELEASE(0, 0);
             return true;
+        case 3:
+            PRESS(0, 0);
+            return true;
+        case 4:
+            RELEASE(0, 0);
+            return true;
+        case 6:
+            PRESS(0, 0);
+            return true;
+        case 8:
+            RELEASE(0, 0);
+            return true;
+        case 7:
+        case 5:
         default:
             return false;
     }
@@ -79,6 +145,22 @@ void takokb_send_keyboard_hid_report(report_keyboard_t *report, size_t size) {
     switch (test_step) {
         case 1:
         case 2:
+        case 3:
+            assert_keycode_equals(report, 0, KC_NO);
+            return;
+        case 4:
+            assert_keycode_equals(report, 0, KC_A);
+            assert_modifiers_equals(report, MOD_LSFT);
+            return;
+        case 5:
+            assert_keycode_equals(report, 0, KC_NO);
+            return;
+        case 6:
+        case 7:
+            assert_keycode_equals(report, 0, KC_A);
+            assert_modifiers_equals(report, MOD_LSFT);
+            return;
+        case 8:
             assert_keycode_equals(report, 0, KC_NO);
             return;
         default:

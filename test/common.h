@@ -19,7 +19,7 @@ void assert_active_layer_equals(int layer);
 
 void assert_keycode_equals(report_keyboard_t *report, int index, uint8_t keycode);
 
-void assert_modifier_bits_equals(report_keyboard_t *report, enum mods_bit bits);
+void assert_modifiers_equals(report_keyboard_t *report, enum mods_bit bits);
 
 void assert_equals(bool changed, bool b, const char *message);
 

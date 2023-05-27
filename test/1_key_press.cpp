@@ -58,11 +58,11 @@ void takokb_send_keyboard_hid_report(report_keyboard_t *report, size_t size) {
             return;
         case 2:
             assert_keycode_equals(report, 0, KC_A);
-            assert_modifier_bits_equals(report, MOD_LSFT);
+            assert_modifiers_equals(report, MOD_LSFT);
             return;
         case 3:
             assert_keycode_equals(report, 0, KC_NO);
-            assert_modifier_bits_equals(report, MOD_LSFT);
+            assert_modifiers_equals(report, MOD_LSFT);
             return;
         default:
             // This should never trigger
