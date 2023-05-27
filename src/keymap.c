@@ -47,14 +47,14 @@ void keymap_set_action(uint8_t layer, uint8_t row, uint8_t column, const action_
     action_t new_action = {
             .id = action->id,
             .state_machine=action->state_machine,
-            .parameter.raw = action->parameter.raw
     };
+    memcpy(&new_action.parameter, &action->parameter, sizeof(action->parameter));
 
     if (action->id == TYPE_KEY) {
         uint8_t modifier_bits = keycode_to_modifier_bits(action->parameter.key.keycode);
         if (modifier_bits != 0) {
             new_action.id = TYPE_MODIFIER;
-            new_action.parameter.raw = 0;
+            memset(&new_action.parameter, 0, sizeof(new_action.parameter));
             new_action.parameter.key.modifiers = modifier_bits;
             keymaps[layer][row][column] = new_action;
             return;

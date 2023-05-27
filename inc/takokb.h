@@ -26,8 +26,8 @@ typedef struct action {
     uint8_t state_machine: 2;
     uint8_t id: 6;
 
-    union {
-        uint32_t raw: 24;
+    union parameter {
+        uint8_t raw[3];
 
         struct action_key {
             uint8_t keycode: 8;
