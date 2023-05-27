@@ -1,4 +1,5 @@
 #include <stdbool.h>
+#include <stdlib.h>
 #include "keyboard.h"
 #include "keymap.h"
 #include "takokb.h"
@@ -191,12 +192,12 @@ static void sync_layer() {
 
 #ifndef NDEBUG
 
-static void handle_basic_state_change(
+static bool handle_basic_state_change(
         uint8_t row, uint8_t colum, key_state_t *key_state, action_t *action, enum key_change change) {
 #else
 
-    static void handle_basic_state_change(
-            key_state_t *key_state, action_t *action, enum key_change change) {
+    static bool handle_basic_state_change(
+                key_state_t *key_state, action_t *action, enum key_change change) {
 #endif
 
     switch (key_state->state) {
@@ -206,6 +207,7 @@ static void handle_basic_state_change(
 
                 key_state->state = basic_TAP;
                 CALL_basic_TRANSITION_FUNC(action->id, IDLE, TAP);
+                return true;
             }
             break;
         case basic_TAP:
@@ -214,11 +216,13 @@ static void handle_basic_state_change(
 
                 key_state->state = basic_IDLE;
                 CALL_basic_TRANSITION_FUNC(action->id, TAP, IDLE);
+                return true;
             }
             break;
         default:
             break;
     }
+    return false;
 }
 
 static void handle_tap_hold_state_change_set_threshold_time(key_state_t *key_state, uint64_t threshold_time) {
@@ -228,20 +232,17 @@ static void handle_tap_hold_state_change_set_threshold_time(key_state_t *key_sta
 }
 
 static void handle_tap_hold_state_change_remove_threshold_time(key_state_t *key_state) {
-    if (key_state->extras.tap_key_hold_layer.key_state_queue_index == 0) {
-        return;
-    }
     time_related_keys_queue_remove(key_state->extras.tap_key_hold_layer.key_state_queue_index);
     key_state->extras.tap_key_hold_layer.key_state_queue_index = 0;
 }
 
 #ifndef NDEBUG
 
-static void handle_tap_hold_state_change(
+static bool handle_tap_hold_state_change(
         uint8_t row, uint8_t colum, key_state_t *key_state, action_t *action, uint8_t change) {
 #else
 
-    static void handle_tap_hold_state_change(
+    static bool handle_tap_hold_state_change(
             key_state_t *key_state, action_t *action, uint8_t change) {
 #endif
 
@@ -254,6 +255,7 @@ static void handle_tap_hold_state_change(
                 handle_tap_hold_state_change_set_threshold_time(key_state, 200);
 
                 CALL_tapHold_TRANSITION_FUNC(action->id, IDLE, TAP);
+                return true;
             }
             break;
         case tapHold_TAP:
@@ -264,6 +266,7 @@ static void handle_tap_hold_state_change(
                 handle_tap_hold_state_change_remove_threshold_time(key_state);
 
                 CALL_tapHold_TRANSITION_FUNC(action->id, TAP, HOLD);
+                return true;
             } else if (change == KEY_CHANGE_RELEASE) {
                 takokb_debug_printf("handle_tap_hold_state_change: (%d, %d) TAP -> WAIT_FOR_RELEASE_INTERNAL\n",
                                     row, colum);
@@ -272,6 +275,7 @@ static void handle_tap_hold_state_change(
                 handle_tap_hold_state_change_set_threshold_time(key_state, 50);
 
                 CALL_tapHold_TRANSITION_FUNC(action->id, TAP, WAIT_FOR_RELEASE_INTERNAL);
+                return true;
             }
             break;
         case tapHold_HOLD:
@@ -282,6 +286,7 @@ static void handle_tap_hold_state_change(
                 handle_tap_hold_state_change_remove_threshold_time(key_state);
 
                 CALL_tapHold_TRANSITION_FUNC(action->id, HOLD, IDLE);
+                return true;
             }
             break;
         case tapHold_WAIT_FOR_RELEASE_INTERNAL:
@@ -293,6 +298,7 @@ static void handle_tap_hold_state_change(
                 handle_tap_hold_state_change_remove_threshold_time(key_state);
 
                 CALL_tapHold_TRANSITION_FUNC(action->id, WAIT_FOR_RELEASE_INTERNAL, TAP_HOLD);
+                return true;
             } else if (time > key_state->extras.tap_key_hold_layer.threshold_time) {
                 takokb_debug_printf(
                         "handle_tap_hold_state_change: (%d, %d) WAIT_FOR_RELEASE_INTERNAL -> WAIT_FOR_TAP_HOLD\n",
@@ -302,6 +308,7 @@ static void handle_tap_hold_state_change(
                 handle_tap_hold_state_change_set_threshold_time(key_state, 150);
 
                 CALL_tapHold_TRANSITION_FUNC(action->id, WAIT_FOR_RELEASE_INTERNAL, HOLD_WAIT_FOR_HOLD);
+                return true;
             }
             break;
         case tapHold_WAIT_FOR_TAP_HOLD:
@@ -312,6 +319,7 @@ static void handle_tap_hold_state_change(
                 handle_tap_hold_state_change_remove_threshold_time(key_state);
 
                 CALL_tapHold_TRANSITION_FUNC(action->id, WAIT_FOR_TAP_HOLD, IDLE);
+                return true;
             } else if (change == KEY_CHANGE_PRESS) {
                 takokb_debug_printf("handle_tap_hold_state_change: (%d, %d) WAIT_FOR_TAP_HOLD -> TAP_HOLD\n",
                                     row, colum);
@@ -320,6 +328,7 @@ static void handle_tap_hold_state_change(
                 handle_tap_hold_state_change_remove_threshold_time(key_state);
 
                 CALL_tapHold_TRANSITION_FUNC(action->id, WAIT_FOR_TAP_HOLD, TAP_HOLD);
+                return true;
             }
         case tapHold_TAP_HOLD:
             if (change == KEY_CHANGE_RELEASE) {
@@ -329,11 +338,13 @@ static void handle_tap_hold_state_change(
                 handle_tap_hold_state_change_remove_threshold_time(key_state);
 
                 CALL_tapHold_TRANSITION_FUNC(action->id, TAP_HOLD, IDLE);
+                return true;
             }
             break;
         default:
             break;
     }
+    return false;
 }
 
 static void handle_changed_keys() {
@@ -375,18 +386,24 @@ static void handle_changed_keys() {
         takokb_debug_print_action(action);
         takokb_debug_printf("\n");
 
+        bool changed = false;
         if (action->state_machine == STATE_MACHINE_BASIC) {
 #ifndef NDEBUG
-            handle_basic_state_change(row, colum, key_state, action, change_event->change);
+            changed = handle_basic_state_change(row, colum, key_state, action, change_event->change);
 #else
-            handle_basic_state_change(key_state, action, change_event->change);
+            changed = handle_basic_state_change(key_state, action, change_event->change);
 #endif
         } else if (action->state_machine == STATE_MACHINE_TAP_HOLD) {
 #ifndef NDEBUG
-            handle_tap_hold_state_change(row, colum, key_state, action, change_event->change);
+            changed = handle_tap_hold_state_change(row, colum, key_state, action, change_event->change);
 #else
-            handle_tap_hold_state_change(key_state, action, change_event->change);
+            changed = handle_tap_hold_state_change(key_state, action, change_event->change);
 #endif
+        }
+
+        // If the state goes to IDLE, reset the action to null so that it can handle next press if layer is changed.
+        if (changed && key_state->state == STATE_IDLE) {
+            key_state->action = NULL;
         }
     }
 }
@@ -400,12 +417,24 @@ static void handle_time_related_keys() {
         key_state_t *key_state = time_related_keys_queue[i];
         action_t *action = key_state->action;
 
+#ifndef NDEBUG
+        if (action == NULL) {
+            takokb_debug_printf("handle_time_related_keys: !!! action is null\n");
+            abort();
+        }
+#endif
+        bool changed = false;
         if (action->state_machine == STATE_MACHINE_TAP_HOLD) {
 #ifndef NDEBUG
-            handle_tap_hold_state_change(UINT8_MAX, UINT8_MAX, key_state, action, KEY_CHANGE_UNCHANGED);
+            changed = handle_tap_hold_state_change(UINT8_MAX, UINT8_MAX, key_state, action, KEY_CHANGE_UNCHANGED);
 #else
-            handle_tap_hold_state_change(key_state, action, KEY_CHANGE_UNCHANGED);
+            changed = handle_tap_hold_state_change(key_state, action, KEY_CHANGE_UNCHANGED);
 #endif
+        }
+
+        // If the state goes to IDLE, reset the action to null so that it can handle next press if layer is changed.
+        if (changed && key_state->state == STATE_IDLE) {
+            key_state->action = NULL;
         }
     }
 }
