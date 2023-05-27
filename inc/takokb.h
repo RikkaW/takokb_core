@@ -72,9 +72,11 @@ void takokb_task(void);
 
 matrix_row_t *takokb_get_matrix(void);
 
-void takokb_keymap_set_action(uint8_t layer, uint8_t row, uint8_t column, action_t *action);
+void takokb_keymap_set_action(uint8_t layer, uint8_t row, uint8_t column, const action_t *action);
 
 uint8_t takokb_get_top_activated_layer(void);
+
+size_t takokb_keymap_get_size(void);
 
 // ---------- weak functions ----------
 #ifdef TAKOKB_TEST

@@ -63,3 +63,7 @@ void keymap_set_action(uint8_t layer, uint8_t row, uint8_t column, const action_
 
     keymaps[layer][row][column] = new_action;
 }
+
+size_t keymap_get_size(void) {
+    return sizeof(keymaps);
+}

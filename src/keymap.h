@@ -14,6 +14,8 @@ action_t *keymap_get_action(uint8_t layer, uint8_t row, uint8_t column);
 
 void keymap_set_action(uint8_t layer, uint8_t row, uint8_t column, const action_t *action);
 
+size_t keymap_get_size(void);
+
 #ifdef __cplusplus
 }
 #endif
