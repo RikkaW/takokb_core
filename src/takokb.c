@@ -28,3 +28,7 @@ uint8_t takokb_get_top_activated_layer(void) {
 size_t takokb_keymap_get_size(void) {
     return keymap_get_size();
 }
+
+action_t *takokb_keymap_get_action(uint8_t layer, uint8_t row, uint8_t column) {
+    return keymap_get_action(layer, row, column);
+}
