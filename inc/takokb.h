@@ -20,6 +20,8 @@ typedef uint32_t matrix_row_t;
 #    error "TAKOKB_MATRIX_COLS must be less than 32"
 #endif
 
+#define TAKOKB_CONFIGURATOR_PROTOCOL_VERSION 1
+
 // ---------- action ----------
 
 typedef struct action {
@@ -96,12 +98,15 @@ __TAKOKB_WEAK bool takokb_matrix_scan(matrix_row_t *matrix);
 
 #ifndef NDEBUG
 __TAKOKB_WEAK int takokb_debug_printf(const char *format, ...);
-
 #else
 #define takokb_debug_printf(...)
 #endif
 
 __TAKOKB_WEAK void takokb_send_keyboard_hid_report(report_keyboard_t *report, size_t size);
+
+__TAKOKB_WEAK void takokb_send_configurator_hid_report(uint8_t *report, size_t size);
+
+void takokb_receive_configurator_hid_report(uint8_t *report, size_t size);
 
 #ifdef __cplusplus
 }

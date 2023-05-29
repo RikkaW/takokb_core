@@ -23,6 +23,8 @@ void assert_modifiers_equals(report_keyboard_t *report, enum mods_bit bits);
 
 void assert_equals(bool changed, bool b, const char *message);
 
+void assert(bool value, const char *message);
+
 #ifdef __cplusplus
 }
 #endif

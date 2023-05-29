@@ -73,3 +73,12 @@ void assert_equals(bool changed, bool b, const char *message) {
         printf("--- Step %d: %s\n", test_step, message);
     }
 }
+
+void assert(bool value, const char *message) {
+    if (!value) {
+        fprintf(stdout, "!!! Step %d: %s\n", test_step, message);
+        success = false;
+    } else {
+        printf("--- Step %d: %s\n", test_step, message);
+    }
+}
