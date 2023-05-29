@@ -46,7 +46,7 @@ static uint8_t keycode_to_modifier_bits(uint8_t keycode) {
 void keymap_set_action(uint8_t layer, uint8_t row, uint8_t column, const action_t *action) {
     action_t new_action = {
             .id = action->id,
-            .state_machine=action->state_machine,
+            .state_machine = action->state_machine,
     };
     memcpy(&new_action.parameter, &action->parameter, sizeof(action->parameter));
 

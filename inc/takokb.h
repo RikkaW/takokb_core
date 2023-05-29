@@ -23,8 +23,8 @@ typedef uint32_t matrix_row_t;
 // ---------- action ----------
 
 typedef struct action {
-    uint8_t state_machine: 2;
-    uint8_t id: 6;
+    uint8_t state_machine: 3;
+    uint8_t id: 5;
 
     union parameter {
         uint8_t raw[3];
