@@ -22,6 +22,14 @@ typedef uint32_t matrix_row_t;
 
 #define TAKOKB_CONFIGURATOR_PROTOCOL_VERSION 1
 
+#ifndef TAKOKB_KEYBOARD_INFO_VERSION
+#define TAKOKB_KEYBOARD_INFO_VERSION 1
+#endif
+
+#ifndef TAKOKB_KEYBOARD_INFO_SIZE
+#define TAKOKB_KEYBOARD_INFO_SIZE 0
+#endif
+
 // ---------- action ----------
 
 typedef struct action {
@@ -50,6 +58,8 @@ typedef struct action {
     } parameter;
 
 } __attribute__((packed)) action_t;
+
+_Static_assert(sizeof(action_t) == 4, "configurator_hid_report must be 32 bits");
 
 // ----------------------------
 
