@@ -15,6 +15,7 @@ enum __attribute__((__packed__)) configurator_commands {
     get_keyboard_info = 0x03,
     get_keycode = 0x04,
     set_keycode = 0x05,
+    failed = 0xff
 };
 
 typedef struct configurator_hid_report {
@@ -44,7 +45,11 @@ typedef struct configurator_hid_report {
             uint8_t row;
             uint8_t column;
             action_t action;
-        }__attribute__((packed)) keycode;
+        } __attribute__((packed)) keycode;
+
+        struct {
+            uint8_t error_code;
+        } __attribute__((packed)) failed;
     };
 
 } configurator_hid_report_t;

@@ -32,6 +32,10 @@ void configurator_receive_hid_report(configurator_hid_report_t *report) {
             keymap_set_action(report->keycode.layer, report->keycode.row, report->keycode.column, &report->keycode.action);
             break;
         }
+        default:
+        case failed: {
+            return;
+        }
     }
 
     takokb_send_configurator_hid_report((uint8_t *) report, sizeof(configurator_hid_report_t));
