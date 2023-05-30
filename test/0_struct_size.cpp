@@ -15,3 +15,7 @@ bool takokb_matrix_scan(matrix_row_t *matrix) {
 
 void takokb_send_keyboard_hid_report(report_keyboard_t *report, size_t size) {
 }
+
+void takokb_send_configurator_hid_report(uint8_t *report, size_t size) {
+
+}

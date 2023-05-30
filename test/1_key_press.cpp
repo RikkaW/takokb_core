@@ -71,3 +71,7 @@ void takokb_send_keyboard_hid_report(report_keyboard_t *report, size_t size) {
             return;
     }
 }
+
+void takokb_send_configurator_hid_report(uint8_t *report, size_t size) {
+
+}
