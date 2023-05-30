@@ -51,8 +51,8 @@ typedef struct key_state {
         uint8_t raw[8];
 
         struct tap_key_hold_layer {
-            uint8_t layer_queue_index: 5;
-            uint8_t key_state_queue_index: 7;
+            uint64_t layer_queue_index: 5;
+            uint64_t key_state_queue_index: 7;
             uint64_t threshold_time: 52;
         } __attribute__((packed)) tap_key_hold_layer;
 

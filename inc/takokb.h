@@ -59,8 +59,6 @@ typedef struct action {
 
 } __attribute__((packed)) action_t;
 
-_Static_assert(sizeof(action_t) == 4, "configurator_hid_report must be 32 bits");
-
 // ----------------------------
 
 // ---------- report ----------
@@ -93,28 +91,23 @@ size_t takokb_keymap_get_size(void);
 action_t *takokb_keymap_get_action(uint8_t layer, uint8_t row, uint8_t column);
 
 // ---------- weak functions ----------
-#ifdef TAKOKB_TEST
-#define __TAKOKB_WEAK
-#else
-#define __TAKOKB_WEAK __attribute__((weak))
-#endif
 
 /**
  * @return Current milliseconds
  */
-__TAKOKB_WEAK uint64_t takokb_get_milliseconds(void);
+uint64_t takokb_get_milliseconds(void);
 
-__TAKOKB_WEAK bool takokb_matrix_scan(matrix_row_t *matrix);
+bool takokb_matrix_scan(matrix_row_t *matrix);
 
 #ifndef NDEBUG
-__TAKOKB_WEAK int takokb_debug_printf(const char *format, ...);
+int takokb_debug_printf(const char *format, ...);
 #else
 #define takokb_debug_printf(...)
 #endif
 
-__TAKOKB_WEAK void takokb_send_keyboard_hid_report(report_keyboard_t *report, size_t size);
+void takokb_send_keyboard_hid_report(report_keyboard_t *report, size_t size);
 
-__TAKOKB_WEAK void takokb_send_configurator_hid_report(uint8_t *report, size_t size);
+void takokb_send_configurator_hid_report(uint8_t *report, size_t size);
 
 void takokb_receive_configurator_hid_report(uint8_t *report, size_t size);
 

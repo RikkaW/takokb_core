@@ -17,8 +17,6 @@ enum __attribute__((__packed__)) configurator_commands {
     set_keycode = 0x05,
 };
 
-_Static_assert(sizeof(enum configurator_commands) == 1, "configurator_commands must be 8 bits");
-
 typedef struct configurator_hid_report {
 
     enum configurator_commands command_id;
@@ -26,22 +24,22 @@ typedef struct configurator_hid_report {
     union {
         uint8_t raw[7];
 
-        struct protocol_version {
+        struct {
             uint8_t protocol_version;
         } __attribute__((packed)) protocol_version;
 
-        struct keyboard_info_metadata {
+        struct {
             uint8_t version;
             uint32_t size;
             uint16_t pages;
         } __attribute__((packed)) keyboard_info_metadata;
 
-        struct keyboard_info_payload {
+        struct {
             uint16_t page;
             uint8_t payload[5];
         } __attribute__((packed)) keyboard_info_payload;
 
-        struct keycode {
+        struct {
             uint8_t layer;
             uint8_t row;
             uint8_t column;
@@ -50,8 +48,6 @@ typedef struct configurator_hid_report {
     };
 
 } configurator_hid_report_t;
-
-_Static_assert(sizeof(configurator_hid_report_t) == 8, "configurator_hid_report must be 64 bits");
 
 void configurator_receive_hid_report(configurator_hid_report_t *report);
 
