@@ -9,13 +9,15 @@ extern "C" {
 #include <stdio.h>
 #include "takokb.h"
 
-enum configurator_commands : uint8_t {
+enum __attribute__((__packed__)) configurator_commands {
     get_protocol_version = 0x01,
     get_keyboard_info_metadata = 0x02,
     get_keyboard_info = 0x03,
     get_keycode = 0x04,
     set_keycode = 0x05,
 };
+
+_Static_assert(sizeof(enum configurator_commands) == 1, "configurator_commands must be 8 bits");
 
 typedef struct configurator_hid_report {
 
