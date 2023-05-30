@@ -28,7 +28,7 @@ file(GLOB_RECURSE SOURCES src/*.*)
 file(GLOB_RECURSE TEST_SOURCES test/common.c)
 
 enable_testing()
-add_executable(test_size ${SOURCES} ${TEST_SOURCES} test/0_struct_size.cpp)
+add_executable(test_size ${SOURCES} ${TEST_SOURCES} test/0_size.cpp)
 add_executable(test_key_press ${SOURCES} ${TEST_SOURCES} test/1_key_press.cpp)
 add_executable(test_layer ${SOURCES} ${TEST_SOURCES} test/2_layer.cpp)
 add_executable(test_layer_toggle ${SOURCES} ${TEST_SOURCES} test/3_layer_toggle.cpp)
