@@ -30,6 +30,10 @@ typedef uint32_t matrix_row_t;
 #define TAKOKB_KEYBOARD_INFO_SIZE 0
 #endif
 
+#ifndef TAKODB_ENCODER_COUNT
+#define TAKODB_ENCODER_COUNT 0
+#endif
+
 // ---------- action ----------
 
 typedef struct action {
