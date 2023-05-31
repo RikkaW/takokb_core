@@ -152,9 +152,9 @@ int takokb_debug_printf(const char *format, ...);
 
 void takokb_send_keyboard_hid_report(report_keyboard_t *report, size_t size);
 
-void takokb_send_configurator_hid_report(uint8_t *report, size_t size);
+void takokb_send_configurator_hid_report(configurator_hid_report_t *report, size_t size);
 
-void takokb_receive_configurator_hid_report(uint8_t *report, size_t size);
+void takokb_receive_configurator_hid_report(configurator_hid_report_t *report, size_t size);
 
 #ifdef __cplusplus
 }

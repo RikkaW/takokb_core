@@ -34,11 +34,11 @@ action_t *takokb_keymap_get_action(uint8_t layer, uint8_t row, uint8_t column) {
     return keymap_get_action(layer, row, column);
 }
 
-void takokb_receive_configurator_hid_report(uint8_t *report, size_t size) {
+void takokb_receive_configurator_hid_report(configurator_hid_report_t *report, size_t size) {
     if (size < sizeof(configurator_hid_report_t)) {
         return;
     }
-    configurator_receive_hid_report((configurator_hid_report_t *) report);
+    configurator_receive_hid_report(report);
 }
 
 __attribute__((weak)) bool takokb_matrix_scan(matrix_row_t *matrix) {
@@ -48,6 +48,6 @@ __attribute__((weak)) bool takokb_matrix_scan(matrix_row_t *matrix) {
 __attribute__((weak)) void takokb_send_keyboard_hid_report(report_keyboard_t *report, size_t size) {
 }
 
-__attribute__((weak)) void takokb_send_configurator_hid_report(uint8_t *report, size_t size) {
+__attribute__((weak)) void takokb_send_configurator_hid_report(configurator_hid_report_t *report, size_t size) {
 
 }
