@@ -4,8 +4,6 @@
 
 #ifndef NDEBUG
 
-extern action_t keymaps[TAKOKB_MAX_LAYERS][TAKOKB_MATRIX_ROWS][TAKOKB_MATRIX_COLS];
-
 const char *takokb_debug_modifier_bit_to_name(enum mods_bit bit) {
     switch (bit) {
         case MOD_LSFT:
@@ -105,7 +103,7 @@ void takokb_debug_print_keymap(void) {
     for (uint8_t layer = 0; layer < TAKOKB_MAX_LAYERS; ++layer) {
         for (uint8_t row = 0; row < TAKOKB_MATRIX_ROWS; ++row) {
             for (uint8_t colum = 0; colum < TAKOKB_MATRIX_COLS; ++colum) {
-                action_t *action = &keymaps[layer][row][colum];
+                action_t *action = &takokb_get_keyboard_configuration()->keymaps[layer][row][colum];
                 takokb_debug_printf("keymaps[%d][%d][%d] = ", layer, row, colum);
                 takokb_debug_print_action(action);
                 takokb_debug_printf("\n");
