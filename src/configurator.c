@@ -1,5 +1,4 @@
 #include "configurator.h"
-#include "takokb.h"
 #include "keymap.h"
 
 void configurator_receive_hid_report(configurator_hid_report_t *report) {

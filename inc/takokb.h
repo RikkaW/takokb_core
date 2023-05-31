@@ -1,5 +1,5 @@
-#ifndef KEYBOARD_API_H
-#define KEYBOARD_API_H
+#ifndef TAKOKB_PUBLIC_API_H
+#define TAKOKB_PUBLIC_API_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -8,7 +8,8 @@ extern "C" {
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
-#include "takokb_action.h"
+#include <takokb_action.h>
+#include <takokb_configurator.h>
 
 #if (TAKOKB_MATRIX_COLS <= 8)
 typedef uint8_t matrix_row_t;
@@ -80,6 +81,46 @@ typedef union {
 
 // ----------------------------
 
+// ---------- configurator ----------
+
+typedef struct configurator_hid_report {
+
+    enum configurator_commands command_id;
+
+    union {
+        uint8_t raw[7];
+
+        struct {
+            uint8_t protocol_version;
+        } __attribute__((packed)) protocol_version;
+
+        struct {
+            uint8_t version;
+            uint32_t size;
+            uint16_t pages;
+        } __attribute__((packed)) keyboard_info_metadata;
+
+        struct {
+            uint16_t page;
+            uint8_t payload[5];
+        } __attribute__((packed)) keyboard_info_payload;
+
+        struct {
+            uint8_t layer;
+            uint8_t row;
+            uint8_t column;
+            action_t action;
+        } __attribute__((packed)) keycode;
+
+        struct {
+            uint8_t error_code;
+        } __attribute__((packed)) failed;
+    };
+
+} configurator_hid_report_t;
+
+// ----------------------------
+
 void takokb_init(void);
 
 void takokb_task(void);
@@ -119,4 +160,4 @@ void takokb_receive_configurator_hid_report(uint8_t *report, size_t size);
 }
 #endif
 
-#endif //KEYBOARD_API_H
+#endif //TAKOKB_PUBLIC_API_H

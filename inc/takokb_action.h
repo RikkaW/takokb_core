@@ -1,5 +1,5 @@
-#ifndef TAKOKB_TAKOKB_ACTION_H
-#define TAKOKB_TAKOKB_ACTION_H
+#ifndef TAKOKB_PUBLIC_ACTION_H
+#define TAKOKB_PUBLIC_ACTION_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -312,4 +312,4 @@ enum keycodes {
 }
 #endif
 
-#endif //TAKOKB_TAKOKB_ACTION_H
+#endif //TAKOKB_PUBLIC_ACTION_H

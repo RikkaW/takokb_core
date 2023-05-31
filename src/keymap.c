@@ -1,4 +1,5 @@
 #include <string.h>
+#include "takokb.h"
 #include "keyboard.h"
 #include "keymap.h"
 
