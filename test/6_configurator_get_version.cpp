@@ -8,9 +8,9 @@
 int main(int argc, char *argv[]) {
     takokb_init();
 
-    uint8_t report[8]{0};
-    report[0] = get_protocol_version;
-    takokb_receive_configurator_hid_report(report, sizeof(report) );
+    configurator_hid_report_t report;
+    report.command_id = get_protocol_version;
+    takokb_receive_configurator_hid_report(&report, sizeof(report));
 
     return success ? 0 : 1;
 }
