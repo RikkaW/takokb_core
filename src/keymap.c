@@ -1,10 +1,6 @@
 #include <string.h>
 #include "takokb.h"
-#include "keyboard.h"
 #include "keymap.h"
-
-action_t keymaps[TAKOKB_MAX_LAYERS][TAKOKB_MATRIX_ROWS][TAKOKB_MATRIX_COLS];
-action_t encoders[TAKOKB_MAX_LAYERS][TAKODB_ENCODER_COUNT][2];
 
 extern action_t action_trans;
 
@@ -51,14 +47,14 @@ void keymap_init(void) {
     for (uint8_t layer = 0; layer < TAKOKB_MAX_LAYERS; ++layer) {
         for (uint8_t row = 0; row < TAKOKB_MATRIX_ROWS; ++row) {
             for (uint8_t colum = 0; colum < TAKOKB_MATRIX_COLS; ++colum) {
-                keymaps[layer][row][colum] = action_trans;
+                takokb_get_keyboard_configuration()->keymaps[layer][row][colum] = action_trans;
             }
         }
     }
 }
 
 action_t *keymap_get_action(uint8_t layer, uint8_t row, uint8_t column) {
-    return &keymaps[layer][row][column];
+    return &takokb_get_keyboard_configuration()->keymaps[layer][row][column];
 }
 
 
@@ -66,20 +62,16 @@ void keymap_set_action(uint8_t layer, uint8_t row, uint8_t column, const action_
     action_t new_action;
     keymap_handle_income_action(action, &new_action);
 
-    keymaps[layer][row][column] = new_action;
+    takokb_get_keyboard_configuration()->keymaps[layer][row][column] = new_action;
 }
 
 action_t *keymap_get_encoder_action(uint8_t layer, uint8_t encoder, uint8_t direction) {
-    return &encoders[layer][encoder][direction];
+    return &takokb_get_keyboard_configuration()->encoders[layer][encoder][direction];
 }
 
 void keymap_set_encoder_action(uint8_t layer, uint8_t encoder, uint8_t direction, const action_t *action) {
     action_t new_action;
     keymap_handle_income_action(action, &new_action);
 
-    encoders[layer][encoder][direction] = *action;
-}
-
-size_t keymap_get_size(void) {
-    return sizeof(keymaps);
+    takokb_get_keyboard_configuration()->encoders[layer][encoder][direction] = *action;
 }

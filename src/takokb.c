@@ -26,10 +26,6 @@ uint8_t takokb_get_top_activated_layer(void) {
     return keyboard_get_top_activated_layer();
 }
 
-size_t takokb_keymap_get_size(void) {
-    return keymap_get_size();
-}
-
 action_t *takokb_keymap_get_action(uint8_t layer, uint8_t row, uint8_t column) {
     return keymap_get_action(layer, row, column);
 }
@@ -50,4 +46,9 @@ __attribute__((weak)) void takokb_send_keyboard_hid_report(report_keyboard_t *re
 
 __attribute__((weak)) void takokb_send_configurator_hid_report(configurator_hid_report_t *report, size_t size) {
 
+}
+
+__attribute__((weak)) takokb_configuration_t *takokb_get_keyboard_configuration() {
+    static takokb_configuration_t configuration;
+    return &configuration;
 }

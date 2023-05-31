@@ -18,8 +18,6 @@ action_t *keymap_get_encoder_action(uint8_t layer, uint8_t encoder, uint8_t dire
 
 void keymap_set_encoder_action(uint8_t layer, uint8_t encoder, uint8_t direction, const action_t *action);
 
-size_t keymap_get_size(void);
-
 #ifdef __cplusplus
 }
 #endif

@@ -19,6 +19,11 @@ int takokb_debug_printf(const char *format, ...) {
 }
 #endif
 
+takokb_configuration_t *takokb_get_keyboard_configuration() {
+    static takokb_configuration_t configuration;
+    return &configuration;
+}
+
 // ----------------------------------------
 
 int test_step = 0;

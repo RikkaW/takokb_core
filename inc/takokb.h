@@ -121,6 +121,15 @@ typedef struct configurator_hid_report {
 
 // ----------------------------
 
+// ---------- keyboard configuration ----------
+
+typedef struct takokb_configuration {
+    action_t keymaps[TAKOKB_MAX_LAYERS][TAKOKB_MATRIX_ROWS][TAKOKB_MATRIX_COLS];
+    action_t encoders[TAKOKB_MAX_LAYERS][TAKODB_ENCODER_COUNT][2];
+} __attribute((packed, aligned(1))) takokb_configuration_t;
+
+// ---------- public functions ----------
+
 void takokb_init(void);
 
 void takokb_task(void);
@@ -130,8 +139,6 @@ matrix_row_t *takokb_get_matrix(void);
 void takokb_keymap_set_action(uint8_t layer, uint8_t row, uint8_t column, const action_t *action);
 
 uint8_t takokb_get_top_activated_layer(void);
-
-size_t takokb_keymap_get_size(void);
 
 action_t *takokb_keymap_get_action(uint8_t layer, uint8_t row, uint8_t column);
 
@@ -155,6 +162,8 @@ void takokb_send_keyboard_hid_report(report_keyboard_t *report, size_t size);
 void takokb_send_configurator_hid_report(configurator_hid_report_t *report, size_t size);
 
 void takokb_receive_configurator_hid_report(configurator_hid_report_t *report, size_t size);
+
+takokb_configuration_t *takokb_get_keyboard_configuration();
 
 #ifdef __cplusplus
 }
