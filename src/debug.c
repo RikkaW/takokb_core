@@ -140,8 +140,36 @@ const char *takokb_debug_keycode_to_name(enum keycodes keycode) {
             return "KC_K";
         case KC_L:
             return "KC_L";
+        case KC_M:
+            return "KC_M";
+        case KC_N:
+            return "KC_N";
+        case KC_O:
+            return "KC_O";
+        case KC_P:
+            return "KC_P";
+        case KC_Q:
+            return "KC_Q";
+        case KC_R:
+            return "KC_R";
+        case KC_S:
+            return "KC_S";
+        case KC_T:
+            return "KC_T";
+        case KC_U:
+            return "KC_U";
+        case KC_V:
+            return "KC_V";
+        case KC_W:
+            return "KC_W";
+        case KC_X:
+            return "KC_X";
+        case KC_Y:
+            return "KC_Y";
+        case KC_Z:
+            return "KC_Z";
         default:
-            return "Unknown";
+            return "(keycode unnamed)";
     }
 }
 
