@@ -52,3 +52,11 @@ __attribute__((weak)) takokb_configuration_t *takokb_get_keyboard_configuration(
     static takokb_configuration_t configuration;
     return &configuration;
 }
+
+__attribute__((weak)) void takokb_reboot_to_bootloader() {
+
+}
+
+__attribute__((weak)) void takokb_system_reset() {
+
+}

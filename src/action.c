@@ -74,6 +74,28 @@ STATE_BASIC_FUNC_DEF(TYPE_BOTTOM_LAYER, IDLE, TAP) {
 STATE_BASIC_FUNC_DEF(TYPE_BOTTOM_LAYER, TAP, IDLE) {
 }
 
+// -------- TYPE_MACRO --------
+STATE_BASIC_FUNC_DEF(TYPE_MACRO, IDLE, TAP) {
+}
+
+STATE_BASIC_FUNC_DEF(TYPE_MACRO, TAP, IDLE) {
+}
+
+// -------- TYPE_CUSTOM --------
+STATE_BASIC_FUNC_DEF(TYPE_CUSTOM, IDLE, TAP) {
+    if (action->parameter.custom.keycode == TAKO_BOOTLOADER) {
+        takokb_reboot_to_bootloader();
+    } else if (action->parameter.custom.keycode == TAKO_SYSTEM_RESET) {
+        takokb_system_reset();
+    }
+}
+
+STATE_BASIC_FUNC_DEF(TYPE_CUSTOM, TAP, IDLE) {
+}
+
+
+// ================================================================================
+
 // -------- TYPE_MOMENTARY_LAYER_KEY --------
 STATE_TAP_HOLD_FUNC_DEF(TYPE_TAP_KEY_HOLD_MOMENTARY_LAYER, IDLE, TAP) {
     // Acquire momentary layer

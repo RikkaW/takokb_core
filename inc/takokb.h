@@ -60,6 +60,9 @@ typedef struct action {
             uint8_t modifiers: 8;
         } tap_key_hold_layer;
 
+        struct action_custom {
+            uint8_t keycode: 8;
+        } custom;
     } parameter;
 
 } __attribute__((packed)) action_t;
@@ -164,6 +167,10 @@ void takokb_send_configurator_hid_report(configurator_hid_report_t *report, size
 void takokb_receive_configurator_hid_report(configurator_hid_report_t *report, size_t size);
 
 takokb_configuration_t *takokb_get_keyboard_configuration();
+
+void takokb_reboot_to_bootloader();
+
+void takokb_system_reset();
 
 #ifdef __cplusplus
 }

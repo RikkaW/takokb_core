@@ -308,6 +308,12 @@ enum keycodes {
     KC_RIGHT_GUI = 0x00E7,
 };
 
+enum takokb_keycode {
+    TAKO_NONE = 0x00,
+    TAKO_BOOTLOADER = 0x01,
+    TAKO_SYSTEM_RESET = 0x02,
+};
+
 #ifdef __cplusplus
 }
 #endif
