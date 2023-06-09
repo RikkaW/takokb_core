@@ -120,7 +120,7 @@ typedef struct configurator_hid_report {
         } __attribute__((packed)) failed;
     };
 
-} configurator_hid_report_t;
+} configurator_report_t;
 
 // ----------------------------
 
@@ -162,9 +162,9 @@ int takokb_debug_printf(const char *format, ...);
 
 void takokb_send_keyboard_hid_report(report_keyboard_t *report, size_t size);
 
-void takokb_send_configurator_hid_report(configurator_hid_report_t *report, size_t size);
+void takokb_send_configurator_report(configurator_report_t *report, size_t size);
 
-void takokb_receive_configurator_hid_report(configurator_hid_report_t *report, size_t size);
+void takokb_receive_configurator_report(configurator_report_t *report, size_t size);
 
 takokb_configuration_t *takokb_get_keyboard_configuration();
 

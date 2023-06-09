@@ -1,7 +1,7 @@
 #include "configurator.h"
 #include "keymap.h"
 
-void configurator_receive_hid_report(configurator_hid_report_t *report) {
+void configurator_receive_report(configurator_report_t *report) {
     switch (report->command_id) {
         case get_protocol_version: {
             report->protocol_version.protocol_version = TAKOKB_CONFIGURATOR_PROTOCOL_VERSION;
@@ -37,5 +37,5 @@ void configurator_receive_hid_report(configurator_hid_report_t *report) {
         }
     }
 
-    takokb_send_configurator_hid_report(report, sizeof(configurator_hid_report_t));
+    takokb_send_configurator_report(report, sizeof(configurator_report_t));
 }

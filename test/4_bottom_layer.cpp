@@ -95,6 +95,6 @@ void takokb_send_keyboard_hid_report(report_keyboard_t *report, size_t size) {
     }
 }
 
-void takokb_send_configurator_hid_report(configurator_hid_report_t *report, size_t size) {
+void takokb_send_configurator_report(configurator_report_t *report, size_t size) {
 
 }
