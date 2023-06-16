@@ -7,7 +7,7 @@ extern "C" {
 
 #include <takokb.h>
 
-void configurator_receive_report(configurator_report_t *report);
+void configurator_receive_report(takokb_configurator_report_t *report, size_t size);
 
 #ifdef __cplusplus
 }

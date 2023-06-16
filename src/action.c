@@ -4,7 +4,7 @@
 #include "action.h"
 
 action_t action_no = {
-        .state_machine= STATE_MACHINE_BASIC,
+        .state_machine=STATE_MACHINE_BASIC,
         .type=TYPE_KEY,
         .parameter={.key = KC_NO}
 };
@@ -83,10 +83,16 @@ STATE_BASIC_FUNC_DEF(TYPE_MACRO, TAP, IDLE) {
 
 // -------- TYPE_CUSTOM --------
 STATE_BASIC_FUNC_DEF(TYPE_CUSTOM, IDLE, TAP) {
-    if (action->parameter.custom.keycode == TAKO_BOOTLOADER) {
-        takokb_reboot_to_bootloader();
-    } else if (action->parameter.custom.keycode == TAKO_SYSTEM_RESET) {
-        takokb_system_reset();
+    switch (action->parameter.custom.keycode) {
+        case TAKO_BOOTLOADER:
+            takokb_reboot_to_bootloader();
+            break;
+        case TAKO_SYSTEM_RESET:
+            takokb_system_reset();
+            break;
+        case TAKO_NONE:
+        default:
+            break;
     }
 }
 

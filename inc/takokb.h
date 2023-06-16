@@ -56,8 +56,8 @@ typedef struct action {
         uint8_t raw[3];
 
         struct action_key {
-            uint8_t keycode: 8;
-            uint8_t modifiers: 8;
+            enum keycodes keycode: 8;
+            enum mods_bit modifiers: 8;
         } key;
 
         struct action_layer {
@@ -67,12 +67,12 @@ typedef struct action {
 
         struct action_layer_tap {
             uint8_t layer_id: 8;
-            uint8_t keycode: 8;
-            uint8_t modifiers: 8;
+            enum keycodes keycode: 8;
+            enum mods_bit modifiers: 8;
         } tap_key_hold_layer;
 
         struct action_custom {
-            uint8_t keycode: 8;
+            enum takokb_keycodes keycode: 8;
         } custom;
     } parameter;
 
@@ -97,7 +97,7 @@ typedef union {
 
 // ---------- configurator ----------
 
-enum __attribute__((__packed__)) configurator_commands {
+enum __attribute__((__packed__)) takokb_configurator_commands {
     takokb_configurator_command_get_protocol_version = 0x01,
     takokb_configurator_command_get_keyboard_info_metadata = 0x02,
     takokb_configurator_command_get_keyboard_info = 0x03,
@@ -106,14 +106,14 @@ enum __attribute__((__packed__)) configurator_commands {
     takokb_configurator_command_custom_start = 0x80,
 };
 
-enum __attribute__((__packed__)) configurator_result_codes {
+enum __attribute__((__packed__)) takokb_configurator_result_codes {
     takokb_configurator_result_success = 0x00,
 };
 
 typedef struct configurator_report {
 
-    enum configurator_commands command_id;
-    enum configurator_result_codes result_code;
+    enum takokb_configurator_commands command_id;
+    enum takokb_configurator_result_codes result_code;
 
     union {
         uint8_t raw[14];
@@ -141,7 +141,7 @@ typedef struct configurator_report {
         } __attribute__((packed)) action;
     };
 
-} configurator_report_t;
+} __attribute__((packed)) takokb_configurator_report_t;
 
 // ----------------------------
 
@@ -183,14 +183,20 @@ int takokb_debug_printf(const char *format, ...);
 
 void takokb_send_keyboard_hid_report(report_keyboard_t *report, size_t size);
 
-void takokb_send_configurator_report(configurator_report_t *report, size_t size);
+void takokb_send_configurator_report(takokb_configurator_report_t *report, size_t size);
 
-void takokb_receive_configurator_report(configurator_report_t *report, size_t size);
+void takokb_receive_configurator_report(takokb_configurator_report_t *report, size_t size);
 
 takokb_configuration_t *takokb_get_keyboard_configuration();
 
+/**
+ * @brief Called when TAKOKB_BOOTLOADER key is pressed
+ */
 void takokb_reboot_to_bootloader();
 
+/**
+ * @brief Called when TAKOKB_SYSTEM_RESET key is pressed
+ */
 void takokb_system_reset();
 
 #ifdef __cplusplus

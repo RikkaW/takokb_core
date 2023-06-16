@@ -1,7 +1,11 @@
 #include "configurator.h"
 #include "keymap.h"
 
-void configurator_receive_report(configurator_report_t *report) {
+void configurator_receive_report(takokb_configurator_report_t *report, size_t size) {
+    if (size != sizeof(takokb_configurator_report_t)) {
+        return;
+    }
+
     switch (report->command_id) {
         case takokb_configurator_command_get_protocol_version: {
             report->result_code = takokb_configurator_result_success;
@@ -36,9 +40,10 @@ void configurator_receive_report(configurator_report_t *report) {
             break;
         }
         default: {
-            break;
+            takokb_debug_printf("Unknown command ID: %d\n", report->command_id);
+            return;
         }
     }
 
-    takokb_send_configurator_report(report, sizeof(configurator_report_t));
+    takokb_send_configurator_report(report, sizeof(takokb_configurator_report_t));
 }
