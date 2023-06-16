@@ -136,9 +136,9 @@ typedef struct configurator_report {
         struct {
             uint8_t layer;
             uint8_t row;
-            uint8_t column;
+            uint8_t col;
             action_t action;
-        } __attribute__((packed)) keycode;
+        } __attribute__((packed)) action;
     };
 
 } configurator_report_t;

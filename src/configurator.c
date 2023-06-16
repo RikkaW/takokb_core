@@ -9,6 +9,7 @@ void configurator_receive_report(configurator_report_t *report) {
             break;
         }
         case takokb_configurator_command_get_keyboard_info_metadata: {
+            report->result_code = takokb_configurator_result_success;
             if (report->keyboard_info_metadata.version == TAKOKB_KEYBOARD_INFO_VERSION) {
                 takokb_debug_printf("Host has cached keyboard information version %d.\n", TAKOKB_KEYBOARD_INFO_VERSION);
                 break;
@@ -23,13 +24,15 @@ void configurator_receive_report(configurator_report_t *report) {
             return;
         }
         case takokb_configurator_command_get_action: {
-            action_t *action = keymap_get_action(report->keycode.layer, report->keycode.row, report->keycode.column);
-            report->keycode.action = *action;
+            action_t *action = keymap_get_action(report->action.layer, report->action.row, report->action.col);
+            report->action.action = *action;
+            report->result_code = takokb_configurator_result_success;
             break;
         }
         case takokb_configurator_command_set_action: {
             // TODO: verify if the action is valid
-            keymap_set_action(report->keycode.layer, report->keycode.row, report->keycode.column, &report->keycode.action);
+            keymap_set_action(report->action.layer, report->action.row, report->action.col, &report->action.action);
+            report->result_code = takokb_configurator_result_success;
             break;
         }
         default: {
