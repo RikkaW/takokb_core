@@ -30,7 +30,7 @@ const char *takokb_debug_modifier_bit_to_name(enum mods_bit bit) {
 void takokb_debug_print_action(action_t *action) {
     switch (action->state_machine) {
         case STATE_MACHINE_BASIC: {
-            switch (action->id) {
+            switch (action->type) {
                 case TYPE_KEY: {
                     takokb_debug_printf("TYPE_NORMAL_KEY (%s)",
                                         takokb_debug_keycode_to_name(action->parameter.key.keycode));
@@ -73,7 +73,7 @@ void takokb_debug_print_action(action_t *action) {
             break;
         }
         case STATE_MACHINE_TAP_HOLD: {
-            switch (action->id) {
+            switch (action->type) {
                 case TYPE_TAP_KEY_HOLD_MOMENTARY_LAYER:
                     takokb_debug_printf("TYPE_TAP_KEY_HOLD_MOMENTARY_LAYER (%d, %s, ",
                                         action->parameter.layer.id,

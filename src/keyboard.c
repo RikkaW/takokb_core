@@ -95,7 +95,7 @@ static action_t *find_action(uint8_t layer, uint8_t row, uint8_t colum) {
         return action;
     }
 
-    if (action->id != TYPE_TRANSPARENT) {
+    if (action->type != TYPE_TRANSPARENT) {
         return action;
     }
     // If action is transparent, find action from lower layer.
@@ -206,7 +206,7 @@ static bool handle_basic_state_change(
                 takokb_debug_printf("handle_basic_state_change: (%d, %d) IDLE -> TAP\n", row, colum);
 
                 key_state->state = basic_TAP;
-                CALL_basic_TRANSITION_FUNC(action->id, IDLE, TAP);
+                CALL_basic_TRANSITION_FUNC(action->type, IDLE, TAP);
                 return true;
             }
             break;
@@ -215,7 +215,7 @@ static bool handle_basic_state_change(
                 takokb_debug_printf("handle_basic_state_change: (%d, %d) TAP -> IDLE\n", row, colum);
 
                 key_state->state = basic_IDLE;
-                CALL_basic_TRANSITION_FUNC(action->id, TAP, IDLE);
+                CALL_basic_TRANSITION_FUNC(action->type, TAP, IDLE);
                 return true;
             }
             break;
@@ -254,7 +254,7 @@ static bool handle_tap_hold_state_change(
                 key_state->state = tapHold_TAP;
                 handle_tap_hold_state_change_set_threshold_time(key_state, 200);
 
-                CALL_tapHold_TRANSITION_FUNC(action->id, IDLE, TAP);
+                CALL_tapHold_TRANSITION_FUNC(action->type, IDLE, TAP);
                 return true;
             }
             break;
@@ -265,7 +265,7 @@ static bool handle_tap_hold_state_change(
                 key_state->state = tapHold_HOLD;
                 handle_tap_hold_state_change_remove_threshold_time(key_state);
 
-                CALL_tapHold_TRANSITION_FUNC(action->id, TAP, HOLD);
+                CALL_tapHold_TRANSITION_FUNC(action->type, TAP, HOLD);
                 return true;
             } else if (change == KEY_CHANGE_RELEASE) {
                 takokb_debug_printf("handle_tap_hold_state_change: (%d, %d) TAP -> WAIT_FOR_RELEASE_INTERNAL\n",
@@ -274,7 +274,7 @@ static bool handle_tap_hold_state_change(
                 key_state->state = tapHold_WAIT_FOR_RELEASE_INTERNAL;
                 handle_tap_hold_state_change_set_threshold_time(key_state, 50);
 
-                CALL_tapHold_TRANSITION_FUNC(action->id, TAP, WAIT_FOR_RELEASE_INTERNAL);
+                CALL_tapHold_TRANSITION_FUNC(action->type, TAP, WAIT_FOR_RELEASE_INTERNAL);
                 return true;
             }
             break;
@@ -285,7 +285,7 @@ static bool handle_tap_hold_state_change(
                 key_state->state = tapHold_IDLE;
                 handle_tap_hold_state_change_remove_threshold_time(key_state);
 
-                CALL_tapHold_TRANSITION_FUNC(action->id, HOLD, IDLE);
+                CALL_tapHold_TRANSITION_FUNC(action->type, HOLD, IDLE);
                 return true;
             }
             break;
@@ -297,7 +297,7 @@ static bool handle_tap_hold_state_change(
                 key_state->state = tapHold_TAP_HOLD;
                 handle_tap_hold_state_change_remove_threshold_time(key_state);
 
-                CALL_tapHold_TRANSITION_FUNC(action->id, WAIT_FOR_RELEASE_INTERNAL, TAP_HOLD);
+                CALL_tapHold_TRANSITION_FUNC(action->type, WAIT_FOR_RELEASE_INTERNAL, TAP_HOLD);
                 return true;
             } else if (time > key_state->extras.tap_key_hold_layer.threshold_time) {
                 takokb_debug_printf(
@@ -307,7 +307,7 @@ static bool handle_tap_hold_state_change(
                 key_state->state = tapHold_WAIT_FOR_TAP_HOLD;
                 handle_tap_hold_state_change_set_threshold_time(key_state, 150);
 
-                CALL_tapHold_TRANSITION_FUNC(action->id, WAIT_FOR_RELEASE_INTERNAL, HOLD_WAIT_FOR_HOLD);
+                CALL_tapHold_TRANSITION_FUNC(action->type, WAIT_FOR_RELEASE_INTERNAL, HOLD_WAIT_FOR_HOLD);
                 return true;
             }
             break;
@@ -318,7 +318,7 @@ static bool handle_tap_hold_state_change(
                 key_state->state = tapHold_IDLE;
                 handle_tap_hold_state_change_remove_threshold_time(key_state);
 
-                CALL_tapHold_TRANSITION_FUNC(action->id, WAIT_FOR_TAP_HOLD, IDLE);
+                CALL_tapHold_TRANSITION_FUNC(action->type, WAIT_FOR_TAP_HOLD, IDLE);
                 return true;
             } else if (change == KEY_CHANGE_PRESS) {
                 takokb_debug_printf("handle_tap_hold_state_change: (%d, %d) WAIT_FOR_TAP_HOLD -> TAP_HOLD\n",
@@ -327,7 +327,7 @@ static bool handle_tap_hold_state_change(
                 key_state->state = tapHold_TAP_HOLD;
                 handle_tap_hold_state_change_remove_threshold_time(key_state);
 
-                CALL_tapHold_TRANSITION_FUNC(action->id, WAIT_FOR_TAP_HOLD, TAP_HOLD);
+                CALL_tapHold_TRANSITION_FUNC(action->type, WAIT_FOR_TAP_HOLD, TAP_HOLD);
                 return true;
             }
         case tapHold_TAP_HOLD:
@@ -337,7 +337,7 @@ static bool handle_tap_hold_state_change(
                 key_state->state = tapHold_IDLE;
                 handle_tap_hold_state_change_remove_threshold_time(key_state);
 
-                CALL_tapHold_TRANSITION_FUNC(action->id, TAP_HOLD, IDLE);
+                CALL_tapHold_TRANSITION_FUNC(action->type, TAP_HOLD, IDLE);
                 return true;
             }
             break;

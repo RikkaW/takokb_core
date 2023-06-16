@@ -5,13 +5,13 @@
 
 action_t action_no = {
         .state_machine= STATE_MACHINE_BASIC,
-        .id=TYPE_KEY,
+        .type=TYPE_KEY,
         .parameter={.key = KC_NO}
 };
 
 action_t action_trans = {
         .state_machine=STATE_MACHINE_BASIC,
-        .id=TYPE_TRANSPARENT,
+        .type=TYPE_TRANSPARENT,
 };
 
 // -------- TYPE_KEY --------

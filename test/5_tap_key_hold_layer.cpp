@@ -52,14 +52,14 @@
 static void set_keymap() {
     action_t action;
 
-    action.id = TYPE_TAP_KEY_HOLD_MOMENTARY_LAYER;
+    action.type = TYPE_TAP_KEY_HOLD_MOMENTARY_LAYER;
     action.state_machine = STATE_MACHINE_TAP_HOLD;
     action.parameter.tap_key_hold_layer.layer_id = 1;
     action.parameter.tap_key_hold_layer.keycode = KC_A;
     action.parameter.tap_key_hold_layer.modifiers = MOD_LSFT;
     takokb_keymap_set_action(0, 0, 0, &action);
 
-    action.id = TYPE_KEY;
+    action.type = TYPE_KEY;
     action.state_machine = STATE_MACHINE_BASIC;
     action.parameter.key.keycode = KC_E;
     takokb_keymap_set_action(1, 0, 2, &action);

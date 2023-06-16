@@ -50,7 +50,7 @@ typedef uint32_t matrix_row_t;
 
 typedef struct action {
     uint8_t state_machine: 3;
-    uint8_t id: 5;
+    uint8_t type: 5;
 
     union parameter {
         uint8_t raw[3];
@@ -101,8 +101,8 @@ enum __attribute__((__packed__)) configurator_commands {
     takokb_configurator_command_get_protocol_version = 0x01,
     takokb_configurator_command_get_keyboard_info_metadata = 0x02,
     takokb_configurator_command_get_keyboard_info = 0x03,
-    takokb_configurator_command_get_keycode = 0x04,
-    takokb_configurator_command_set_keycode = 0x05,
+    takokb_configurator_command_get_action = 0x04,
+    takokb_configurator_command_set_action = 0x05,
     takokb_configurator_command_custom_start = 0x80,
 };
 

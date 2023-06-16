@@ -22,12 +22,12 @@ void configurator_receive_report(configurator_report_t *report) {
             // TODO
             return;
         }
-        case takokb_configurator_command_get_keycode: {
+        case takokb_configurator_command_get_action: {
             action_t *action = keymap_get_action(report->keycode.layer, report->keycode.row, report->keycode.column);
             report->keycode.action = *action;
             break;
         }
-        case takokb_configurator_command_set_keycode: {
+        case takokb_configurator_command_set_action: {
             // TODO: verify if the action is valid
             keymap_set_action(report->keycode.layer, report->keycode.row, report->keycode.column, &report->keycode.action);
             break;

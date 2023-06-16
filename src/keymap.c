@@ -30,10 +30,10 @@ static uint8_t keycode_to_modifier_bits(uint8_t keycode) {
 static void keymap_handle_income_action(const action_t *action, action_t *new_action) {
     memcpy(new_action, action, sizeof(action_t));
 
-    if (action->id == TYPE_KEY) {
+    if (action->type == TYPE_KEY) {
         uint8_t modifier_bits = keycode_to_modifier_bits(action->parameter.key.keycode);
         if (modifier_bits != 0) {
-            new_action->id = TYPE_MODIFIER;
+            new_action->type = TYPE_MODIFIER;
             memset(&new_action->parameter, 0, sizeof(new_action->parameter));
             new_action->parameter.key.modifiers = modifier_bits;
             return;
