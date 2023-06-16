@@ -9,7 +9,6 @@ extern "C" {
 #include <stdbool.h>
 #include <stddef.h>
 #include <takokb_action.h>
-#include <takokb_configurator.h>
 
 #if (TAKOKB_MATRIX_COLS <= 8)
 typedef uint8_t matrix_row_t;
@@ -86,12 +85,26 @@ typedef union {
 
 // ---------- configurator ----------
 
-typedef struct configurator_hid_report {
+enum __attribute__((__packed__)) configurator_commands {
+    takokb_configurator_command_get_protocol_version = 0x01,
+    takokb_configurator_command_get_keyboard_info_metadata = 0x02,
+    takokb_configurator_command_get_keyboard_info = 0x03,
+    takokb_configurator_command_get_keycode = 0x04,
+    takokb_configurator_command_set_keycode = 0x05,
+    takokb_configurator_command_custom_start = 0x80,
+};
+
+enum __attribute__((__packed__)) configurator_result_codes {
+    takokb_configurator_result_success = 0x00,
+};
+
+typedef struct configurator_report {
 
     enum configurator_commands command_id;
+    enum configurator_result_codes result_code;
 
     union {
-        uint8_t raw[7];
+        uint8_t raw[14];
 
         struct {
             uint8_t protocol_version;
@@ -114,10 +127,6 @@ typedef struct configurator_hid_report {
             uint8_t column;
             action_t action;
         } __attribute__((packed)) keycode;
-
-        struct {
-            uint8_t error_code;
-        } __attribute__((packed)) failed;
     };
 
 } configurator_report_t;

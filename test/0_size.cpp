@@ -3,7 +3,7 @@
 
 static_assert(sizeof(action_t) == 4, "action_t should be 4 bytes");
 static_assert(sizeof(enum configurator_commands) == 1, "configurator_commands must be 8 bits");
-static_assert(sizeof(configurator_report_t) == 8, "configurator_hid_report must be 64 bits");
+static_assert(sizeof(configurator_report_t) == 16, "configurator_report must be 128 bits");
 
 int main(int argc, char *argv[]) {
     return 0;
