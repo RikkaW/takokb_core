@@ -87,3 +87,11 @@ void assert(bool value, const char *message) {
         printf("--- Step %d: %s\n", test_step, message);
     }
 }
+
+void takokb_reboot_to_bootloader() {
+
+}
+
+void takokb_system_reset() {
+
+}

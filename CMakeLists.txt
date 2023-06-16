@@ -22,7 +22,6 @@ set(HEADERS "inc/takokb.h" "inc/takokb_action.h")
 
 # Library
 file(GLOB_RECURSE SOURCES src/*.*)
-file(GLOB_RECURSE TEST_SOURCES test/common.c)
 
 add_library(${PROJECT_NAME})
 add_library("${PROJECT_NAME}::${PROJECT_NAME}" ALIAS "${PROJECT_NAME}")
@@ -30,9 +29,8 @@ add_library("${PROJECT_NAME}::${PROJECT_NAME}" ALIAS "${PROJECT_NAME}")
 target_sources(${PROJECT_NAME} PRIVATE ${SOURCES})
 
 target_include_directories(${PROJECT_NAME} PUBLIC
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/inc>
-        $<INSTALL_INTERFACE:inc>
-        PRIVATE src)
+        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/inc>
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 # Install
 install(TARGETS "${PROJECT_NAME}"
@@ -40,29 +38,31 @@ install(TARGETS "${PROJECT_NAME}"
         LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
         ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}")
 
-install(FILES ${HEADERS} DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
+install(FILES ${HEADERS} TYPE INCLUDE DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
 
-if (!CMAKE_CROSSCOMPILING)
+add_definitions(-DTAKOKB_MAX_LAYERS=4)
+add_definitions(-DTAKOKB_MATRIX_ROWS=1)
+add_definitions(-DTAKOKB_MATRIX_COLS=4)
+
+if (NOT CMAKE_CROSSCOMPILING)
     enable_testing()
 
-    add_definitions(-DTAKOKB_MAX_LAYERS=4)
-    add_definitions(-DTAKOKB_MATRIX_ROWS=1)
-    add_definitions(-DTAKOKB_MATRIX_COLS=4)
-    add_definitions(-DTAKOKB_TEST)
+    function(add_test_executable name)
+        add_executable(${name} test/common.c test/${name}.cpp)
+        target_link_libraries(${name} PRIVATE takokb)
+        target_include_directories(${name} PRIVATE src)
+        target_compile_definitions(${name} PRIVATE -DTAKOKB_TEST)
+        target_compile_definitions(${name} PRIVATE -DTAKOKB_MAX_LAYERS=4)
+        target_compile_definitions(${name} PRIVATE -DTAKOKB_MATRIX_ROWS=1)
+        target_compile_definitions(${name} PRIVATE -DTAKOKB_MATRIX_COLS=4)
+        add_test(NAME ${name} COMMAND ${name})
+    endfunction()
 
-    add_executable(test_size ${SOURCES} ${TEST_SOURCES} test/0_size.cpp)
-    add_executable(test_key_press ${SOURCES} ${TEST_SOURCES} test/1_key_press.cpp)
-    add_executable(test_layer ${SOURCES} ${TEST_SOURCES} test/2_layer.cpp)
-    add_executable(test_layer_toggle ${SOURCES} ${TEST_SOURCES} test/3_layer_toggle.cpp)
-    add_executable(test_bottom_layer ${SOURCES} ${TEST_SOURCES} test/4_bottom_layer.cpp)
-    add_executable(test_tap_key_hold_layer ${SOURCES} ${TEST_SOURCES} test/5_tap_key_hold_layer.cpp)
-    add_executable(test_configurator_get_version ${SOURCES} ${TEST_SOURCES} test/6_configurator_get_version.cpp)
-
-    add_test(NAME size COMMAND test_size)
-    add_test(NAME key_press COMMAND test_key_press)
-    add_test(NAME layer COMMAND test_layer)
-    add_test(NAME layer_toggle COMMAND test_layer_toggle)
-    add_test(NAME bottom_layer COMMAND test_bottom_layer)
-    add_test(NAME tap_key_hold_layer COMMAND test_tap_key_hold_layer)
-    add_test(NAME configurator_get_version COMMAND test_configurator_get_version)
+    add_test_executable(0_size)
+    add_test_executable(1_key_press)
+    add_test_executable(2_layer)
+    add_test_executable(3_layer_toggle)
+    add_test_executable(4_bottom_layer)
+    add_test_executable(5_tap_key_hold_layer)
+    add_test_executable(6_configurator_get_version)
 endif ()
