@@ -6,7 +6,7 @@
 action_t action_no = {
         .state_machine=STATE_MACHINE_BASIC,
         .type=TYPE_KEY,
-        .parameter={.key = KC_NO}
+        .parameter={.key = KEY_NONE}
 };
 
 action_t action_trans = {

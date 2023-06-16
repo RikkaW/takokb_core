@@ -6,21 +6,21 @@ extern action_t action_trans;
 
 static uint8_t keycode_to_modifier_bits(uint8_t keycode) {
     switch (keycode) {
-        case KC_LEFT_SHIFT:
+        case KEY_LEFT_SHIFT:
             return MOD_LSFT;
-        case KC_RIGHT_SHIFT:
+        case KEY_RIGHT_SHIFT:
             return MOD_RSFT;
-        case KC_LEFT_CTRL:
+        case KEY_LEFT_CTRL:
             return MOD_LCTL;
-        case KC_RIGHT_CTRL:
+        case KEY_RIGHT_CTRL:
             return MOD_RCTL;
-        case KC_LEFT_ALT:
+        case KEY_LEFT_ALT:
             return MOD_LALT;
-        case KC_RIGHT_ALT:
+        case KEY_RIGHT_ALT:
             return MOD_RALT;
-        case KC_LEFT_GUI:
+        case KEY_LEFT_GUI:
             return MOD_LGUI;
-        case KC_RIGHT_GUI:
+        case KEY_RIGHT_GUI:
             return MOD_RGUI;
         default:
             return 0;

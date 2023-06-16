@@ -85,226 +85,488 @@ enum __attribute__((packed)) mods_bit {
     MOD_RGUI = 1 << 7,
 };
 
+/*
+ * Keyboard/Keypad Page (0x07)
+ **/
 enum __attribute__((packed)) keycodes {
-    KC_NO = 0x00,
-    KC_A = 0x04,
-    KC_B = 0x05,
-    KC_C = 0x06,
-    KC_D = 0x07,
-    KC_E = 0x08,
-    KC_F = 0x09,
-    KC_G = 0x0A,
-    KC_H = 0x0B,
-    KC_I = 0x0C,
-    KC_J = 0x0D,
-    KC_K = 0x0E,
-    KC_L = 0x0F,
-    KC_M = 0x10,
-    KC_N = 0x11,
-    KC_O = 0x12,
-    KC_P = 0x13,
-    KC_Q = 0x14,
-    KC_R = 0x15,
-    KC_S = 0x16,
-    KC_T = 0x17,
-    KC_U = 0x18,
-    KC_V = 0x19,
-    KC_W = 0x1A,
-    KC_X = 0x1B,
-    KC_Y = 0x1C,
-    KC_Z = 0x1D,
-    KC_1 = 0x1E,
-    KC_2 = 0x1F,
-    KC_3 = 0x20,
-    KC_4 = 0x21,
-    KC_5 = 0x22,
-    KC_6 = 0x23,
-    KC_7 = 0x24,
-    KC_8 = 0x25,
-    KC_9 = 0x26,
-    KC_0 = 0x27,
-    KC_ENTER = 0x28,
-    KC_ESCAPE = 0x29,
-    KC_BACKSPACE = 0x2A,
-    KC_TAB = 0x2B,
-    KC_SPACE = 0x2C,
-    KC_MINUS = 0x2D,
-    KC_EQUAL = 0x2E,
-    KC_LEFT_BRACKET = 0x2F,
-    KC_RIGHT_BRACKET = 0x30,
-    KC_BACKSLASH = 0x31,
-    KC_NONUS_HASH = 0x32,
-    KC_SEMICOLON = 0x33,
-    KC_QUOTE = 0x34,
-    KC_GRAVE = 0x35,
-    KC_COMMA = 0x36,
-    KC_DOT = 0x37,
-    KC_SLASH = 0x38,
-    KC_CAPS_LOCK = 0x39,
-    KC_F1 = 0x3A,
-    KC_F2 = 0x3B,
-    KC_F3 = 0x3C,
-    KC_F4 = 0x3D,
-    KC_F5 = 0x3E,
-    KC_F6 = 0x3F,
-    KC_F7 = 0x40,
-    KC_F8 = 0x41,
-    KC_F9 = 0x42,
-    KC_F10 = 0x43,
-    KC_F11 = 0x44,
-    KC_F12 = 0x45,
-    KC_PRINT_SCREEN = 0x46,
-    KC_SCROLL_LOCK = 0x47,
-    KC_PAUSE = 0x48,
-    KC_INSERT = 0x49,
-    KC_HOME = 0x4A,
-    KC_PAGE_UP = 0x4B,
-    KC_DELETE = 0x4C,
-    KC_END = 0x4D,
-    KC_PAGE_DOWN = 0x4E,
-    KC_RIGHT = 0x4F,
-    KC_LEFT = 0x50,
-    KC_DOWN = 0x51,
-    KC_UP = 0x52,
-    KC_NUM_LOCK = 0x53,
-    KC_KP_SLASH = 0x54,
-    KC_KP_ASTERISK = 0x55,
-    KC_KP_MINUS = 0x56,
-    KC_KP_PLUS = 0x57,
-    KC_KP_ENTER = 0x58,
-    KC_KP_1 = 0x59,
-    KC_KP_2 = 0x5A,
-    KC_KP_3 = 0x5B,
-    KC_KP_4 = 0x5C,
-    KC_KP_5 = 0x5D,
-    KC_KP_6 = 0x5E,
-    KC_KP_7 = 0x5F,
-    KC_KP_8 = 0x60,
-    KC_KP_9 = 0x61,
-    KC_KP_0 = 0x62,
-    KC_KP_DOT = 0x63,
-    KC_NONUS_BACKSLASH = 0x64,
-    KC_APPLICATION = 0x65,
-    KC_KB_POWER = 0x66,
-    KC_KP_EQUAL = 0x67,
-    KC_F13 = 0x68,
-    KC_F14 = 0x69,
-    KC_F15 = 0x6A,
-    KC_F16 = 0x6B,
-    KC_F17 = 0x6C,
-    KC_F18 = 0x6D,
-    KC_F19 = 0x6E,
-    KC_F20 = 0x6F,
-    KC_F21 = 0x70,
-    KC_F22 = 0x71,
-    KC_F23 = 0x72,
-    KC_F24 = 0x73,
-    KC_EXECUTE = 0x74,
-    KC_HELP = 0x75,
-    KC_MENU = 0x76,
-    KC_SELECT = 0x77,
-    KC_STOP = 0x78,
-    KC_AGAIN = 0x79,
-    KC_UNDO = 0x7A,
-    KC_CUT = 0x7B,
-    KC_COPY = 0x7C,
-    KC_PASTE = 0x7D,
-    KC_FIND = 0x7E,
-    KC_KB_MUTE = 0x7F,
-    KC_KB_VOLUME_UP = 0x80,
-    KC_KB_VOLUME_DOWN = 0x81,
-    KC_LOCKING_CAPS_LOCK = 0x82,
-    KC_LOCKING_NUM_LOCK = 0x83,
-    KC_LOCKING_SCROLL_LOCK = 0x84,
-    KC_KP_COMMA = 0x85,
-    KC_KP_EQUAL_AS400 = 0x86,
-    KC_INTERNATIONAL_1 = 0x87,
-    KC_INTERNATIONAL_2 = 0x88,
-    KC_INTERNATIONAL_3 = 0x89,
-    KC_INTERNATIONAL_4 = 0x8A,
-    KC_INTERNATIONAL_5 = 0x8B,
-    KC_INTERNATIONAL_6 = 0x8C,
-    KC_INTERNATIONAL_7 = 0x8D,
-    KC_INTERNATIONAL_8 = 0x8E,
-    KC_INTERNATIONAL_9 = 0x8F,
-    KC_LANGUAGE_1 = 0x90,
-    KC_LANGUAGE_2 = 0x91,
-    KC_LANGUAGE_3 = 0x92,
-    KC_LANGUAGE_4 = 0x93,
-    KC_LANGUAGE_5 = 0x94,
-    KC_LANGUAGE_6 = 0x95,
-    KC_LANGUAGE_7 = 0x96,
-    KC_LANGUAGE_8 = 0x97,
-    KC_LANGUAGE_9 = 0x98,
-    KC_ALTERNATE_ERASE = 0x99,
-    KC_SYSTEM_REQUEST = 0x9A,
-    KC_CANCEL = 0x9B,
-    KC_CLEAR = 0x9C,
-    KC_PRIOR = 0x9D,
-    KC_RETURN = 0x9E,
-    KC_SEPARATOR = 0x9F,
-    KC_OUT = 0xA0,
-    KC_OPER = 0xA1,
-    KC_CLEAR_AGAIN = 0xA2,
-    KC_CRSEL = 0xA3,
-    KC_EXSEL = 0xA4,
-    KC_SYSTEM_POWER = 0xA5,
-    KC_SYSTEM_SLEEP = 0xA6,
-    KC_SYSTEM_WAKE = 0xA7,
-    KC_AUDIO_MUTE = 0xA8,
-    KC_AUDIO_VOL_UP = 0xA9,
-    KC_AUDIO_VOL_DOWN = 0xAA,
-    KC_MEDIA_NEXT_TRACK = 0xAB,
-    KC_MEDIA_PREV_TRACK = 0xAC,
-    KC_MEDIA_STOP = 0xAD,
-    KC_MEDIA_PLAY_PAUSE = 0xAE,
-    KC_MEDIA_SELECT = 0xAF,
-    KC_MEDIA_EJECT = 0xB0,
-    KC_MAIL = 0xB1,
-    KC_CALCULATOR = 0xB2,
-    KC_MY_COMPUTER = 0xB3,
-    KC_WWW_SEARCH = 0xB4,
-    KC_WWW_HOME = 0xB5,
-    KC_WWW_BACK = 0xB6,
-    KC_WWW_FORWARD = 0xB7,
-    KC_WWW_STOP = 0xB8,
-    KC_WWW_REFRESH = 0xB9,
-    KC_WWW_FAVORITES = 0xBA,
-    KC_MEDIA_FAST_FORWARD = 0xBB,
-    KC_MEDIA_REWIND = 0xBC,
-    KC_BRIGHTNESS_UP = 0xBD,
-    KC_BRIGHTNESS_DOWN = 0xBE,
-    KC_CONTROL_PANEL = 0xBF,
-    KC_ASSISTANT = 0xC0,
-    KC_MISSION_CONTROL = 0xC1,
-    KC_LAUNCHPAD = 0xC2,
-    KC_MS_UP = 0xCD,
-    KC_MS_DOWN = 0xCE,
-    KC_MS_LEFT = 0xCF,
-    KC_MS_RIGHT = 0xD0,
-    KC_MS_BTN1 = 0xD1,
-    KC_MS_BTN2 = 0xD2,
-    KC_MS_BTN3 = 0xD3,
-    KC_MS_BTN4 = 0xD4,
-    KC_MS_BTN5 = 0xD5,
-    KC_MS_BTN6 = 0xD6,
-    KC_MS_BTN7 = 0xD7,
-    KC_MS_BTN8 = 0xD8,
-    KC_MS_WH_UP = 0xD9,
-    KC_MS_WH_DOWN = 0xDA,
-    KC_MS_WH_LEFT = 0xDB,
-    KC_MS_WH_RIGHT = 0xDC,
-    KC_MS_ACCEL0 = 0xDD,
-    KC_MS_ACCEL1 = 0xDE,
-    KC_MS_ACCEL2 = 0xDF,
-    KC_LEFT_CTRL = 0xE0,
-    KC_LEFT_SHIFT = 0xE1,
-    KC_LEFT_ALT = 0xE2,
-    KC_LEFT_GUI = 0xE3,
-    KC_RIGHT_CTRL = 0xE4,
-    KC_RIGHT_SHIFT = 0xE5,
-    KC_RIGHT_ALT = 0xE6,
-    KC_RIGHT_GUI = 0xE7,
+    // No key pressed
+    KEY_NONE = 0x00,
+    //  Keyboard Error Roll Over - used for all slots if too many keys are pressed ("Phantom key")
+    KEY_ERR_OVF = 0x01,
+    //=0x02, //  Keyboard POST Fail
+    //=0x03, //  Keyboard Error Undefined
+
+    // Keyboard a and A
+    KEY_A = 0x04,
+    // Keyboard b and B
+    KEY_B = 0x05,
+    // Keyboard c and C
+    KEY_C = 0x06,
+    // Keyboard d and D
+    KEY_D = 0x07,
+    // Keyboard e and E
+    KEY_E = 0x08,
+    // Keyboard f and F
+    KEY_F = 0x09,
+    // Keyboard g and G
+    KEY_G = 0x0a,
+    // Keyboard h and H
+    KEY_H = 0x0b,
+    // Keyboard i and I
+    KEY_I = 0x0c,
+    // Keyboard j and J
+    KEY_J = 0x0d,
+    // Keyboard k and K
+    KEY_K = 0x0e,
+    // Keyboard l and L
+    KEY_L = 0x0f,
+    // Keyboard m and M
+    KEY_M = 0x10,
+    // Keyboard n and N
+    KEY_N = 0x11,
+    // Keyboard o and O
+    KEY_O = 0x12,
+    // Keyboard p and P
+    KEY_P = 0x13,
+    // Keyboard q and Q
+    KEY_Q = 0x14,
+    // Keyboard r and R
+    KEY_R = 0x15,
+    // Keyboard s and S
+    KEY_S = 0x16,
+    // Keyboard t and T
+    KEY_T = 0x17,
+    // Keyboard u and U
+    KEY_U = 0x18,
+    // Keyboard v and V
+    KEY_V = 0x19,
+    // Keyboard w and W
+    KEY_W = 0x1a,
+    // Keyboard x and X
+    KEY_X = 0x1b,
+    // Keyboard y and Y
+    KEY_Y = 0x1c,
+    // Keyboard z and Z
+    KEY_Z = 0x1d,
+
+    // Keyboard 1 and !
+    KEY_1 = 0x1e,
+    // Keyboard 2 and @
+    KEY_2 = 0x1f,
+    // Keyboard 3 and #
+    KEY_3 = 0x20,
+    // Keyboard 4 and $
+    KEY_4 = 0x21,
+    // Keyboard 5 and %
+    KEY_5 = 0x22,
+    // Keyboard 6 and ^
+    KEY_6 = 0x23,
+    // Keyboard 7 and &
+    KEY_7 = 0x24,
+    // Keyboard 8 and *
+    KEY_8 = 0x25,
+    // Keyboard 9 and (
+    KEY_9 = 0x26,
+    // Keyboard 0 and )
+    KEY_0 = 0x27,
+
+    // Keyboard Return (ENTER)
+    KEY_ENTER = 0x28,
+    // Keyboard ESCAPE
+    KEY_ESC = 0x29,
+    // Keyboard DELETE (Backspace)
+    KEY_BACKSPACE = 0x2a,
+    // Keyboard Tab
+    KEY_TAB = 0x2b,
+    // Keyboard Spacebar
+    KEY_SPACE = 0x2c,
+    // Keyboard - and _
+    KEY_MINUS = 0x2d,
+    // Keyboard = and +
+    KEY_EQUAL = 0x2e,
+    // Keyboard [ and {
+    KEY_LEFTBRACE = 0x2f,
+    // Keyboard ] and }
+    KEY_RIGHTBRACE = 0x30,
+    // Keyboard \ and |
+    KEY_BACKSLASH = 0x31,
+    // Keyboard Non-US # and ~
+    KEY_HASHTILDE = 0x32,
+    // Keyboard ; and :
+    KEY_SEMICOLON = 0x33,
+    // Keyboard ' and "
+    KEY_APOSTROPHE = 0x34,
+    // Keyboard ` and ~
+    KEY_GRAVE = 0x35,
+    // Keyboard , and <
+    KEY_COMMA = 0x36,
+    // Keyboard . and >
+    KEY_DOT = 0x37,
+    // Keyboard / and ?
+    KEY_SLASH = 0x38,
+    // Keyboard Caps Lock
+    KEY_CAPSLOCK = 0x39,
+
+    // Keyboard F1
+    KEY_F1 = 0x3a,
+    // Keyboard F2
+    KEY_F2 = 0x3b,
+    // Keyboard F3
+    KEY_F3 = 0x3c,
+    // Keyboard F4
+    KEY_F4 = 0x3d,
+    // Keyboard F5
+    KEY_F5 = 0x3e,
+    // Keyboard F6
+    KEY_F6 = 0x3f,
+    // Keyboard F7
+    KEY_F7 = 0x40,
+    // Keyboard F8
+    KEY_F8 = 0x41,
+    // Keyboard F9
+    KEY_F9 = 0x42,
+    // Keyboard F10
+    KEY_F10 = 0x43,
+    // Keyboard F11
+    KEY_F11 = 0x44,
+    // Keyboard F12
+    KEY_F12 = 0x45,
+
+    // Keyboard Print Screen
+    KEY_PRINT_SCREEN = 0x46,
+    // Keyboard Scroll Lock
+    KEY_SCROLL_LOCK = 0x47,
+    // Keyboard Pause
+    KEY_PAUSE = 0x48,
+    // Keyboard Insert
+    KEY_INSERT = 0x49,
+    // Keyboard Home
+    KEY_HOME = 0x4a,
+    // Keyboard Page Up
+    KEY_PAGE_UP = 0x4b,
+    // Keyboard Delete Forward
+    KEY_DELETE = 0x4c,
+    // Keyboard End
+    KEY_END = 0x4d,
+    // Keyboard Page Down
+    KEY_PAGE_DOWN = 0x4e,
+    // Keyboard Right Arrow
+    KEY_RIGHT = 0x4f,
+    // Keyboard Left Arrow
+    KEY_LEFT = 0x50,
+    // Keyboard Down Arrow
+    KEY_DOWN = 0x51,
+    // Keyboard Up Arrow
+    KEY_UP = 0x52,
+
+    // Keyboard Num Lock and Clear
+    KEY_NUMLOCK = 0x53,
+    // Keypad /
+    KEY_KP_SLASH = 0x54,
+    // Keypad *
+    KEY_KP_ASTERISK = 0x55,
+    // Keypad -
+    KEY_KP_MINUS = 0x56,
+    // Keypad +
+    KEY_KP_PLUS = 0x57,
+    // Keypad ENTER
+    KEY_KP_ENTER = 0x58,
+    // Keypad 1 and End
+    KEY_KP_1 = 0x59,
+    // Keypad 2 and Down Arrow
+    KEY_KP_2 = 0x5a,
+    // Keypad 3 and PageDn
+    KEY_KP_3 = 0x5b,
+    // Keypad 4 and Left Arrow
+    KEY_KP_4 = 0x5c,
+    // Keypad 5
+    KEY_KP_5 = 0x5d,
+    // Keypad 6 and Right Arrow
+    KEY_KP_6 = 0x5e,
+    // Keypad 7 and Home
+    KEY_KP_7 = 0x5f,
+    // Keypad 8 and Up Arrow
+    KEY_KP_8 = 0x60,
+    // Keypad 9 and Page Up
+    KEY_KP_9 = 0x61,
+    // Keypad 0 and Insert
+    KEY_KP_0 = 0x62,
+    // Keypad . and Delete
+    KEY_KP_DOT = 0x63,
+
+    // Keyboard Non-US \ and |
+    KEY_NONUS_BACKSLASH = 0x64,
+    // Keyboard Application
+    KEY_APPLICATION = 0x65,
+    // Keyboard Power
+    KEY_POWER = 0x66,
+    // Keypad =
+    KEY_KP_EQUAL = 0x67,
+
+    // Keyboard F13
+    KEY_F13 = 0x68,
+    // Keyboard F14
+    KEY_F14 = 0x69,
+    // Keyboard F15
+    KEY_F15 = 0x6a,
+    // Keyboard F16
+    KEY_F16 = 0x6b,
+    // Keyboard F17
+    KEY_F17 = 0x6c,
+    // Keyboard F18
+    KEY_F18 = 0x6d,
+    // Keyboard F19
+    KEY_F19 = 0x6e,
+    // Keyboard F20
+    KEY_F20 = 0x6f,
+    // Keyboard F21
+    KEY_F21 = 0x70,
+    // Keyboard F22
+    KEY_F22 = 0x71,
+    // Keyboard F23
+    KEY_F23 = 0x72,
+    // Keyboard F24
+    KEY_F24 = 0x73,
+
+    // Keyboard Execute
+    KEY_EXECUTE = 0x74,
+    // Keyboard Help
+    KEY_HELP = 0x75,
+    // Keyboard Menu
+    KEY_MENU = 0x76,
+    // Keyboard Select
+    KEY_SELECT = 0x77,
+    // Keyboard Stop
+    KEY_STOP = 0x78,
+    // Keyboard Again
+    KEY_AGAIN = 0x79,
+    // Keyboard Undo
+    KEY_UNDO = 0x7a,
+    // Keyboard Cut
+    KEY_CUT = 0x7b,
+    // Keyboard Copy
+    KEY_COPY = 0x7c,
+    // Keyboard Paste
+    KEY_PASTE = 0x7d,
+    // Keyboard Find
+    KEY_FIND = 0x7e,
+    // Keyboard Mute
+    KEY_MUTE = 0x7f,
+    // Keyboard Volume Up
+    KEY_VOLUME_UP = 0x80,
+    // Keyboard Volume Down
+    KEY_VOLUME_DOWN = 0x81,
+    // Keyboard Locking Caps Lock
+    KEY_LOCKING_NUM_CAPS_LOCK = 0x82,
+    // Keyboard Locking Num Lock
+    KEY_LOCKING_NUM_LOCK = 0x83,
+    // Keyboard Locking Scroll Lock
+    KEY_LOCKING_SCROLL_LOCK = 0x84,
+
+    // Keypad Comma
+    KEY_KP_COMMA = 0x85,
+    // Keypad Equal Sign
+    KEY_KP_EQUAL_SIGN = 0x86,
+
+    // Keyboard International1
+    KEY_RO = 0x87,
+    // Keyboard International2
+    KEY_KATAKANAHIRAGANA = 0x88,
+    // Keyboard International3
+    KEY_YEN = 0x89,
+    // Keyboard International4
+    KEY_HENKAN = 0x8a,
+    // Keyboard International5
+    KEY_MUHENKAN = 0x8b,
+    // Keyboard International6
+    KEY_KPJPCOMMA = 0x8c,
+    // Keyboard International7
+    KEY_INTL7 = 0x8d,
+    // Keyboard International8
+    KEY_INTL8 = 0x8e,
+    // Keyboard International9
+    KEY_INTL9 = 0x8f,
+
+    // Keyboard LANG1
+    KEY_HANGEUL = 0x90,
+    // Keyboard LANG2
+    KEY_HANJA = 0x91,
+    // Keyboard LANG3
+    KEY_KATAKANA = 0x92,
+    // Keyboard LANG4
+    KEY_HIRAGANA = 0x93,
+    // Keyboard LANG5
+    KEY_ZENKAKUHANKAKU = 0x94,
+    // Keyboard LANG6
+    KEY_LANG6 = 0x95,
+    // Keyboard LANG7
+    KEY_LANG7 = 0x96,
+    // Keyboard LANG8
+    KEY_LANG8 = 0x97,
+    // Keyboard LANG9
+    KEY_LANG9 = 0x98,
+    // Keyboard Alternate Erase
+    KEY_ALTERASE = 0x99,
+    // Keyboard SysReq/Attention
+    KEY_SYSREQ = 0x9a,
+    // Keyboard Cancel
+    KEY_CANCEL = 0x9b,
+    // Keyboard Clear
+    KEY_CLEAR = 0x9c,
+    // Keyboard Prior
+    KEY_PRIOR = 0x9d,
+    // Keyboard Return
+    KEY_RETURN = 0x9e,
+    // Keyboard Separator
+    KEY_SEPARATOR = 0x9f,
+    // Keyboard Out
+    KEY_OUT = 0xa0,
+    // Keyboard Oper
+    KEY_OPER = 0xa1,
+    // Keyboard Clear/Again
+    KEY_CLEARAGAIN = 0xa2,
+    // Keyboard CrSel/Props
+    KEY_CRSEL = 0xa3,
+    // Keyboard ExSel
+    KEY_EXSEL = 0xa4,
+
+    // A5-AF Reserved
+
+    // Keypad 00
+    KEY_KP_00 = 0xb0,
+    // Keypad 000
+    KEY_KP_000 = 0xb1,
+    // Thousands Separator
+    KEY_THOUSANDS_SEPARATOR = 0xb2,
+    // Decimal Separator
+    KEY_DECIMAL_SEPARATOR = 0xb3,
+    // Currency Unit
+    KEY_CURRENCY_UNIT = 0xb4,
+    // Currency Sub-unit
+    KEY_CURRENCY_SUB_UNIT = 0xb5,
+
+    // Keypad (
+    KEY_KP_LEFT_PAREN = 0xb6,
+    // Keypad )
+    KEY_KP_RIGHT_PAREN = 0xb7,
+    // Keypad {
+    KEY_KP_LEFT_BRACE = 0xb8,
+    // Keypad }
+    KEY_KP_RIGHT_BRACE = 0xb9,
+    // Keypad Tab
+    KEY_KP_TAB = 0xba,
+    // Keypad Backspace
+    KEY_KP_BACKSPACE = 0xbb,
+    // Keypad A
+    KEY_KP_A = 0xbc,
+    // Keypad B
+    KEY_KP_B = 0xbd,
+    // Keypad C
+    KEY_KP_C = 0xbe,
+    // Keypad D
+    KEY_KP_D = 0xbf,
+    // Keypad E
+    KEY_KP_E = 0xc0,
+    // Keypad F
+    KEY_KP_F = 0xc1,
+    // Keypad XOR
+    KEY_KP_XOR = 0xc2,
+    // Keypad ^
+    KEY_KP_POWER = 0xc3,
+    // Keypad %
+    KEY_KP_PERCENT = 0xc4,
+    // Keypad <
+    KEY_KP_LESS = 0xc5,
+    // Keypad >
+    KEY_KP_GREATER = 0xc6,
+    // Keypad &
+    KEY_KP_AMPERSAND = 0xc7,
+    // Keypad &&
+    KEY_KP_DBLAMPERSAND = 0xc8,
+    // Keypad |
+    KEY_KP_VERTICALBAR = 0xc9,
+    // Keypad ||
+    KEY_KP_DBLVERTICALBAR = 0xca,
+    // Keypad :
+    KEY_KP_COLON = 0xcb,
+    // Keypad #
+    KEY_KP_HASH = 0xcc,
+    // Keypad Space
+    KEY_KP_SPACE = 0xcd,
+    // Keypad @
+    KEY_KP_AT = 0xce,
+    // Keypad !
+    KEY_KP_EXCLAM = 0xcf,
+    // Keypad Memory Store
+    KEY_KP_MEMSTORE = 0xd0,
+    // Keypad Memory Recall
+    KEY_KP_MEMRECALL = 0xd1,
+    // Keypad Memory Clear
+    KEY_KP_MEMCLEAR = 0xd2,
+    // Keypad Memory Add
+    KEY_KP_MEMADD = 0xd3,
+    // Keypad Memory Subtract
+    KEY_KP_MEMSUBTRACT = 0xd4,
+    // Keypad Memory Multiply
+    KEY_KP_MEMMULTIPLY = 0xd5,
+    // Keypad Memory Divide
+    KEY_KP_MEMDIVIDE = 0xd6,
+    // Keypad +/-
+    KEY_KP_PLUSMINUS = 0xd7,
+    // Keypad Clear
+    KEY_KP_CLEAR = 0xd8,
+    // Keypad Clear Entry
+    KEY_KP_CLEARENTRY = 0xd9,
+    // Keypad Binary
+    KEY_KP_BINARY = 0xda,
+    // Keypad Octal
+    KEY_KP_OCTAL = 0xdb,
+    // Keypad Decimal
+    KEY_KP_DECIMAL = 0xdc,
+    // Keypad Hexadecimal
+    KEY_KP_HEXADECIMAL = 0xdd,
+
+    // DE-DF Reserved
+
+    // Keyboard Left Control
+    KEY_LEFT_CTRL = 0xe0,
+    // Keyboard Left Shift
+    KEY_LEFT_SHIFT = 0xe1,
+    // Keyboard Left Alt
+    KEY_LEFT_ALT = 0xe2,
+    // Keyboard Left GUI
+    KEY_LEFT_GUI = 0xe3,
+    // Keyboard Right Control
+    KEY_RIGHT_CTRL = 0xe4,
+    // Keyboard Right Shift
+    KEY_RIGHT_SHIFT = 0xe5,
+    // Keyboard Right Alt
+    KEY_RIGHT_ALT = 0xe6,
+    // Keyboard Right GUI
+    KEY_RIGHT_GUI = 0xe7,
+
+    KEY_MEDIA_PLAYPAUSE = 0xe8,
+    KEY_MEDIA_STOPCD = 0xe9,
+    KEY_MEDIA_PREVIOUSSONG = 0xea,
+    KEY_MEDIA_NEXTSONG = 0xeb,
+    KEY_MEDIA_EJECTCD = 0xec,
+    KEY_MEDIA_VOLUMEUP = 0xed,
+    KEY_MEDIA_VOLUMEDOWN = 0xee,
+    KEY_MEDIA_MUTE = 0xef,
+    KEY_MEDIA_WWW = 0xf0,
+    KEY_MEDIA_BACK = 0xf1,
+    KEY_MEDIA_FORWARD = 0xf2,
+    KEY_MEDIA_STOP = 0xf3,
+    KEY_MEDIA_FIND = 0xf4,
+    KEY_MEDIA_SCROLLUP = 0xf5,
+    KEY_MEDIA_SCROLLDOWN = 0xf6,
+    KEY_MEDIA_EDIT = 0xf7,
+    KEY_MEDIA_SLEEP = 0xf8,
+    KEY_MEDIA_COFFEE = 0xf9,
+    KEY_MEDIA_REFRESH = 0xfa,
+    KEY_MEDIA_CALC = 0xfb,
+
+    // E8-FFFF Reserved
 };
 
 enum __attribute__((packed)) takokb_keycodes {

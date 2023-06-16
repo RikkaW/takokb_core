@@ -5,13 +5,13 @@
 
 /*
  * Step 1:
- * PRESS(0, 0) KC_A
+ * PRESS(0, 0) KEY_A
  *
  * Step 2:
- * PRESS(0, 1) KC_B
+ * PRESS(0, 1) KEY_B
  *
  * Step 3:
- * RELEASE(0, 0) KC_A
+ * RELEASE(0, 0) KEY_A
  **/
 
 int main(int argc, char *argv[]) {
@@ -20,9 +20,9 @@ int main(int argc, char *argv[]) {
     action_t action;
     action.type = TYPE_KEY;
     action.state_machine = STATE_MACHINE_BASIC;
-    action.parameter.key.keycode = KC_A;
+    action.parameter.key.keycode = KEY_A;
     takokb_keymap_set_action(0, 0, 0, &action);
-    action.parameter.key.keycode = KC_LEFT_SHIFT;
+    action.parameter.key.keycode = KEY_LEFT_SHIFT;
     takokb_keymap_set_action(0, 0, 1, &action);
     takokb_debug_print_keymap();
 
@@ -54,14 +54,14 @@ bool takokb_matrix_scan(matrix_row_t *matrix) {
 void takokb_send_keyboard_hid_report(report_keyboard_t *report, size_t size) {
     switch (test_step) {
         case 1:
-            assert_keycode_equals(report, 0, KC_A);
+            assert_keycode_equals(report, 0, KEY_A);
             return;
         case 2:
-            assert_keycode_equals(report, 0, KC_A);
+            assert_keycode_equals(report, 0, KEY_A);
             assert_modifiers_equals(report, MOD_LSFT);
             return;
         case 3:
-            assert_keycode_equals(report, 0, KC_NO);
+            assert_keycode_equals(report, 0, KEY_NONE);
             assert_modifiers_equals(report, MOD_LSFT);
             return;
         default:

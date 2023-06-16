@@ -9,14 +9,14 @@
  *
  *    0                         1      2     3
  *    Layer 1:
- * 0: TRANS,                    TRANS, KC_E, TRANS
+ * 0: TRANS,                    TRANS, KEY_E, TRANS
  *
  *    Layer 0:
- * 0: LT(1, KC_A, MOD_LSFT),    TRANS, TRANS, TRANS
+ * 0: LT(1, KEY_A, MOD_LSFT),    TRANS, TRANS, TRANS
  *
  * Step 1:
  * PRESS(0, 0)
- * -> layer=1, KC_NO
+ * -> layer=1, KEY_NO
  *
  * Step 2:
  * Wait for 400ms
@@ -25,28 +25,28 @@
  *
  * Step 3:
  * PRESS(0, 0)
- * -> layer=1, KC_NO
+ * -> layer=1, KEY_NO
  *
  * Step 4:
  * Wait for 50ms
  * RELEASE(0, 1)
- * -> layer=0, KC_A, MOD_LSFT
+ * -> layer=0, KEY_A, MOD_LSFT
  *
  * Step5 :
  * Wait for 100ms
- * -> layer=0, KC_NO
+ * -> layer=0, KEY_NO
  *
  * Step 6:
  * PRESS(0, 0)
- * -> layer=0, KC_A, MOD_LSFT
+ * -> layer=0, KEY_A, MOD_LSFT
  *
  * Step 7:
  * Wait 1000ms
- * -> layer=0, KC_A, MOD_LSFT
+ * -> layer=0, KEY_A, MOD_LSFT
  *
  * Step 8:
  * RELEASE(0, 0)
- * -> layer=0, KC_NO
+ * -> layer=0, KEY_NO
  **/
 
 static void set_keymap() {
@@ -55,13 +55,13 @@ static void set_keymap() {
     action.type = TYPE_TAP_KEY_HOLD_MOMENTARY_LAYER;
     action.state_machine = STATE_MACHINE_TAP_HOLD;
     action.parameter.tap_key_hold_layer.layer_id = 1;
-    action.parameter.tap_key_hold_layer.keycode = KC_A;
+    action.parameter.tap_key_hold_layer.keycode = KEY_A;
     action.parameter.tap_key_hold_layer.modifiers = MOD_LSFT;
     takokb_keymap_set_action(0, 0, 0, &action);
 
     action.type = TYPE_KEY;
     action.state_machine = STATE_MACHINE_BASIC;
-    action.parameter.key.keycode = KC_E;
+    action.parameter.key.keycode = KEY_E;
     takokb_keymap_set_action(1, 0, 2, &action);
 }
 
@@ -146,22 +146,22 @@ void takokb_send_keyboard_hid_report(report_keyboard_t *report, size_t size) {
         case 1:
         case 2:
         case 3:
-            assert_keycode_equals(report, 0, KC_NO);
+            assert_keycode_equals(report, 0, KEY_NONE);
             return;
         case 4:
-            assert_keycode_equals(report, 0, KC_A);
+            assert_keycode_equals(report, 0, KEY_A);
             assert_modifiers_equals(report, MOD_LSFT);
             return;
         case 5:
-            assert_keycode_equals(report, 0, KC_NO);
+            assert_keycode_equals(report, 0, KEY_NONE);
             return;
         case 6:
         case 7:
-            assert_keycode_equals(report, 0, KC_A);
+            assert_keycode_equals(report, 0, KEY_A);
             assert_modifiers_equals(report, MOD_LSFT);
             return;
         case 8:
-            assert_keycode_equals(report, 0, KC_NO);
+            assert_keycode_equals(report, 0, KEY_NONE);
             return;
         default:
             // This should never trigger

@@ -9,7 +9,7 @@ static report_keyboard_t report_keyboard = {0};
 static bool report_changed = false;
 
 void report_add_keycode(uint8_t keycode) {
-    if (keycode == KC_NO) {
+    if (keycode == KEY_NONE) {
         return;
     }
 
@@ -19,7 +19,7 @@ void report_add_keycode(uint8_t keycode) {
         if (report_keyboard.keys[index] == keycode) {
             return;
         }
-        if (report_keyboard.keys[index] == KC_NO) {
+        if (report_keyboard.keys[index] == KEY_NONE) {
             break;
         }
     }
@@ -36,7 +36,7 @@ void report_add_keycode(uint8_t keycode) {
 }
 
 void report_remove_keycode(uint8_t keycode) {
-    if (keycode == KC_NO) {
+    if (keycode == KEY_NONE) {
         return;
     }
 
@@ -53,7 +53,7 @@ void report_remove_keycode(uint8_t keycode) {
     }
 
     memcpy(&report_keyboard.keys[index], &report_keyboard.keys[index + 1], MAX_KEYS - index - 1);
-    report_keyboard.keys[MAX_KEYS - 1] = KC_NO;
+    report_keyboard.keys[MAX_KEYS - 1] = KEY_NONE;
 
     report_changed = true;
 
