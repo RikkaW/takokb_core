@@ -10,6 +10,18 @@ extern "C" {
 #include <stddef.h>
 #include <takokb_action.h>
 
+#ifndef TAKOKB_MAX_LAYERS
+#define TAKOKB_MAX_LAYERS 4
+#endif
+
+#ifndef TAKOKB_MATRIX_ROWS
+#define TAKOKB_MATRIX_ROWS 1
+#endif
+
+#ifndef TAKOKB_MATRIX_COLS
+#define TAKOKB_MATRIX_COLS 4
+#endif
+
 #if (TAKOKB_MATRIX_COLS <= 8)
 typedef uint8_t matrix_row_t;
 #elif (TAKOKB_MATRIX_COLS <= 16)

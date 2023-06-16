@@ -38,12 +38,6 @@ install(TARGETS "${PROJECT_NAME}"
         LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
         ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}")
 
-install(FILES ${HEADERS} TYPE INCLUDE DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
-
-add_definitions(-DTAKOKB_MAX_LAYERS=4)
-add_definitions(-DTAKOKB_MATRIX_ROWS=1)
-add_definitions(-DTAKOKB_MATRIX_COLS=4)
-
 if (NOT CMAKE_CROSSCOMPILING)
     enable_testing()
 
@@ -51,7 +45,6 @@ if (NOT CMAKE_CROSSCOMPILING)
         add_executable(${name} test/common.c test/${name}.cpp)
         target_link_libraries(${name} PRIVATE takokb)
         target_include_directories(${name} PRIVATE src)
-        target_compile_definitions(${name} PRIVATE -DTAKOKB_TEST)
         target_compile_definitions(${name} PRIVATE -DTAKOKB_MAX_LAYERS=4)
         target_compile_definitions(${name} PRIVATE -DTAKOKB_MATRIX_ROWS=1)
         target_compile_definitions(${name} PRIVATE -DTAKOKB_MATRIX_COLS=4)

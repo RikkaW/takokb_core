@@ -9,7 +9,7 @@ int main(int argc, char *argv[]) {
     takokb_init();
 
     configurator_report_t report;
-    report.command_id = get_protocol_version;
+    report.command_id = takokb_configurator_command_get_protocol_version;
     takokb_receive_configurator_report(&report, sizeof(report));
 
     return success ? 0 : 1;
