@@ -75,6 +75,7 @@ enum __attribute__((packed)) tap_hold_types {
 };
 
 enum __attribute__((packed)) mods_bit {
+    MOD_NONE = 0,
     MOD_LCTL = 1,
     MOD_LSFT = 1 << 1,
     MOD_LALT = 1 << 2,
