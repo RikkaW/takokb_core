@@ -68,7 +68,7 @@ action_t *keymap_get_action(uint8_t layer, uint8_t row, uint8_t column) {
 
 void keymap_set_action(uint8_t layer, uint8_t row, uint8_t column, const action_t *action) {
     keymap_handle_set_action(action, &takokb_get_keyboard_configuration()->keymaps[layer][row][column]);
-    //takokb_configuration_changed(offsetof(takokb_configuration_t, encoders[layer][encoder][direction]), sizeof(action_t));
+    takokb_configuration_changed(offsetof(takokb_configuration_t, encoders[layer][row][column]), sizeof(action_t));
 }
 
 action_t *keymap_get_encoder_action(uint8_t layer, uint8_t encoder, uint8_t direction) {
@@ -77,5 +77,5 @@ action_t *keymap_get_encoder_action(uint8_t layer, uint8_t encoder, uint8_t dire
 
 void keymap_set_encoder_action(uint8_t layer, uint8_t encoder, uint8_t direction, const action_t *action) {
     keymap_handle_set_action(action, &takokb_get_keyboard_configuration()->encoders[layer][encoder][direction]);
-    //takokb_configuration_changed(offsetof(takokb_configuration_t, encoders[layer][encoder][direction]), sizeof(action_t));
+    takokb_configuration_changed(offsetof(takokb_configuration_t, encoders[layer][encoder][direction]), sizeof(action_t));
 }
