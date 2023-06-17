@@ -45,15 +45,23 @@ __attribute__((weak)) void takokb_send_configurator_report(takokb_configurator_r
 
 }
 
-__attribute__((weak)) takokb_configuration_t *takokb_get_keyboard_configuration() {
+__attribute__((weak)) takokb_configuration_t *takokb_get_keyboard_configuration(void) {
     static takokb_configuration_t configuration;
     return &configuration;
 }
 
-__attribute__((weak)) void takokb_reboot_to_bootloader() {
+__attribute__((weak)) void takokb_reboot_to_bootloader(void) {
 
 }
 
-__attribute__((weak)) void takokb_system_reset() {
+__attribute__((weak)) void takokb_system_reset(void) {
+
+}
+
+__attribute__((weak)) void takokb_configuration_changed(size_t offset, size_t nbytes) {
+
+}
+
+__attribute__((weak)) void takokb_reset_configuration(void) {
 
 }

@@ -88,10 +88,18 @@ void assert(bool value, const char *message) {
     }
 }
 
-void takokb_reboot_to_bootloader() {
+void takokb_reboot_to_bootloader(void) {
 
 }
 
-void takokb_system_reset() {
+void takokb_system_reset(void) {
+
+}
+
+void takokb_reset_configuration(void) {
+
+}
+
+void takokb_configuration_changed(size_t offset, size_t nbytes) {
 
 }

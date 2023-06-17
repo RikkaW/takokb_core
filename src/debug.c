@@ -94,7 +94,7 @@ void takokb_debug_print_action(action_t *action) {
             break;
         }
         default:
-            takokb_debug_printf("(unknown state machine type)");
+            takokb_debug_printf("(unknown state machine type %d)", action->state_machine);
             break;
     }
 }
@@ -202,17 +202,17 @@ const char *takokb_debug_keycode_to_name(enum keycodes keycode) {
             return "KEY_MINUS";
         case KEY_EQUAL:
             return "KEY_EQUAL";
-        case KEY_LEFTBRACE:
+        case KEY_LEFT_BRACKET:
             return "KEY_LEFTBRACE";
-        case KEY_RIGHTBRACE:
+        case KEY_RIGHT_BRACKET:
             return "KEY_RIGHTBRACE";
         case KEY_BACKSLASH:
             return "KEY_BACKSLASH";
-        case KEY_HASHTILDE:
+        case KEY_NONUS_HASH:
             return "KEY_HASHTILDE";
         case KEY_SEMICOLON:
             return "KEY_SEMICOLON";
-        case KEY_APOSTROPHE:
+        case KEY_QUOTE:
             return "KEY_APOSTROPHE";
         case KEY_GRAVE:
             return "KEY_GRAVE";
