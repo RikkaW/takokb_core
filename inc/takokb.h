@@ -76,7 +76,9 @@ typedef struct action {
         } custom;
     } parameter;
 
-} __attribute__((packed)) action_t;
+} __attribute__((packed, aligned(4))) action_t;
+
+// On chips that not support unaligned memory access, action_t must be 4 byte aligned
 
 // ----------------------------
 
@@ -148,9 +150,10 @@ typedef struct configurator_report {
 // ---------- keyboard configuration ----------
 
 typedef struct takokb_configuration {
+    uint32_t version;
     action_t keymaps[TAKOKB_MAX_LAYERS][TAKOKB_MATRIX_ROWS][TAKOKB_MATRIX_COLS];
     action_t encoders[TAKOKB_MAX_LAYERS][TAKODB_ENCODER_COUNT][2];
-} __attribute((packed, aligned(1))) takokb_configuration_t;
+} __attribute((packed, aligned(4))) takokb_configuration_t;
 
 // ---------- public functions ----------
 
@@ -165,6 +168,15 @@ void takokb_keymap_set_action(uint8_t layer, uint8_t row, uint8_t column, const 
 uint8_t takokb_get_top_activated_layer(void);
 
 action_t *takokb_keymap_get_action(uint8_t layer, uint8_t row, uint8_t column);
+
+/**
+ *
+ * @param configuration
+ * @return Return true if the configuration changed (e.g., version is different), otherwise false
+ */
+bool takokb_keymap_set_configuration(takokb_configuration_t *configuration);
+
+void takokb_keymap_disable_save_configuration();
 
 // ---------- weak functions ----------
 
@@ -187,17 +199,21 @@ void takokb_send_configurator_report(takokb_configurator_report_t *report, size_
 
 void takokb_receive_configurator_report(takokb_configurator_report_t *report, size_t size);
 
-takokb_configuration_t *takokb_get_keyboard_configuration();
+takokb_configuration_t *takokb_get_keyboard_configuration(void);
 
 /**
  * @brief Called when TAKOKB_BOOTLOADER key is pressed
  */
-void takokb_reboot_to_bootloader();
+void takokb_reboot_to_bootloader(void);
 
 /**
  * @brief Called when TAKOKB_SYSTEM_RESET key is pressed
  */
-void takokb_system_reset();
+void takokb_system_reset(void);
+
+void takokb_configuration_changed(size_t offset, size_t nbytes);
+
+void takokb_reset_configuration(void);
 
 #ifdef __cplusplus
 }
