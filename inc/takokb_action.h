@@ -186,17 +186,17 @@ enum __attribute__((packed)) keycodes {
     // Keyboard = and +
     KEY_EQUAL = 0x2e,
     // Keyboard [ and {
-    KEY_LEFTBRACE = 0x2f,
+    KEY_LEFT_BRACKET = 0x2f,
     // Keyboard ] and }
-    KEY_RIGHTBRACE = 0x30,
+    KEY_RIGHT_BRACKET = 0x30,
     // Keyboard \ and |
     KEY_BACKSLASH = 0x31,
     // Keyboard Non-US # and ~
-    KEY_HASHTILDE = 0x32,
+    KEY_NONUS_HASH = 0x32,
     // Keyboard ; and :
     KEY_SEMICOLON = 0x33,
     // Keyboard ' and "
-    KEY_APOSTROPHE = 0x34,
+    KEY_QUOTE = 0x34,
     // Keyboard ` and ~
     KEY_GRAVE = 0x35,
     // Keyboard , and <
