@@ -1,3 +1,4 @@
+#include <string.h>
 #include "configurator.h"
 #include "keymap.h"
 
@@ -35,7 +36,12 @@ void configurator_receive_report(takokb_configurator_report_t *report, size_t si
         }
         case takokb_configurator_command_set_action: {
             // TODO: verify if the action is valid
-            keymap_set_action(report->action.layer, report->action.row, report->action.col, &report->action.action);
+
+            // Use memcpy to avoid alignment issues as GUI application assumes there are no padding bytes.
+            action_t action;
+            memcpy(&action, &report->action.action, sizeof(action_t));
+
+            keymap_set_action(report->action.layer, report->action.row, report->action.col, &action);
             report->result_code = takokb_configurator_result_success;
             break;
         }
