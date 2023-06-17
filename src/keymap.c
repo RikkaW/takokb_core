@@ -44,11 +44,20 @@ static void keymap_handle_set_action(const action_t *action, action_t *new_actio
 }
 
 void keymap_init(void) {
+    takokb_get_keyboard_configuration()->version = TAKOKB_CONFIGURATOR_DATA_VERSION;
+
     for (uint8_t layer = 0; layer < TAKOKB_MAX_LAYERS; ++layer) {
         for (uint8_t row = 0; row < TAKOKB_MATRIX_ROWS; ++row) {
             for (uint8_t colum = 0; colum < TAKOKB_MATRIX_COLS; ++colum) {
                 takokb_get_keyboard_configuration()->keymaps[layer][row][colum] = action_trans;
             }
+        }
+    }
+
+    for (uint8_t layer = 0; layer < TAKOKB_MAX_LAYERS; ++layer) {
+        for (uint8_t row = 0; row < TAKODB_ENCODER_COUNT; ++row) {
+            takokb_get_keyboard_configuration()->encoders[layer][row][0] = action_trans;
+            takokb_get_keyboard_configuration()->encoders[layer][row][1] = action_trans;
         }
     }
 }
