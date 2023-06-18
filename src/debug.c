@@ -66,6 +66,16 @@ void takokb_debug_print_action(action_t *action) {
                                         action->parameter.layer.id);
                     break;
                 }
+                case TYPE_TAKOKB: {
+                    takokb_debug_printf("TYPE_TAKOKB %d",
+                                        action->parameter.custom.keycode);
+                    break;
+                }
+                case TYPE_PROFILE: {
+                    takokb_debug_printf("TYPE_PROFILE %d",
+                                        action->parameter.profile.profile);
+                    break;
+                }
                 default:
                     takokb_debug_printf("(unknown action type)");
                     break;
@@ -100,13 +110,17 @@ void takokb_debug_print_action(action_t *action) {
 }
 
 void takokb_debug_print_keymap(void) {
-    for (uint8_t layer = 0; layer < TAKOKB_MAX_LAYERS; ++layer) {
-        for (uint8_t row = 0; row < TAKOKB_MATRIX_ROWS; ++row) {
-            for (uint8_t colum = 0; colum < TAKOKB_MATRIX_COLS; ++colum) {
-                action_t *action = &takokb_get_keyboard_configuration()->keymaps[layer][row][colum];
-                takokb_debug_printf("keymaps[%d][%d][%d] = ", layer, row, colum);
-                takokb_debug_print_action(action);
-                takokb_debug_printf("\n");
+    for (uint8_t profile = 0; profile < TAKOKB_MAX_PROFILES; ++profile) {
+        takokb_debug_printf("keymaps profile %d:\n", profile);
+
+        for (uint8_t layer = 0; layer < TAKOKB_MAX_LAYERS; ++layer) {
+            for (uint8_t row = 0; row < TAKOKB_MATRIX_ROWS; ++row) {
+                for (uint8_t colum = 0; colum < TAKOKB_MATRIX_COLS; ++colum) {
+                    action_t *action = &takokb_get_keyboard_configuration()->keymaps[profile][layer][row][colum];
+                    takokb_debug_printf("keymaps[%d][%d][%d] = ", layer, row, colum);
+                    takokb_debug_print_action(action);
+                    takokb_debug_printf("\n");
+                }
             }
         }
     }
