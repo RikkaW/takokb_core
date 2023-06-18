@@ -18,7 +18,7 @@ static uint8_t top_layer = 0;
 static uint8_t bottom_layer[TAKOKB_MAX_PROFILES];
 
 static uint32_t synced_layers_mask = 0;
-static uint32_t toggled_layers_mask = 0;
+static uint32_t toggled_layers_mask[TAKOKB_MAX_PROFILES];
 
 #define IS_LAYER_ACTIVATED(layer) ((synced_layers_mask & (1 << layer)) != 0)
 
@@ -180,7 +180,7 @@ static void sync_layer() {
         takokb_debug_printf("sync_layer: momentary layer %d\n", top_layer);
     }
 
-    synced_layers_mask |= toggled_layers_mask;
+    synced_layers_mask |= toggled_layers_mask[current_profile];
     if (!has_momentary_layer) {
         for (uint8_t i = 31; i >= 0; i--) {
             if (synced_layers_mask & (1 << i)) {
@@ -487,6 +487,7 @@ void keyboard_init() {
 
     for (uint8_t profile = 0; profile < TAKOKB_MAX_PROFILES; profile++) {
         bottom_layer[profile] = 0;
+        toggled_layers_mask[profile] = 0;
     }
 
     for (uint8_t row = 0; row < TAKOKB_MATRIX_ROWS; row++) {
@@ -508,7 +509,7 @@ uint8_t keyboard_get_top_activated_layer(void) {
 }
 
 uint32_t *keyboard_get_toggled_layers_mask(void) {
-    return &toggled_layers_mask;
+    return &toggled_layers_mask[current_profile];
 }
 
 void keyboard_set_bottom_layer(uint8_t layer) {
