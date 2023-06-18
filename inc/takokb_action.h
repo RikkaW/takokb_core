@@ -58,10 +58,20 @@ enum __attribute__((packed)) basic_types {
      * Parameter: macro # (8) */
     TYPE_MACRO = 0x06,
 
-    /* Custom function. (TBD)
+    /* TakoKB custom keycode.
      *
-     * Parameter: TBD */
-    TYPE_CUSTOM = 0x07,
+     * Parameter: keycode (8) */
+    TYPE_TAKOKB = 0x07,
+
+    /* Set current profile.
+     *
+     * Parameter: profile # (8) */
+    TYPE_PROFILE = 0x08,
+
+    /* User custom keycode.
+     *
+     * Parameter: keycode (8) */
+    TYPE_USER = 0x80,
 };
 
 enum __attribute__((packed)) tap_hold_types {

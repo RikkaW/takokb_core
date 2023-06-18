@@ -29,7 +29,7 @@ void configurator_receive_report(takokb_configurator_report_t *report, size_t si
             return;
         }
         case takokb_configurator_command_get_action: {
-            action_t *action = keymap_get_action(report->action.layer, report->action.row, report->action.col);
+            action_t *action = keymap_get_action(report->action.profile, report->action.layer, report->action.row, report->action.col);
             report->action.action = *action;
             report->result_code = takokb_configurator_result_success;
             break;
@@ -41,7 +41,7 @@ void configurator_receive_report(takokb_configurator_report_t *report, size_t si
             action_t action;
             memcpy(&action, &report->action.action, sizeof(action_t));
 
-            keymap_set_action(report->action.layer, report->action.row, report->action.col, &action);
+            keymap_set_action(report->action.profile, report->action.layer, report->action.row, report->action.col, &action);
             report->result_code = takokb_configurator_result_success;
             break;
         }

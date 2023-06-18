@@ -32,6 +32,8 @@ static uint32_t time_related_keys_queue_size = 0;
 uint64_t time = 0;
 static uint64_t next_time_related_key_update_time = 0;
 
+static uint8_t current_profile = 0;
+
 /**
  * @brief Scan matrix and update changed_keys array.
  * @return If matrix is changed
@@ -81,13 +83,13 @@ bool matrix_task() {
     return changed;
 }
 
-static action_t *find_action(uint8_t layer, uint8_t row, uint8_t colum) {
-    takokb_debug_printf("find_action: top_layer = %d, (%d, %d)\n", layer, row, colum);
+static action_t *find_action(uint8_t profile, uint8_t layer, uint8_t row, uint8_t colum) {
+    takokb_debug_printf("find_action: profile=%d, top_layer = %d, (%d, %d)\n", profile, layer, row, colum);
 
-    action_t *action = keymap_get_action(layer, row, colum);
+    action_t *action = keymap_get_action(profile, layer, row, colum);
     if (!IS_LAYER_ACTIVATED(layer)) {
         // If the layer is not activated, find action from lower layer.
-        return find_action(layer - 1, row, colum);
+        return find_action(profile, layer - 1, row, colum);
     }
 
     if (layer == bottom_layer) {
@@ -99,7 +101,7 @@ static action_t *find_action(uint8_t layer, uint8_t row, uint8_t colum) {
         return action;
     }
     // If action is transparent, find action from lower layer.
-    return find_action(layer - 1, row, colum);
+    return find_action(profile, layer - 1, row, colum);
 }
 
 uint8_t keyboard_momentary_layer_queue_insert(uint8_t layer) {
@@ -375,7 +377,7 @@ static void handle_changed_keys() {
         // If the new state is release, key_state should have been set, use action from it.
         // Otherwise, find action from keymap.
         action_t *action = change_event->change
-                           ? find_action(layer, row, colum)
+                           ? find_action(current_profile, layer, row, colum)
                            : key_state->action;
 
         if (change_event->change) {
@@ -485,4 +487,12 @@ uint32_t *keyboard_get_toggled_layers_mask(void) {
 
 void keyboard_set_bottom_layer(uint8_t layer) {
     bottom_layer = layer;
+}
+
+uint8_t keyboard_get_current_profile() {
+    return current_profile;
+}
+
+void keyboard_set_current_profile(uint8_t profile) {
+    current_profile = profile;
 }

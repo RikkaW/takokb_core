@@ -81,8 +81,8 @@ STATE_BASIC_FUNC_DEF(TYPE_MACRO, IDLE, TAP) {
 STATE_BASIC_FUNC_DEF(TYPE_MACRO, TAP, IDLE) {
 }
 
-// -------- TYPE_CUSTOM --------
-STATE_BASIC_FUNC_DEF(TYPE_CUSTOM, IDLE, TAP) {
+// -------- TYPE_TAKOKB --------
+STATE_BASIC_FUNC_DEF(TYPE_TAKOKB, IDLE, TAP) {
     switch (action->parameter.custom.keycode) {
         case TAKO_BOOTLOADER:
             takokb_reboot_to_bootloader();
@@ -96,9 +96,16 @@ STATE_BASIC_FUNC_DEF(TYPE_CUSTOM, IDLE, TAP) {
     }
 }
 
-STATE_BASIC_FUNC_DEF(TYPE_CUSTOM, TAP, IDLE) {
+STATE_BASIC_FUNC_DEF(TYPE_TAKOKB, TAP, IDLE) {
 }
 
+// -------- TYPE_PROFILE --------
+STATE_BASIC_FUNC_DEF(TYPE_PROFILE, IDLE, TAP) {
+    keyboard_set_current_profile(action->parameter.profile.profile);
+}
+
+STATE_BASIC_FUNC_DEF(TYPE_PROFILE, TAP, IDLE) {
+}
 
 // ================================================================================
 

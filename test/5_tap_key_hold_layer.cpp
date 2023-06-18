@@ -57,12 +57,12 @@ static void set_keymap() {
     action.parameter.tap_key_hold_layer.layer_id = 1;
     action.parameter.tap_key_hold_layer.keycode = KEY_A;
     action.parameter.tap_key_hold_layer.modifiers = MOD_LSFT;
-    takokb_keymap_set_action(0, 0, 0, &action);
+    takokb_keymap_set_action(0, 0, 0, 0, &action);
 
     action.type = TYPE_KEY;
     action.state_machine = STATE_MACHINE_BASIC;
     action.parameter.key.keycode = KEY_E;
-    takokb_keymap_set_action(1, 0, 2, &action);
+    takokb_keymap_set_action(0, 1, 0, 2, &action);
 }
 
 int main(int argc, char *argv[]) {

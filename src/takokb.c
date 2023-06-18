@@ -18,16 +18,20 @@ matrix_row_t *takokb_get_matrix(void) {
     return keyboard_get_matrix();
 }
 
-void takokb_keymap_set_action(uint8_t layer, uint8_t row, uint8_t column, const action_t *action) {
-    keymap_set_action(layer, row, column, action);
+void takokb_keymap_set_action(uint8_t profile, uint8_t layer, uint8_t row, uint8_t column, const action_t *action) {
+    keymap_set_action(profile, layer, row, column, action);
 }
 
 uint8_t takokb_get_top_activated_layer(void) {
     return keyboard_get_top_activated_layer();
 }
 
-action_t *takokb_keymap_get_action(uint8_t layer, uint8_t row, uint8_t column) {
-    return keymap_get_action(layer, row, column);
+uint8_t takokb_get_current_profile(void) {
+    return keyboard_get_current_profile();
+}
+
+action_t *takokb_keymap_get_action(uint8_t profile, uint8_t layer, uint8_t row, uint8_t column) {
+    return keymap_get_action(profile, layer, row, column);
 }
 
 void takokb_receive_configurator_report(takokb_configurator_report_t *report, size_t size) {

@@ -10,6 +10,10 @@ extern "C" {
 #include <stddef.h>
 #include <takokb_action.h>
 
+#ifndef TAKOKB_MAX_PROFILES
+#define TAKOKB_MAX_PROFILES 1
+#endif
+
 #ifndef TAKOKB_MAX_LAYERS
 #define TAKOKB_MAX_LAYERS 4
 #endif
@@ -75,6 +79,10 @@ typedef struct action {
         struct action_custom {
             enum takokb_keycodes keycode: 8;
         } custom;
+
+        struct action_profile {
+            uint8_t profile: 8;
+        } profile;
     } parameter;
 
 } __attribute__((packed, aligned(4))) action_t;
@@ -137,6 +145,7 @@ typedef struct configurator_report {
         } __attribute__((packed)) keyboard_info_payload;
 
         struct {
+            uint8_t profile;
             uint8_t layer;
             uint8_t row;
             uint8_t col;
@@ -152,8 +161,8 @@ typedef struct configurator_report {
 
 typedef struct takokb_configuration {
     uint32_t version;
-    action_t keymaps[TAKOKB_MAX_LAYERS][TAKOKB_MATRIX_ROWS][TAKOKB_MATRIX_COLS];
-    action_t encoders[TAKOKB_MAX_LAYERS][TAKODB_ENCODER_COUNT][2];
+    action_t keymaps[TAKOKB_MAX_PROFILES][TAKOKB_MAX_LAYERS][TAKOKB_MATRIX_ROWS][TAKOKB_MATRIX_COLS];
+    action_t encoders[TAKOKB_MAX_PROFILES][TAKOKB_MAX_LAYERS][TAKODB_ENCODER_COUNT][2];
 } __attribute((packed, aligned(4))) takokb_configuration_t;
 
 // ---------- public functions ----------
@@ -164,11 +173,13 @@ void takokb_task(void);
 
 matrix_row_t *takokb_get_matrix(void);
 
-void takokb_keymap_set_action(uint8_t layer, uint8_t row, uint8_t column, const action_t *action);
+void takokb_keymap_set_action(uint8_t profile, uint8_t layer, uint8_t row, uint8_t column, const action_t *action);
 
 uint8_t takokb_get_top_activated_layer(void);
 
-action_t *takokb_keymap_get_action(uint8_t layer, uint8_t row, uint8_t column);
+uint8_t takokb_get_current_profile(void);
+
+action_t *takokb_keymap_get_action(uint8_t profile, uint8_t layer, uint8_t row, uint8_t column);
 
 /**
  *

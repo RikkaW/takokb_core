@@ -34,11 +34,11 @@ static void set_keymap() {
 
     action.type = TYPE_BOTTOM_LAYER;
     action.parameter.layer.id = 1;
-    takokb_keymap_set_action(0, 0, 0, &action);
+    takokb_keymap_set_action(0, 0, 0, 0, &action);
 
     action.type = TYPE_KEY;
     action.parameter.key.keycode = KEY_E;
-    takokb_keymap_set_action(1, 0, 2, &action);
+    takokb_keymap_set_action(0, 1, 0, 2, &action);
 }
 
 int main(int argc, char *argv[]) {

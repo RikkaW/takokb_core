@@ -21,9 +21,9 @@ int main(int argc, char *argv[]) {
     action.type = TYPE_KEY;
     action.state_machine = STATE_MACHINE_BASIC;
     action.parameter.key.keycode = KEY_A;
-    takokb_keymap_set_action(0, 0, 0, &action);
+    takokb_keymap_set_action(0, 0, 0, 0, &action);
     action.parameter.key.keycode = KEY_LEFT_SHIFT;
-    takokb_keymap_set_action(0, 0, 1, &action);
+    takokb_keymap_set_action(0, 0, 0, 1, &action);
     takokb_debug_print_keymap();
 
     test_next_step();
