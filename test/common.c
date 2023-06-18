@@ -103,3 +103,11 @@ void takokb_reset_configuration(void) {
 void takokb_configuration_changed(size_t offset, size_t nbytes) {
 
 }
+
+void takokb_on_active_layer_changed(uint8_t layer) {
+
+}
+
+void takokb_on_profile_changed(uint8_t profile, bool from_key) {
+
+}

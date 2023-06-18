@@ -69,3 +69,11 @@ __attribute__((weak)) void takokb_configuration_changed(size_t offset, size_t nb
 __attribute__((weak)) void takokb_reset_configuration(void) {
 
 }
+
+__attribute__((weak)) void takokb_on_active_layer_changed(uint8_t layer) {
+
+}
+
+__attribute__((weak)) void takokb_on_profile_changed(uint8_t profile, bool from_key) {
+
+}

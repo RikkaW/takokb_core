@@ -457,6 +457,7 @@ void keyboard_task() {
     if (matrix_task()) {
         handle_changed_keys();
         sync_layer();
+        takokb_on_active_layer_changed(top_layer);
     }
     hid_report_task();
 }
@@ -471,6 +472,7 @@ void keyboard_init() {
     }
 
     sync_layer();
+    takokb_on_active_layer_changed(top_layer);
 }
 
 matrix_row_t *keyboard_get_matrix(void) {
@@ -493,6 +495,11 @@ uint8_t keyboard_get_current_profile() {
     return current_profile;
 }
 
-void keyboard_set_current_profile(uint8_t profile) {
+void keyboard_set_current_profile(uint8_t profile, bool from_key) {
+    if (profile == current_profile) {
+        return;
+    }
+
     current_profile = profile;
+    takokb_on_profile_changed(current_profile, from_key);
 }

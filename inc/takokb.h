@@ -227,6 +227,20 @@ void takokb_configuration_changed(size_t offset, size_t nbytes);
 
 void takokb_reset_configuration(void);
 
+/**
+ * @brief Called when active layer changed.
+ * @param layer Layer number
+ * @param from_key True if layer changed by user press, otherwise false
+ */
+void takokb_on_active_layer_changed(uint8_t layer);
+
+/**
+ * @brief Called when profile changed.
+ * @param profile Profile number
+ * @param from_key True if profile changed by user press, otherwise false
+ */
+void takokb_on_profile_changed(uint8_t profile, bool from_key);
+
 #ifdef __cplusplus
 }
 #endif
