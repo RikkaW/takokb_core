@@ -15,7 +15,7 @@ static key_change_event_t changed_keys[TAKOKB_MATRIX_ROWS * TAKOKB_MATRIX_COLS] 
 static uint8_t changed_keys_size = 0;
 
 static uint8_t top_layer = 0;
-static uint8_t bottom_layer = 0;
+static uint8_t bottom_layer[TAKOKB_MAX_PROFILES];
 
 static uint32_t synced_layers_mask = 0;
 static uint32_t toggled_layers_mask = 0;
@@ -92,7 +92,7 @@ static action_t *find_action(uint8_t profile, uint8_t layer, uint8_t row, uint8_
         return find_action(profile, layer - 1, row, colum);
     }
 
-    if (layer == bottom_layer) {
+    if (layer == bottom_layer[current_profile]) {
         // If the layer is bottom layer, return action.
         return action;
     }
@@ -162,7 +162,7 @@ static void time_related_keys_set_next_update_time(uint64_t new_time) {
  */
 static void sync_layer() {
     // Bottom layer is always activated.
-    synced_layers_mask = (1 << bottom_layer);
+    synced_layers_mask = (1 << bottom_layer[current_profile]);
 
     bool has_momentary_layer = false;
     for (uint8_t i = 0; i < momentary_layer_queue_size; i++) {
@@ -465,6 +465,10 @@ void keyboard_task() {
 void keyboard_init() {
     keymap_init();
 
+    for (uint8_t profile = 0; profile < TAKOKB_MAX_PROFILES; profile++) {
+        bottom_layer[profile] = 0;
+    }
+
     for (uint8_t row = 0; row < TAKOKB_MATRIX_ROWS; row++) {
         for (uint8_t colum = 0; colum < TAKOKB_MATRIX_COLS; colum++) {
             key_states[row][colum].state = STATE_IDLE;
@@ -488,7 +492,7 @@ uint32_t *keyboard_get_toggled_layers_mask(void) {
 }
 
 void keyboard_set_bottom_layer(uint8_t layer) {
-    bottom_layer = layer;
+    bottom_layer[current_profile] = layer;
 }
 
 uint8_t keyboard_get_current_profile() {
