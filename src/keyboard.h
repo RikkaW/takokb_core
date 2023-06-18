@@ -90,7 +90,7 @@ void keyboard_set_bottom_layer(uint8_t layer);
 
 uint8_t keyboard_get_current_profile();
 
-void keyboard_set_current_profile(uint8_t profile, bool from_key);
+void keyboard_schedule_switch_profile(uint8_t profile);
 
 #ifdef __cplusplus
 }

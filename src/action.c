@@ -101,10 +101,10 @@ STATE_BASIC_FUNC_DEF(TYPE_TAKOKB, TAP, IDLE) {
 
 // -------- TYPE_PROFILE --------
 STATE_BASIC_FUNC_DEF(TYPE_PROFILE, IDLE, TAP) {
-    keyboard_set_current_profile(action->parameter.profile.profile);
 }
 
 STATE_BASIC_FUNC_DEF(TYPE_PROFILE, TAP, IDLE) {
+    keyboard_schedule_switch_profile(action->parameter.profile.profile);
 }
 
 // ================================================================================

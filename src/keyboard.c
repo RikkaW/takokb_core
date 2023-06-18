@@ -33,6 +33,7 @@ uint64_t time = 0;
 static uint64_t next_time_related_key_update_time = 0;
 
 static uint8_t current_profile = 0;
+static uint8_t pending_profile = 0;
 
 /**
  * @brief Scan matrix and update changed_keys array.
@@ -441,6 +442,23 @@ static void handle_time_related_keys() {
     }
 }
 
+void profile_task() {
+    if (pending_profile == current_profile) {
+        return;
+    }
+
+    for (uint8_t row = 0; row < TAKOKB_MATRIX_ROWS; row++) {
+        if (matrix[row] != 0) {
+            takokb_debug_printf("profile_task: matrix is not empty (there are still keys are pressed), "
+                                "aborting profile change");
+            return;
+        }
+    }
+
+    current_profile = pending_profile;
+    takokb_on_profile_changed(pending_profile);
+}
+
 void hid_report_task() {
     if (report_has_changed()) {
         takokb_debug_printf("hid_report_task: report has changed\n");
@@ -460,6 +478,8 @@ void keyboard_task() {
         takokb_on_active_layer_changed(top_layer);
     }
     hid_report_task();
+
+    profile_task();
 }
 
 void keyboard_init() {
@@ -499,11 +519,10 @@ uint8_t keyboard_get_current_profile() {
     return current_profile;
 }
 
-void keyboard_set_current_profile(uint8_t profile, bool from_key) {
+void keyboard_schedule_switch_profile(uint8_t profile) {
     if (profile == current_profile) {
         return;
     }
 
-    current_profile = profile;
-    takokb_on_profile_changed(current_profile, from_key);
+    pending_profile = profile;
 }
