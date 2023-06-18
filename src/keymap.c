@@ -45,6 +45,7 @@ static void keymap_handle_set_action(const action_t *action, action_t *new_actio
 
 void keymap_init(void) {
     takokb_get_keyboard_configuration()->version = TAKOKB_CONFIGURATOR_DATA_VERSION;
+    takokb_get_keyboard_configuration()->current_profile = 0;
 
     for (uint8_t profile = 0; profile < TAKOKB_MAX_PROFILES; ++profile) {
         for (uint8_t layer = 0; layer < TAKOKB_MAX_LAYERS; ++layer) {

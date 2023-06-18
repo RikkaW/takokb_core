@@ -526,4 +526,6 @@ void keyboard_schedule_switch_profile(uint8_t profile) {
     }
 
     pending_profile = profile;
+
+    takokb_configuration_changed(offsetof(takokb_configuration_t, current_profile), sizeof(profile));
 }

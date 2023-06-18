@@ -161,6 +161,7 @@ typedef struct configurator_report {
 
 typedef struct takokb_configuration {
     uint32_t version;
+    uint8_t current_profile;
     action_t keymaps[TAKOKB_MAX_PROFILES][TAKOKB_MAX_LAYERS][TAKOKB_MATRIX_ROWS][TAKOKB_MATRIX_COLS];
     action_t encoders[TAKOKB_MAX_PROFILES][TAKOKB_MAX_LAYERS][TAKODB_ENCODER_COUNT][2];
 } __attribute((packed, aligned(4))) takokb_configuration_t;
