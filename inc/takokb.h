@@ -85,7 +85,7 @@ typedef struct action {
         } profile;
     } parameter;
 
-} __attribute__((packed, aligned(4))) action_t;
+} __attribute__((aligned(4))) action_t;
 
 // On chips that not support unaligned memory access, action_t must be 4 byte aligned
 
@@ -164,7 +164,7 @@ typedef struct takokb_configuration {
     uint8_t current_profile;
     action_t keymaps[TAKOKB_MAX_PROFILES][TAKOKB_MAX_LAYERS][TAKOKB_MATRIX_ROWS][TAKOKB_MATRIX_COLS];
     action_t encoders[TAKOKB_MAX_PROFILES][TAKOKB_MAX_LAYERS][TAKODB_ENCODER_COUNT][2];
-} __attribute((packed, aligned(4))) takokb_configuration_t;
+} __attribute((aligned(4))) takokb_configuration_t;
 
 // ---------- public functions ----------
 

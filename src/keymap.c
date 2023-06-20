@@ -27,20 +27,18 @@ static uint8_t keycode_to_modifier_bits(uint8_t keycode) {
     }
 }
 
-static void keymap_handle_set_action(const action_t *action, action_t *new_action) {
-    memcpy(new_action, action, sizeof(action_t));
+static void keymap_handle_set_action(const action_t *input, action_t *output) {
+    memcpy(output, input, sizeof(action_t));
 
-    if (action->type == TYPE_KEY) {
-        uint8_t modifier_bits = keycode_to_modifier_bits(action->parameter.key.keycode);
+    if (input->type == TYPE_KEY) {
+        uint8_t modifier_bits = keycode_to_modifier_bits(input->parameter.key.keycode);
         if (modifier_bits != 0) {
-            new_action->type = TYPE_MODIFIER;
-            memset(&new_action->parameter, 0, sizeof(new_action->parameter));
-            new_action->parameter.key.modifiers = modifier_bits;
+            output->type = TYPE_MODIFIER;
+            memset(&output->parameter, 0, sizeof(output->parameter));
+            output->parameter.key.modifiers = modifier_bits;
             return;
         }
     }
-
-    *new_action = *action;
 }
 
 void keymap_init(void) {
