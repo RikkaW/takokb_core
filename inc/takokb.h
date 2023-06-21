@@ -39,14 +39,6 @@ typedef uint32_t matrix_row_t;
 #define TAKOKB_CONFIGURATOR_PROTOCOL_VERSION 1
 #define TAKOKB_CONFIGURATOR_DATA_VERSION     1
 
-#ifndef TAKOKB_KEYBOARD_INFO_VERSION
-#define TAKOKB_KEYBOARD_INFO_VERSION 1
-#endif
-
-#ifndef TAKOKB_KEYBOARD_INFO_SIZE
-#define TAKOKB_KEYBOARD_INFO_SIZE 0
-#endif
-
 #ifndef TAKODB_ENCODER_COUNT
 #define TAKODB_ENCODER_COUNT 0
 #endif
@@ -119,6 +111,7 @@ enum __attribute__((__packed__)) takokb_configurator_commands {
 
 enum __attribute__((__packed__)) takokb_configurator_result_codes {
     takokb_configurator_result_success = 0x00,
+    takokb_configurator_result_invalid = 0x01,
 };
 
 typedef struct configurator_report {
@@ -134,14 +127,15 @@ typedef struct configurator_report {
         } __attribute__((packed)) protocol_version;
 
         struct {
-            uint8_t version;
+            uint32_t version;
             uint32_t size;
-            uint16_t pages;
+            uint32_t pages;
         } __attribute__((packed)) keyboard_info_metadata;
 
         struct {
-            uint16_t page;
-            uint8_t payload[60];
+            uint32_t page;
+            uint8_t size;
+            uint8_t payload[57];
         } __attribute__((packed)) keyboard_info_payload;
 
         struct {
@@ -240,6 +234,21 @@ void takokb_on_active_layer_changed(uint8_t layer);
  * @param profile Profile number
  */
 void takokb_on_profile_changed(uint8_t profile);
+
+/**
+ * @return Keyboard info array
+ */
+const uint8_t *takokb_get_keyboard_info(void);
+
+/**
+ * @return Keyboard info array size
+ */
+size_t takokb_get_keyboard_info_size(void);
+
+/**
+ * @return Keyboard info version
+ */
+uint32_t takokb_get_keyboard_info_version(void);
 
 #ifdef __cplusplus
 }

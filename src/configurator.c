@@ -15,18 +15,29 @@ void configurator_receive_report(takokb_configurator_report_t *report, size_t si
         }
         case takokb_configurator_command_get_keyboard_info_metadata: {
             report->result_code = takokb_configurator_result_success;
-            if (report->keyboard_info_metadata.version == TAKOKB_KEYBOARD_INFO_VERSION) {
-                takokb_debug_printf("Host has cached keyboard information version %d.\n", TAKOKB_KEYBOARD_INFO_VERSION);
-                break;
+            if (report->keyboard_info_metadata.version == takokb_get_keyboard_info_version()) {
+                takokb_debug_printf("Host has cached keyboard information version %d.\n", takokb_get_keyboard_info_version());
             }
-            report->keyboard_info_metadata.version = TAKOKB_KEYBOARD_INFO_VERSION;
-            report->keyboard_info_metadata.size = TAKOKB_KEYBOARD_INFO_SIZE;
-            report->keyboard_info_metadata.pages = (TAKOKB_KEYBOARD_INFO_SIZE + 4) / 5;
+            report->keyboard_info_metadata.version = takokb_get_keyboard_info_version();
+            report->keyboard_info_metadata.size = takokb_get_keyboard_info_size();
+            report->keyboard_info_metadata.pages = (takokb_get_keyboard_info_size() / 57) + (takokb_get_keyboard_info_size() % 57 != 0);
             break;
         }
         case takokb_configurator_command_get_keyboard_info: {
-            // TODO
-            return;
+            uint32_t max_page = ((takokb_get_keyboard_info_size() / 57) + (takokb_get_keyboard_info_size() % 57 != 0)) - 1;
+            uint32_t page = report->keyboard_info_payload.page;
+
+            if (page > max_page) {
+                takokb_debug_printf("Invalid page number: %d\n", page);
+                report->result_code = takokb_configurator_result_invalid;
+                return;
+            }
+
+            size_t size_to_copy = (page == max_page) ? takokb_get_keyboard_info_size() % 57 : 57;
+            report->result_code = takokb_configurator_result_success;
+            report->keyboard_info_payload.size = size_to_copy;
+            memcpy(report->keyboard_info_payload.payload, takokb_get_keyboard_info() + page * 57, size_to_copy);
+            break;
         }
         case takokb_configurator_command_get_action: {
             action_t *action = keymap_get_action(report->action.profile, report->action.layer, report->action.row, report->action.col);

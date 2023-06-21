@@ -111,3 +111,16 @@ void takokb_on_active_layer_changed(uint8_t layer) {
 void takokb_on_profile_changed(uint8_t profile) {
 
 }
+
+const uint8_t *takokb_get_keyboard_info(void) {
+    static uint8_t info[] = "";
+    return info;
+}
+
+size_t takokb_get_keyboard_info_size(void) {
+    return 0;
+}
+
+uint64_t takokb_get_keyboard_info_version(void) {
+    return 0;
+}
