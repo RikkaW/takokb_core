@@ -127,10 +127,10 @@ typedef struct configurator_report {
     enum takokb_configurator_result_codes result_code;
 
     union {
-        uint8_t raw[14];
+        uint8_t raw[62];
 
         struct {
-            uint8_t protocol_version;
+            uint32_t protocol_version;
         } __attribute__((packed)) protocol_version;
 
         struct {
@@ -141,7 +141,7 @@ typedef struct configurator_report {
 
         struct {
             uint16_t page;
-            uint8_t payload[5];
+            uint8_t payload[60];
         } __attribute__((packed)) keyboard_info_payload;
 
         struct {

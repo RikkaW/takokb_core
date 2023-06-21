@@ -3,7 +3,7 @@
 
 static_assert(sizeof(action_t) == 4, "action_t should be 4 bytes");
 static_assert(sizeof(enum takokb_configurator_commands) == 1, "configurator_commands must be 8 bits");
-static_assert(sizeof(takokb_configurator_report_t) == 16, "configurator_report must be 128 bits");
+static_assert(sizeof(takokb_configurator_report_t) == 64, "configurator_report must be 64 bytes");
 
 int main(int argc, char *argv[]) {
     return 0;
