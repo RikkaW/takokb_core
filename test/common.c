@@ -121,6 +121,6 @@ size_t takokb_get_keyboard_info_size(void) {
     return 0;
 }
 
-uint64_t takokb_get_keyboard_info_version(void) {
+uint32_t takokb_get_keyboard_info_version(void) {
     return 0;
 }
