@@ -77,3 +77,11 @@ __attribute__((weak)) void takokb_on_active_layer_changed(uint8_t layer) {
 __attribute__((weak)) void takokb_on_profile_changed(uint8_t profile) {
 
 }
+
+__attribute__((weak)) void takokb_delay_ms(uint32_t ms) {
+
+}
+
+__attribute__((weak)) void takokb_delay_us(uint32_t us) {
+
+}

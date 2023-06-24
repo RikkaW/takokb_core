@@ -56,6 +56,12 @@ void configurator_receive_report(takokb_configurator_report_t *report, size_t si
             report->result_code = takokb_configurator_result_success;
             break;
         }
+        case takokb_configurator_request_reboot_to_bootloader: {
+            takokb_debug_printf("Rebooting to bootloader...\n");
+            report->result_code = takokb_configurator_result_success;
+            takokb_reboot_to_bootloader();
+            return;
+        }
         default: {
             takokb_debug_printf("Unknown command ID: %d\n", report->command_id);
             return;

@@ -106,6 +106,7 @@ enum __attribute__((__packed__)) takokb_configurator_commands {
     takokb_configurator_command_get_keyboard_info = 0x03,
     takokb_configurator_command_get_action = 0x04,
     takokb_configurator_command_set_action = 0x05,
+    takokb_configurator_request_reboot_to_bootloader = 0x06,
     takokb_configurator_command_custom_start = 0x80,
 };
 
@@ -191,6 +192,10 @@ void takokb_keymap_disable_save_configuration();
  * @return Current milliseconds
  */
 uint64_t takokb_get_milliseconds(void);
+
+void takokb_delay_ms(uint32_t ms);
+
+void takokb_delay_us(uint32_t us);
 
 bool takokb_matrix_scan(matrix_row_t *matrix);
 

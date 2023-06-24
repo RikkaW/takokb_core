@@ -124,3 +124,11 @@ size_t takokb_get_keyboard_info_size(void) {
 uint32_t takokb_get_keyboard_info_version(void) {
     return 0;
 }
+
+void takokb_delay_ms(uint32_t ms) {
+
+}
+
+void takokb_delay_us(uint32_t us) {
+
+}
