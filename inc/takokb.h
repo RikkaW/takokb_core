@@ -75,11 +75,21 @@ typedef struct action {
         struct action_profile {
             uint8_t profile: 8;
         } profile;
+
+        struct action_consumer {
+            uint8_t usage;
+            uint8_t usage2;
+        } consumer;
     } parameter;
 
+// On chips that not support unaligned memory access, action_t must be 4 byte aligned
 } __attribute__((aligned(4))) action_t;
 
-// On chips that not support unaligned memory access, action_t must be 4 byte aligned
+#ifdef __cplusplus
+static_assert(sizeof(action_t) == 4, "action_t must be 4 byte");
+#else
+_Static_assert(sizeof(action_t) == 4, "action_t must be 4 byte");
+#endif
 
 // ----------------------------
 
@@ -212,6 +222,8 @@ void takokb_send_configurator_report(takokb_configurator_report_t *report, size_
 void takokb_receive_configurator_report(takokb_configurator_report_t *report, size_t size);
 
 takokb_configuration_t *takokb_get_keyboard_configuration(void);
+
+void takokb_send_consumer_usage(uint16_t usage);
 
 /**
  * @brief Called when TAKOKB_BOOTLOADER key is pressed

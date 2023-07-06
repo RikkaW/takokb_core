@@ -85,3 +85,7 @@ __attribute__((weak)) void takokb_delay_ms(uint32_t ms) {
 __attribute__((weak)) void takokb_delay_us(uint32_t us) {
 
 }
+
+__attribute__((weak)) void takokb_send_consumer_usage(uint16_t usage) {
+
+}

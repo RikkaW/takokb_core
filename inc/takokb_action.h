@@ -68,6 +68,11 @@ enum __attribute__((packed)) basic_types {
      * Parameter: profile # (8) */
     TYPE_PROFILE = 0x08,
 
+    /* Send a HID Consumer page usage.
+     *
+     * Parameter: usage (16) */
+    TYPE_USAGE_CONSUMER = 0x09,
+
     /* User custom keycode.
      *
      * Parameter: keycode (8) */
@@ -556,27 +561,6 @@ enum __attribute__((packed)) keycodes {
     // Keyboard Right GUI
     KEY_RIGHT_GUI = 0xe7,
 
-    KEY_MEDIA_PLAYPAUSE = 0xe8,
-    KEY_MEDIA_STOPCD = 0xe9,
-    KEY_MEDIA_PREVIOUSSONG = 0xea,
-    KEY_MEDIA_NEXTSONG = 0xeb,
-    KEY_MEDIA_EJECTCD = 0xec,
-    KEY_MEDIA_VOLUMEUP = 0xed,
-    KEY_MEDIA_VOLUMEDOWN = 0xee,
-    KEY_MEDIA_MUTE = 0xef,
-    KEY_MEDIA_WWW = 0xf0,
-    KEY_MEDIA_BACK = 0xf1,
-    KEY_MEDIA_FORWARD = 0xf2,
-    KEY_MEDIA_STOP = 0xf3,
-    KEY_MEDIA_FIND = 0xf4,
-    KEY_MEDIA_SCROLLUP = 0xf5,
-    KEY_MEDIA_SCROLLDOWN = 0xf6,
-    KEY_MEDIA_EDIT = 0xf7,
-    KEY_MEDIA_SLEEP = 0xf8,
-    KEY_MEDIA_COFFEE = 0xf9,
-    KEY_MEDIA_REFRESH = 0xfa,
-    KEY_MEDIA_CALC = 0xfb,
-
     // E8-FFFF Reserved
 };
 
@@ -585,6 +569,16 @@ enum __attribute__((packed)) takokb_keycodes {
     TAKO_BOOTLOADER = 0x01,
     TAKO_SYSTEM_RESET = 0x02,
 };
+
+enum consumer_usage {
+
+    DISPLAY_BRIGHTNESS_INCREMENT = 0x006F,
+    DISPLAY_BRIGHTNESS_DECREMENT = 0x0070,
+
+    VOLUME_INCREMENT = 0x00E9,
+    VOLUME_DECREMENT = 0x00EA,
+};
+
 
 #ifdef __cplusplus
 }

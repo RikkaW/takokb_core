@@ -107,6 +107,15 @@ STATE_BASIC_FUNC_DEF(TYPE_PROFILE, TAP, IDLE) {
     keyboard_schedule_switch_profile(action->parameter.profile.profile);
 }
 
+// -------- TYPE_USAGE_CONSUMER --------
+STATE_BASIC_FUNC_DEF(TYPE_USAGE_CONSUMER, IDLE, TAP) {
+    report_consumer_set(action->parameter.consumer.usage | action->parameter.consumer.usage2 << 8);
+}
+
+STATE_BASIC_FUNC_DEF(TYPE_USAGE_CONSUMER, TAP, IDLE) {
+    report_consumer_set(0);
+}
+
 // ================================================================================
 
 // -------- TYPE_MOMENTARY_LAYER_KEY --------

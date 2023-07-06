@@ -460,10 +460,16 @@ void profile_task() {
 }
 
 void hid_report_task() {
-    if (report_has_changed()) {
+    if (report_keyboard_has_changed()) {
         takokb_debug_printf("hid_report_task: report has changed\n");
         takokb_send_keyboard_hid_report(report_get_keyboard_hid_report(), 8);
-        report_clear_changed();
+        report_keyboard_clear_changed();
+    }
+
+    if (report_consumer_has_changed()) {
+        takokb_debug_printf("hid_report_task: consumer report has changed\n");
+        takokb_send_consumer_usage(report_consumer_get());
+        report_consumer_clear_changed();
     }
 }
 

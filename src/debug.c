@@ -76,6 +76,11 @@ void takokb_debug_print_action(action_t *action) {
                                         action->parameter.profile.profile);
                     break;
                 }
+                case TYPE_USAGE_CONSUMER: {
+                    takokb_debug_printf("TYPE_USAGE_CONSUMER 0x%x",
+                                        action->parameter.consumer.usage | action->parameter.consumer.usage2 << 8);
+                    break;
+                }
                 default:
                     takokb_debug_printf("(unknown action type)");
                     break;
@@ -426,46 +431,6 @@ const char *takokb_debug_keycode_to_name(enum keycodes keycode) {
             return "KEY_RIGHTALT";
         case KEY_RIGHT_GUI:
             return "KEY_RIGHTMETA";
-        case KEY_MEDIA_PLAYPAUSE:
-            return "KEY_MEDIA_PLAYPAUSE";
-        case KEY_MEDIA_STOPCD:
-            return "KEY_MEDIA_STOPCD";
-        case KEY_MEDIA_PREVIOUSSONG:
-            return "KEY_MEDIA_PREVIOUSSONG";
-        case KEY_MEDIA_NEXTSONG:
-            return "KEY_MEDIA_NEXTSONG";
-        case KEY_MEDIA_EJECTCD:
-            return "KEY_MEDIA_EJECTCD";
-        case KEY_MEDIA_VOLUMEUP:
-            return "KEY_MEDIA_VOLUMEUP";
-        case KEY_MEDIA_VOLUMEDOWN:
-            return "KEY_MEDIA_VOLUMEDOWN";
-        case KEY_MEDIA_MUTE:
-            return "KEY_MEDIA_MUTE";
-        case KEY_MEDIA_WWW:
-            return "KEY_MEDIA_WWW";
-        case KEY_MEDIA_BACK:
-            return "KEY_MEDIA_BACK";
-        case KEY_MEDIA_FORWARD:
-            return "KEY_MEDIA_FORWARD";
-        case KEY_MEDIA_STOP:
-            return "KEY_MEDIA_STOP";
-        case KEY_MEDIA_FIND:
-            return "KEY_MEDIA_FIND";
-        case KEY_MEDIA_SCROLLUP:
-            return "KEY_MEDIA_SCROLLUP";
-        case KEY_MEDIA_SCROLLDOWN:
-            return "KEY_MEDIA_SCROLLDOWN";
-        case KEY_MEDIA_EDIT:
-            return "KEY_MEDIA_EDIT";
-        case KEY_MEDIA_SLEEP:
-            return "KEY_MEDIA_SLEEP";
-        case KEY_MEDIA_COFFEE:
-            return "KEY_MEDIA_COFFEE";
-        case KEY_MEDIA_REFRESH:
-            return "KEY_MEDIA_REFRESH";
-        case KEY_MEDIA_CALC:
-            return "KEY_MEDIA_CALC";
         default:
             return "(keycode unnamed)";
     }

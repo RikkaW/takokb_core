@@ -132,3 +132,7 @@ void takokb_delay_ms(uint32_t ms) {
 void takokb_delay_us(uint32_t us) {
 
 }
+
+void takokb_send_consumer_usage(uint16_t usage) {
+
+}
